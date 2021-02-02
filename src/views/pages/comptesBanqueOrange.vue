@@ -14,7 +14,7 @@
                 <p>Tableau de Bord</p>
               </a>
             </li>
-            <li class="nav-item active">
+            <li class="nav-item">
               <a class="nav-link" href="profile">
                 <i class="material-icons">person</i>
                 <p>Profil</p>
@@ -65,7 +65,7 @@
                 <p>Notifications</p>
               </a>
             </li>
-            <li class="nav-item" v-if="userInfos.roles[0].slug==='superAdmin' || userInfos.roles[0].slug==='validatorOMCI'">
+            <li class="nav-item active" v-if="userInfos.roles[0].slug==='superAdmin' || userInfos.roles[0].slug==='validatorOMCI'">
               <a
                 class="nav-link collapsed text-truncate"
                 href="#sousmenuAdmin"
@@ -116,7 +116,7 @@
                 </ul>
               </div>
             </li>
-            <li class="nav-item" v-if="userInfos.roles[0].slug==='validatorOMCI'">
+            <li class="nav-item active" v-if="userInfos.roles[0].slug==='validatorOMCI'">
                     <a class="nav-link" href="comptesBanqueOrange">
                       <i class="material-icons">account_balance</i>
                       <p>Comptes Banque Orange</p>
@@ -187,7 +187,7 @@
         >
           <div class="container-fluid">
             <div class="navbar-wrapper">
-              <a class="navbar-brand" href="javascript:;">Profil Utilisateur</a>
+              <a class="navbar-brand" href="javascript:;">Comptes Banque Orange</a>
             </div>
             <button
               class="navbar-toggler"
@@ -270,218 +270,8 @@
         <!-- End Navbar -->
         <div class="content">
           <div class="container-fluid">
-            <div class="row">
-              <div class="col-md-8">
-                <div class="card">
-                  <div class="card-header card-header-primary bg-orange">
-                    <h4 class="card-title">Editer Profil</h4>
-                    <p class="card-category">
-                      Modifiez vos informations de compte
-                    </p>
-                  </div>
-                  <div class="card-body">
-                    <v-form>
-                      <div class="row">
-                        <div class="col-md-4">
-                          <div class="form-group">
-                            <label>Nom Utilisateur</label>
-                            <input
-                              v-model="userInfos.name"
-                              type="text"
-                              class="form-control"
-                            />
-                          </div>
-                        </div>
-                        <div class="col-md-4">
-                          <div class="form-group">
-                            <label>Email</label>
-                            <input
-                              v-model="userInfos.email"
-                              type="email"
-                              class="form-control"
-                            />
-                          </div>
-                        </div>
-                        <div class="col-md-4">
-                          <div class="form-group">
-                            <label>Date Inscription</label>
-                            <input
-                              v-model="userInfos.created_at"
-                              type="text"
-                              class="form-control"
-                              disabled
-                            />
-                          </div>
-                        </div>
-                      </div>
-                      <div class="row">
-                        <div class="col-md-4">
-                          <div class="form-group">
-                            <label>Nom de Famille</label>
-                            <input 
-                              v-model="userInfos.firstname"
-                              type="text" 
-                              class="form-control" />
-                          </div>
-                        </div>
-                        <div class="col-md-4">
-                          <div class="form-group">
-                            <label>Prénom(s)</label>
-                            <input 
-                              v-model="userInfos.lastname"
-                              type="text" 
-                              class="form-control" />
-                          </div>
-                        </div>
-                        <div class="col-md-4">
-                          <div class="form-group">
-                            <label>Numéro de Téléphone</label>
-                            <input 
-                              v-model="userInfos.phone"
-                              type="text" 
-                              class="form-control" />
-                          </div>
-                        </div>
-                      </div>
-                      <button
-                        class="btn btn-orange btn-fill pull-right">
-                        Enregistrer
-                      </button>
-
-                      <div class="clearfix"></div>
-                    </v-form>
-                  </div>
-                </div>
-              </div>
-              <div class="col-md-4">
-                <div class="card card-nav-tabs bg-black">
-                  <div class="card-header card-header-warning bg-orange">
-                    Editer Mot de Passe
-                  </div>
-                  <div class="card-body">
-                    <v-form>
-                      <div class="container">
-                        <div class="form-group">
-                          <label for="oldPassword">Mot de Passe Actuel</label>
-                          <input
-                            type="password"
-                            class="form-control"
-                            id="oldPassword"
-                          />
-                        </div>
-                        <div class="form-group">
-                          <label for="newPassword">Nouveau Mot de Passe</label>
-                          <input
-                            type="password"
-                            class="form-control"
-                            id="newPassword"
-                          />
-                        </div>
-                        <div class="form-group">
-                          <label for="confirmNewPassword"
-                            >Confirmer Nouveau Mot de Passe</label
-                          >
-                          <input
-                            type="password"
-                            class="form-control"
-                            id="confirmNewPassword"
-                          />
-                        </div>
-                      </div>
-                      <button
-                        type="submit"
-                        class="btn btn-orange btn-fill pull-right">
-                        Valider
-                      </button>
-                    </v-form>
-                  </div>
-                </div>
-              </div>
-              <!-- <div class="col-md-12" v-if="userInfos.id===1">
-                <div class="card bg-black">
-                  <div class="card-header card-header-primary bg-orange">
-                    <h4 class="card-title ">Comptes Banques</h4>
-                    <p class="card-category">
-                      Ici vos Relévés d'Identité Banquaire (à renseigner avant
-                      transaction)
-                    </p>
-                    <br /><button
-                      class="btn btn-white text-dark btn-round"
-                      data-toggle="modal"
-                      data-target="#addRIBModal"
-                    >
-                      <i class="material-icons">add</i> Ajouter
-                    </button>
-                  </div>
-                  <div class="card-body">
-                    <div class="table-responsive">
-                      <table class="table table-stripped">
-                        <thead class="font-weight-bold">
-                          <th>
-                            #
-                          </th>
-                          <th>
-                            RIB
-                          </th>
-                          <th>
-                            Banque
-                          </th>
-                          <th>
-                            Description
-                          </th>
-                          <th>
-                            Actions
-                          </th>
-                        </thead>
-                        <tbody>
-                          <tr v-for="(rib, index) in ribs" :key="rib.id">
-                            <td>
-                              {{ index + 1 }}
-                            </td>
-                            <td class="text-orange">
-                              {{ rib.numero }}
-                            </td>
-                            <td class="font-weight-bold">
-                              {{ rib.bank.nom }}
-                            </td>
-                            <td>
-                              {{ rib.description }}
-                            </td>
-                            <td class="td-actions">
-                              <button
-                                type="button"
-                                rel="tooltip"
-                                title="Modifier"
-                                class="btn btn-black btn-link btn-sm"
-                              >
-                                <i
-                                  class="material-icons"
-                                  @click="editRib(rib.id)"
-                                  >edit</i
-                                >
-                              </button>
-                              <button
-                                type="button"
-                                rel="tooltip"
-                                title="Supprimer"
-                                class="btn btn-danger btn-link btn-sm"
-                              >
-                                <i
-                                  class="material-icons"
-                                  @click="deleteRib(rib.id)"
-                                  >close</i
-                                >
-                              </button>
-                            </td>
-                          </tr>
-                        </tbody>
-                      </table>
-                    </div>
-                  </div>
-                </div>
-              </div> -->
               <div class="row">
-              <div class="col-md-12" v-if="userInfos.roles[0].slug==='structureOM'">
+              <div class="col-md-12" v-if="userInfos.roles[0].slug==='superAdmin' || userInfos.roles[0].slug==='validatorOMCI'">
                 <template>
                   <v-data-table
                     :headers="headers"
@@ -493,6 +283,7 @@
                       flat
                     >
                       <v-toolbar-title v-if="userInfos.roles[0].slug==='structureOM'">Mes Relévés d'Identité Banquaire</v-toolbar-title>
+                      <v-toolbar-title v-if="userInfos.roles[0].slug==='validatorOMCI'">Relévés d'Identité Banquaire d'ORANGE</v-toolbar-title>
                         <v-divider
                           class="mx-4"
                           inset
@@ -763,7 +554,7 @@
 import { mapActions, mapGetters, mapState } from "vuex";
 
 export default {
-  name: "profile",
+  name: "comptesBanqueOrange",
   data:() => ({
       // selectedBank: [],
       // formValid: false,

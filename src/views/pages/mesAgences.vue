@@ -44,7 +44,7 @@
                             <p>Nouvelle Demande</p>
                           </a>
                         </li>
-                      <li class="nav-item" v-if="userInfos.roles[0].slug==='adminBanque' || userInfos.roles[0].slug==='validatorOMCI'">
+                      <li class="nav-item" v-if="userInfos.roles[0].slug==='adminBanque' || userInfos.roles[0].slug==='validatorBanque' || userInfos.roles[0].slug==='validatorOMCI'">
                           <a class="nav-link" href="demandes">
                             <i class="material-icons">schedule</i>
                             <p>Demandes en attente</p>
@@ -107,11 +107,17 @@
                       <p>Liste des Agences</p>
                     </a>
                   </li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="#">
+                      <i class="material-icons">palette</i>
+                      <p>Approvisionner une agence</p>
+                    </a>
+                  </li>
                 </ul>
               </div>
             </li>
             <li class="nav-item" v-if="userInfos.roles[0].slug==='validatorOMCI'">
-                    <a class="nav-link" href="#">
+                    <a class="nav-link" href="comptesBanqueOrange">
                       <i class="material-icons">account_balance</i>
                       <p>Comptes Banque Orange</p>
                     </a>
@@ -291,6 +297,9 @@
                           <th>
                             Description
                           </th>
+                          <th>
+                            Solde
+                          </th>
                         </thead>
                         <tbody>
                           <tr v-for="(agency, index) in agencies" :key="agency.id">
@@ -305,6 +314,9 @@
                             </td>
                             <td>
                               {{ agency.description }}
+                            </td>
+                            <td>
+                              250.000 UVE
                             </td>
                           </tr>
                         </tbody>

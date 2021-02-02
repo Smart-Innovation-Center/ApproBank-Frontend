@@ -44,7 +44,7 @@
                             <p>Nouvelle Demande</p>
                           </a>
                         </li>
-                      <li class="nav-item active" v-if="userInfos.roles[0].slug==='adminBanque' || userInfos.roles[0].slug==='validatorOMCI'">
+                      <li class="nav-item active" v-if="userInfos.roles[0].slug==='adminBanque' || userInfos.roles[0].slug==='validatorBanque' || userInfos.roles[0].slug==='validatorOMCI'">
                           <a class="nav-link" href="demandes">
                             <i class="material-icons">schedule</i>
                             <p>Demandes en attente</p>
@@ -107,11 +107,17 @@
                       <p>Liste des Agences</p>
                     </a>
                   </li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="#">
+                      <i class="material-icons">palette</i>
+                      <p>Approvisionner une agence</p>
+                    </a>
+                  </li>
                 </ul>
               </div>
             </li>
             <li class="nav-item" v-if="userInfos.roles[0].slug==='validatorOMCI'">
-                    <a class="nav-link" href="#">
+                    <a class="nav-link" href="comptesBanqueOrange">
                       <i class="material-icons">account_balance</i>
                       <p>Comptes Banque Orange</p>
                     </a>
@@ -271,7 +277,7 @@
                 <div class="card">
                   <div class="card-header card-header-primary bg-orange">
                     <h4 class="card-title ">Liste des demandes sans bordereau en attente de validation</h4>
-                    <p class="card-category" v-if="userInfos.roles[0].slug==='adminBanque'">
+                    <p class="card-category" v-if="userInfos.roles[0].slug==='adminBanque' || userInfos.roles[0].slug==='validatorBanque'">
                       Ici la liste des demandes d'approvisionnement en UVE (à
                       confirmer ou rejeter)
                     </p>
@@ -334,7 +340,7 @@
                                 <i class="material-icons">visibility</i>
                               </button>
                               <button
-                                v-if="userInfos.roles[0].slug==='adminBanque'"
+                                v-if="userInfos.roles[0].slug==='adminBanque' || userInfos.roles[0].slug==='validatorBanque'"
                                 data-toggle="modal"
                                 data-target="#approModal"
                                 class="btn btn-success btn-sm"
@@ -342,7 +348,7 @@
                                 <i class="material-icons">check</i>
                               </button>
                               <button
-                                v-if="userInfos.roles[0].slug==='adminBanque'"
+                                v-if="userInfos.roles[0].slug==='adminBanque' || userInfos.roles[0].slug==='validatorBanque'"
                                 data-toggle="modal"
                                 data-target="#rejModal"
                                 class="btn btn-danger btn-sm"
