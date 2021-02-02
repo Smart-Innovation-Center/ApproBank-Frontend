@@ -448,12 +448,12 @@
                     </p>
                   </div>
                   <div class="card-body">
-                    <v-form>
+                    <!--<v-form>-->
                       <div class="row">
                         <div class="col-md-4">
                           <div class="form-group">
                             <v-select
-                              v-model="selectedAgency"
+                              v-model="supply.agencyID"
                               :items="agencies"
                               item-value="id"
                               item-text="code"
@@ -496,7 +496,7 @@
                             >
                             </v-select>-->
                             <label for="ribbankExp"></label>
-                            <select  name="ribbankExp" class="form-control">
+                            <select v-model="supply.ribExpID" name="ribbankExp" class="form-control">
                               <option selected disabled value="">Selectionner RIB Expéditeur</option>
                               <option v-for="ribbankExp in ribsbankExp" :value="ribbankExp.id">{{ ribbankExp.description }}</option>
                             </select>
@@ -536,7 +536,7 @@
                             >
                             </v-select>-->
                             <label for="ribbankBenef"></label>
-                            <select name="ribbankBenef" class="form-control">
+                            <select v-model="supply.ribBenefID" name="ribbankBenef" class="form-control">
                               <option selected disabled value="">Selectionner RIB Bénéficiaire</option>
                               <option v-for="ribbankBenef in ribsbankBenef" :value="ribbankBenef.id">{{ ribbankBenef.description }}</option>
                             </select>
@@ -546,6 +546,7 @@
                           <div class="form-group">
                             <label>Montant approvisionnement</label>
                             <input
+                            v-model="supply.montant"
                               type="number"
                               class="form-control"
                               min="1000"
@@ -584,12 +585,12 @@
                       ></v-file-input>
                         </div> -->
                       <!--   -->
-                      <button class="btn btn-orange btn-fill pull-center">
+                      <button class="btn btn-orange btn-fill pull-center" @click="save">
                         Envoyer Demande
                       </button>
 
                       <div class="clearfix"></div>
-                    </v-form>
+                    <!--</v-form>-->
                   </div>
                 </div>
               </div>
@@ -603,12 +604,22 @@
   </v-app>
 </template>
 <script>
-import { mapGetters, mapState } from "vuex";
+import { mapActions, mapGetters, mapState } from "vuex";
 import axios from "../../axios"
 export default {
   name: "supply",
   data() {
     return {
+      supply: {
+        userID: '',
+        agencyID: '',
+        bankExpID: '',
+        ribExpID: '',
+        bankBenefID: '',
+        ribBenefID: '',
+        montant: '',
+        statut: ''
+      },
       bankExp: '',
       bankBenef: '',
     banksExp: [],
@@ -636,6 +647,10 @@ export default {
   },
 
   methods: {
+    ...mapActions({
+      //addNotification: "application/addNotification",
+      supplyAd: "supply/addSupply"
+    }),
       loadBanksExp() {
         axios.get('/banksAll').then(response => this.banksExp =response.data.banks).catch(error => console.log(error))
       },    
@@ -651,6 +666,19 @@ export default {
     Preview_image() {
       this.url= URL.createObjectURL(this.image)
     },
+    
+    save () {
+      //console.log(this.supply);
+
+        this.supply.userID = this.$store.state.user.userInfos.id;
+        this.supply.agencyID = this.supply.agencyID.id;
+        this.supply.bankExpID = this.bankExp;
+        this.supply.bankBenefID = this.bankBenef;
+        this.supply.statut = 'Demande envoyée et en cours d\'approbation !';
+
+        this.supplyAd(this.supply);
+        this.$router.push({ name: "listeDemandes" });
+      },
     logout() {
       this.$store.dispatch("user/logoutUser").then(() => {
         this.$router.push({ name: "login" });

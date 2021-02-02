@@ -290,7 +290,7 @@
                       <i class="material-icons">account_balance_wallet</i>
                     </div>
                     <p class="card-category">Approvisionnements</p>
-                    <h3 class="card-title">75</h3>
+                    <h3 class="card-title">2</h3>
                   </div>
                   <div class="card-footer">
                     <a href="listeDemandes" class="btn btn-primary btn-round">
@@ -306,7 +306,7 @@
                       <i class="material-icons">people</i>
                     </div>
                     <p class="card-category">Comptes Utilisateurs</p>
-                    <h3 class="card-title">245</h3>
+                    <h3 class="card-title">4</h3>
                   </div>
                   <div class="card-footer">
                     <a href="javascript:;" class="btn btn-primary btn-round">
@@ -322,7 +322,7 @@
                       <i class="material-icons">person_off</i>
                     </div>
                     <p class="card-category">Comptes Gelés</p>
-                    <h3 class="card-title">45</h3>
+                    <h3 class="card-title">0</h3>
                   </div>
                   <div class="card-footer">
                     <a href="javascript:;" class="btn btn-primary btn-round">
