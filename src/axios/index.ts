@@ -5,6 +5,7 @@ const ax = axios.create({
     // timeout: 1000,
     // headers: {'X-Custom-Header': 'foobar'}
 });
+//ax.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 
 ax.interceptors.request.use(function(config){
     const token =  localStorage.getItem('token');

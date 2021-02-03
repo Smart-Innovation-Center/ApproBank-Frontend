@@ -282,11 +282,12 @@
                     </p>
                   </div>
                   <div class="card-body">
-                    <v-form>
+                  <input type="file" @change="selectFile">
+                    <form @submit.prevent="save">
                       <div class="row">
                         <div class="col-md-8">
                             <v-file-input
-                            @change="Preview_image"
+                            @change="traitementImage"
                             v-model="image"
                             accept="image/*"
                             chips
@@ -306,7 +307,7 @@
                         <div class="col-md-4">
                           <div class="form-group">
                             <v-select
-                              v-model="selectedAgency"
+                              v-model="supply.agencyID"
                               :items="agencies"
                               item-value="id"
                               item-text="code"
@@ -319,68 +320,47 @@
                         </div>
                         <div class="col-md-4">
                           <div class="form-group">
-                            <v-select
-                              v-model="rib.bankID"
-                              :items="banks"
-                              prepend-icon="account_balance"
-                              item-value="id"
-                              item-text="nom"
-                              placeholder="Banque Expéditrice"
-                              single-line
-                              return-object
-                              >
-                            </v-select>
+                            <label for="bankExp"></label>
+                            <select v-model="bankExp" name="bankExp" class="form-control" @change="getRibs">
+                                <option selected disabled value="">Selectionner Banque Expéditrice</option>
+                                <option v-for="bank in banks" :value="bank.id">{{ bank.nom }}</option>
+                            </select>
                           </div>
                         </div>
                         <div class="col-md-4">
                           <div class="form-group">
-                             <v-select
-                              :items="ribs"
-                              prepend-icon="note"
-                              item-value="id"
-                              item-text="description"
-                              placeholder="RIB Expéditeur"
-                              single-line
-                              return-object
-                            >
-                            </v-select>
+                            <label for="ribbankExp"></label>
+                            <select v-model="supply.ribExpID" name="ribbankExp" class="form-control">
+                              <option selected disabled value="">Selectionner RIB Expéditeur</option>
+                              <option v-for="ribbankExp in ribsbankExp" :value="ribbankExp.id">{{ ribbankExp.description }}</option>
+                            </select>
                           </div>
                         </div>
                       </div>
                       <div class="row">
                         <div class="col-md-4">
                           <div class="form-group">
-                            <v-select
-                                v-model="rib.bankID"
-                                :items="banks"
-                                prepend-icon="account_balance"
-                                item-value="id"
-                                item-text="nom"
-                                placeholder="Banque Bénéficiaire"
-                                single-line
-                                return-object
-                              >
-                            </v-select>
+                            <label for="bankBenef"></label>
+                            <select v-model="bankBenef" name="bankBenef" class="form-control" @change="getRibsOrange">
+                                <option selected disabled value="">Selectionner Banque Bénéficiaire</option>
+                                <option v-for="bank in banks" :value="bank.id">{{ bank.nom }}</option>
+                            </select>
                           </div>
                         </div>
                         <div class="col-md-4">
                           <div class="form-group">
-                             <v-select
-                              :items="ribs"
-                              prepend-icon="note"
-                              item-value="id"
-                              item-text="numero"
-                              placeholder="RIB Bénéficiaire"
-                              single-line
-                              return-object
-                            >
-                            </v-select>
+                            <label for="ribbankBenef"></label>
+                            <select v-model="supply.ribBenefID" name="ribbankBenef" class="form-control">
+                              <option selected disabled value="">Selectionner RIB Bénéficiaire</option>
+                              <option v-for="ribbankBenef in ribsbankBenef" :value="ribbankBenef.id">{{ ribbankBenef.description }}</option>
+                            </select>
                           </div>
                         </div>
                         <div class="col-md-4">
                           <div class="form-group">
                             <label>Montant approvisionnement</label>
                             <input
+                            v-model="supply.montant"
                               type="number"
                               class="form-control"
                               min="1000"
@@ -390,14 +370,13 @@
                         </div>
                       </div>
                       <div class="row">
-                      
-                        
                         <div class="col-md-4">
                           <div class="form-group">
                             <label>Date de Traitement</label>
                             <input
-                              type="text"
-                              class="form-control datetimepicker"
+                              v-model="supply.dateTraitement"
+                              type="date"
+                              class="form-control"
                             />
                           </div>
                         </div>
@@ -405,8 +384,9 @@
                           <div class="form-group">
                             <label>Date de Versement</label>
                             <input
-                              type="text"
-                              class="form-control datetimepicker"
+                              v-model="supply.dateVersement"
+                              type="date"
+                              class="form-control"
                             />
                           </div>
                         </div>
@@ -414,6 +394,7 @@
                           <div class="form-group">
                             <label>Numero du bordereau</label>
                             <input
+                              v-model="supply.numeroBordereau"
                               type="text"
                               class="form-control"
                             />
@@ -421,12 +402,10 @@
                         </div>
                       </div>
                       
-                      <button class="btn btn-orange btn-fill pull-center">
-                        Envoyer Demande
-                      </button>
+                      <input type="submit" class="btn btn-orange btn-fill pull-center" value="Envoyer Demande" />
   
                       <div class="clearfix"></div>
-                    </v-form>
+                    </form>
                   </div>
                 </div>
               </div>
@@ -616,6 +595,9 @@ export default {
   name: "supply",
   data() {
     return {
+      photo: null,
+        description: '',
+        productId: 0,
       supply: {
         userID: '',
         agencyID: '',
@@ -623,6 +605,10 @@ export default {
         ribExpID: '',
         bankBenefID: '',
         ribBenefID: '',
+        dateTraitement: '',
+        dateVersement: '',
+        numeroBordereau: '',
+        photoBordereau: '',
         montant: '',
         statut: ''
       },
@@ -669,22 +655,45 @@ export default {
       getRibsOrange() {
         axios.get('/ribsOrange', {params: {bank_id: this.bankBenef}}).then(response => this.ribsbankBenef = response.data).catch(error => console.log(error))
       },
-    Preview_image() {
-      this.url= URL.createObjectURL(this.image)
+    traitementImage(event) {
+       this.supply.photoBordereau = event;
+       this.url= URL.createObjectURL(this.image); 
+      // this.supply.photoBordereau = this.url;
+      console.log(this.supply.photoBordereau);
     },
     
+    selectFile(event) {
+            // `files` is always an array because the file input may be in multiple mode
+            this.photo = event.target.files[0];
+
+            const data = new FormData();
+data.append('photoBordereau', this.photo);
+data.append('montant', '9000');
+console.log(data);
+this.supplyAd(data);
+        },
     save () {
-      //console.log(this.supply);
+      
+                //       e.preventDefault();
+                // let currentObj = this;
+                // const config = {
+                //     headers: { 'content-type': 'multipart/form-data' }
+                // }
+                // let formData = new FormData();
+                // formData.append('photoBordereau', this.supply.photoBordereau);
+
+        
 
         this.supply.userID = this.$store.state.user.userInfos.id;
         this.supply.agencyID = this.supply.agencyID.id;
         this.supply.bankExpID = this.bankExp;
         this.supply.bankBenefID = this.bankBenef;
         this.supply.statut = 'Demande envoyée et en cours d\'approbation !';
-
-        this.supplyAd(this.supply);
-        this.$router.push({ name: "listeDemandes" });
+        console.log(this.supply)
+         this.supplyAd(data);
+         this.$router.push({ name: "listeDemandes" });
       },
+      
     logout() {
       this.$store.dispatch("user/logoutUser").then(() => {
         this.$router.push({ name: "login" });
