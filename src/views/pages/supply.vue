@@ -282,8 +282,7 @@
                     </p>
                   </div>
                   <div class="card-body">
-                  <input type="file" @change="selectFile">
-                    <form @submit.prevent="save">
+                    
                       <div class="row">
                         <div class="col-md-8">
                             <v-file-input
@@ -307,7 +306,7 @@
                         <div class="col-md-4">
                           <div class="form-group">
                             <v-select
-                              v-model="supply.agencyID"
+                              v-model="agencyID"
                               :items="agencies"
                               item-value="id"
                               item-text="code"
@@ -330,7 +329,7 @@
                         <div class="col-md-4">
                           <div class="form-group">
                             <label for="ribbankExp"></label>
-                            <select v-model="supply.ribExpID" name="ribbankExp" class="form-control">
+                            <select v-model="ribExpID" name="ribbankExp" class="form-control">
                               <option selected disabled value="">Selectionner RIB Expéditeur</option>
                               <option v-for="ribbankExp in ribsbankExp" :value="ribbankExp.id">{{ ribbankExp.description }}</option>
                             </select>
@@ -350,7 +349,7 @@
                         <div class="col-md-4">
                           <div class="form-group">
                             <label for="ribbankBenef"></label>
-                            <select v-model="supply.ribBenefID" name="ribbankBenef" class="form-control">
+                            <select v-model="ribBenefID" name="ribbankBenef" class="form-control">
                               <option selected disabled value="">Selectionner RIB Bénéficiaire</option>
                               <option v-for="ribbankBenef in ribsbankBenef" :value="ribbankBenef.id">{{ ribbankBenef.description }}</option>
                             </select>
@@ -360,7 +359,7 @@
                           <div class="form-group">
                             <label>Montant approvisionnement</label>
                             <input
-                            v-model="supply.montant"
+                            v-model="montant"
                               type="number"
                               class="form-control"
                               min="1000"
@@ -374,7 +373,7 @@
                           <div class="form-group">
                             <label>Date de Traitement</label>
                             <input
-                              v-model="supply.dateTraitement"
+                              v-model="dateTraitement"
                               type="date"
                               class="form-control"
                             />
@@ -384,7 +383,7 @@
                           <div class="form-group">
                             <label>Date de Versement</label>
                             <input
-                              v-model="supply.dateVersement"
+                              v-model="dateVersement"
                               type="date"
                               class="form-control"
                             />
@@ -394,7 +393,7 @@
                           <div class="form-group">
                             <label>Numero du bordereau</label>
                             <input
-                              v-model="supply.numeroBordereau"
+                              v-model="numeroBordereau"
                               type="text"
                               class="form-control"
                             />
@@ -402,10 +401,9 @@
                         </div>
                       </div>
                       
-                      <input type="submit" class="btn btn-orange btn-fill pull-center" value="Envoyer Demande" />
+                      <input type="submit" class="btn btn-orange btn-fill pull-center" value="Envoyer Demande" @click="saveAvecB" />
   
-                      <div class="clearfix"></div>
-                    </form>
+                      <div class="clearfix"></div> 
                   </div>
                 </div>
               </div>
@@ -570,7 +568,7 @@
                       ></v-file-input>
                         </div> -->
                       <!--   -->
-                      <button class="btn btn-orange btn-fill pull-center" @click="save">
+                      <button class="btn btn-orange btn-fill pull-center" @click="saveSansB">
                         Envoyer Demande
                       </button>
 
@@ -595,9 +593,18 @@ export default {
   name: "supply",
   data() {
     return {
-      photo: null,
-        description: '',
-        productId: 0,
+      userID: '',
+      agencyID: '',
+      bankExpID: '',
+      ribExpID: '',
+      bankBenefID: '',
+      ribBenefID: '',
+      dateTraitement: '',
+      dateVersement: '',
+      numeroBordereau: '',
+      photoBordereau: null,
+      montant: '',
+      statut: '',
       supply: {
         userID: '',
         agencyID: '',
@@ -611,7 +618,8 @@ export default {
         photoBordereau: '',
         montant: '',
         statut: ''
-      },
+      }
+     ,
       bankExp: '',
       bankBenef: '',
     banksExp: [],
@@ -641,7 +649,8 @@ export default {
   methods: {
     ...mapActions({
       //addNotification: "application/addNotification",
-      supplyAd: "supply/addSupply"
+      supplyAd: "supply/addSupply",
+      supplyAd2: "supply/addSupply2"
     }),
       loadBanksExp() {
         axios.get('/banksAll').then(response => this.banksExp =response.data.banks).catch(error => console.log(error))
@@ -656,25 +665,52 @@ export default {
         axios.get('/ribsOrange', {params: {bank_id: this.bankBenef}}).then(response => this.ribsbankBenef = response.data).catch(error => console.log(error))
       },
     traitementImage(event) {
-       this.supply.photoBordereau = event;
+       this.photoBordereau = event;
        this.url= URL.createObjectURL(this.image); 
       // this.supply.photoBordereau = this.url;
-      console.log(this.supply.photoBordereau);
+      //console.log(this.supply.photoBordereau);
     },
     
-    selectFile(event) {
-            // `files` is always an array because the file input may be in multiple mode
-            this.photo = event.target.files[0];
+    saveAvecB(e) {
+            e.preventDefault();
+              this.userID = this.$store.state.user.userInfos.id;
 
-            const data = new FormData();
-data.append('photoBordereau', this.photo);
-data.append('montant', '9000');
-console.log(data);
-this.supplyAd(data);
+                      const data = new FormData();
+                      
+                      data.append('userID', this.$store.state.user.userInfos.id);
+                      data.append('agencyID', this.agencyID.id);
+                      data.append('bankExpID', this.bankExp);
+                      data.append('ribBenefID', this.ribBenefID);
+                      data.append('ribExpID', this.ribExpID);
+                      data.append('bankBenefID', this.bankBenef);
+                      data.append('dateTraitement', this.dateTraitement);
+                      data.append('dateVersement', this.dateVersement);
+                      data.append('numeroBordereau', this.numeroBordereau);
+                      data.append('montant', this.montant);
+                      data.append('statut', 'Demande avec bordereau envoyée et en cours d\'approbation !');
+                      data.append('photoBordereau', this.photoBordereau);
+                      // const json = JSON.stringify({
+                      //     userID: this.$store.state.user.userInfos.id,
+                      //     agencyID: this.agencyID.id,
+                      //     bankExpID: this.bankExp,
+                      //     ribExpID: this.ribExpID,
+                      //      bankBenefID: this.bankBenef,
+                      //     dateTraitement: this.dateTraitement,
+                      //     dateVersement: this.dateVersement,
+                      //     numeroBordereau: this.numeroBordereau,
+                      //     montant: this.montant,
+                      //     statut: 'Demande envoyée et en cours d\'approbation !'
+                      // });
+                      // data.append('data', json);
+                       this.supplyAd2(data);
+         this.$router.push({ name: "listeDemandes" });
+                      //axios.post("/supplyAdd", data);
+                      // console.log("data => ",data);
+
         },
-    save () {
+    saveSansB () {
       
-                //       e.preventDefault();
+                      
                 // let currentObj = this;
                 // const config = {
                 //     headers: { 'content-type': 'multipart/form-data' }
@@ -682,15 +718,13 @@ this.supplyAd(data);
                 // let formData = new FormData();
                 // formData.append('photoBordereau', this.supply.photoBordereau);
 
-        
-
         this.supply.userID = this.$store.state.user.userInfos.id;
         this.supply.agencyID = this.supply.agencyID.id;
         this.supply.bankExpID = this.bankExp;
         this.supply.bankBenefID = this.bankBenef;
-        this.supply.statut = 'Demande envoyée et en cours d\'approbation !';
-        console.log(this.supply)
-         this.supplyAd(data);
+        this.supply.statut = 'Demande sans bordereau envoyée et en cours d\'approbation !';
+        console.log('supply',this.supply)
+          this.supplyAd(this.supply);
          this.$router.push({ name: "listeDemandes" });
       },
       

@@ -7,7 +7,7 @@ export default {
         commit("SET_SUPPLIES", supplies);
       },
 
-      addSupply(ctx, payload){
+    addSupply(ctx, payload){
           //console.log('payload :>> ', payload);
           
         return new Promise((resolve, reject) => {
@@ -21,6 +21,21 @@ export default {
                 })
         })
     },
+
+    addSupply2(ctx, payload){
+        //console.log('payload :>> ', payload);
+        
+      return new Promise((resolve, reject) => {
+          axios
+              .post('supplyAdd2', payload)
+              .then(response => {
+                  resolve(response);
+              })
+              .catch((error)=>{
+                  reject(error);
+              })
+      })
+  },
 
     // editRib(ctx, payload){
     //     //console.log('payload :>> ', payload);
