@@ -44,7 +44,7 @@
                             <p>Nouvelle Demande</p>
                           </a>
                         </li>
-                      <li class="nav-item" v-if="userInfos.roles[0].slug==='adminBanque' || userInfos.roles[0].slug==='validatorOMCI'">
+                      <li class="nav-item" v-if="userInfos.roles[0].slug==='adminBanque' || userInfos.roles[0].slug==='validatorBanque' || userInfos.roles[0].slug==='validatorOMCI'">
                           <a class="nav-link" href="demandes">
                             <i class="material-icons">schedule</i>
                             <p>Demandes en attente</p>
@@ -107,11 +107,17 @@
                       <p>Liste des Agences</p>
                     </a>
                   </li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="#">
+                      <i class="material-icons">palette</i>
+                      <p>Approvisionner une agence</p>
+                    </a>
+                  </li>
                 </ul>
               </div>
             </li>
             <li class="nav-item" v-if="userInfos.roles[0].slug==='validatorOMCI'">
-                    <a class="nav-link" href="#">
+                    <a class="nav-link" href="comptesBanqueOrange">
                       <i class="material-icons">account_balance</i>
                       <p>Comptes Banque Orange</p>
                     </a>
@@ -290,7 +296,7 @@
                       <i class="material-icons">account_balance_wallet</i>
                     </div>
                     <p class="card-category">Approvisionnements</p>
-                    <h3 class="card-title">75</h3>
+                    <h3 class="card-title">2</h3>
                   </div>
                   <div class="card-footer">
                     <a href="listeDemandes" class="btn btn-primary btn-round">
@@ -306,7 +312,7 @@
                       <i class="material-icons">people</i>
                     </div>
                     <p class="card-category">Comptes Utilisateurs</p>
-                    <h3 class="card-title">245</h3>
+                    <h3 class="card-title">4</h3>
                   </div>
                   <div class="card-footer">
                     <a href="javascript:;" class="btn btn-primary btn-round">
@@ -322,7 +328,7 @@
                       <i class="material-icons">person_off</i>
                     </div>
                     <p class="card-category">Comptes Gelés</p>
-                    <h3 class="card-title">45</h3>
+                    <h3 class="card-title">0</h3>
                   </div>
                   <div class="card-footer">
                     <a href="javascript:;" class="btn btn-primary btn-round">

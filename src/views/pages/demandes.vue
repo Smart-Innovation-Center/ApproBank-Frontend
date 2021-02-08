@@ -44,7 +44,7 @@
                             <p>Nouvelle Demande</p>
                           </a>
                         </li>
-                      <li class="nav-item active" v-if="userInfos.roles[0].slug==='adminBanque' || userInfos.roles[0].slug==='validatorOMCI'">
+                      <li class="nav-item active" v-if="userInfos.roles[0].slug==='adminBanque' || userInfos.roles[0].slug==='validatorBanque' || userInfos.roles[0].slug==='validatorOMCI'">
                           <a class="nav-link" href="demandes">
                             <i class="material-icons">schedule</i>
                             <p>Demandes en attente</p>
@@ -107,11 +107,17 @@
                       <p>Liste des Agences</p>
                     </a>
                   </li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="#">
+                      <i class="material-icons">palette</i>
+                      <p>Approvisionner une agence</p>
+                    </a>
+                  </li>
                 </ul>
               </div>
             </li>
             <li class="nav-item" v-if="userInfos.roles[0].slug==='validatorOMCI'">
-                    <a class="nav-link" href="#">
+                    <a class="nav-link" href="comptesBanqueOrange">
                       <i class="material-icons">account_balance</i>
                       <p>Comptes Banque Orange</p>
                     </a>
@@ -271,7 +277,7 @@
                 <div class="card">
                   <div class="card-header card-header-primary bg-orange">
                     <h4 class="card-title ">Liste des demandes sans bordereau en attente de validation</h4>
-                    <p class="card-category" v-if="userInfos.roles[0].slug==='adminBanque'">
+                    <p class="card-category" v-if="userInfos.roles[0].slug==='adminBanque' || userInfos.roles[0].slug==='validatorBanque'">
                       Ici la liste des demandes d'approvisionnement en UVE (à
                       confirmer ou rejeter)
                     </p>
@@ -296,34 +302,34 @@
                             Montant
                           </th>
                           <th>
-                            Banque Bénéficiaire
+                            RIB Expéditeur
                           </th>
                           <th>
                             RIB Bénéficiaire
                           </th>
                           <th>
-                            Statut
+                            Action
                           </th>
                         </thead>
                         <tbody>
-                          <tr>
+                          <tr v-for="(supplySansB, index) in suppliesSansB" :key="supplySansB.id">
                             <td>
-                              1
+                              {{ index + 1 }}
                             </td>
-                            <td>
-                              12/01/2021
+                             <td>
+                              {{ supplySansB.created_at | formatDate }}
                             </td>
                             <td class="font-weight-bold">
-                              SICmoney
+                              {{ supplySansB.user.firstname }} {{ supplySansB.user.lastname }}
                             </td>
                             <td class="text-orange">
-                              5 000 000 F CFA
+                              {{ supplySansB.montant }} F CFA
                             </td>
-                            <td>
-                              Société Générale
+                            <td class="font-weight-bold text-uppercase">
+                              {{ supplySansB.rib_exp.numero }}
                             </td>
-                            <td>
-                              Société Générale
+                            <td class="font-weight-bold text-uppercase">
+                             {{ supplySansB.rib_benef.numero }}
                             </td>
                             <td class="text-info">
                               <button
@@ -334,7 +340,7 @@
                                 <i class="material-icons">visibility</i>
                               </button>
                               <button
-                                v-if="userInfos.roles[0].slug==='adminBanque'"
+                                v-if="userInfos.roles[0].slug==='adminBanque' || userInfos.roles[0].slug==='validatorBanque'"
                                 data-toggle="modal"
                                 data-target="#approModal"
                                 class="btn btn-success btn-sm"
@@ -342,7 +348,7 @@
                                 <i class="material-icons">check</i>
                               </button>
                               <button
-                                v-if="userInfos.roles[0].slug==='adminBanque'"
+                                v-if="userInfos.roles[0].slug==='adminBanque' || userInfos.roles[0].slug==='validatorBanque'"
                                 data-toggle="modal"
                                 data-target="#rejModal"
                                 class="btn btn-danger btn-sm"
@@ -503,10 +509,14 @@
 </template>
 <script>
 import { mapGetters, mapState } from "vuex";
+
 export default {
   name: "supply",
   data() {
     return {
+      index: 1,
+      supplySansB: {},
+      supplyAvecB: {},
       selectedAgency: [],
       selectedRib: []
     };
@@ -517,7 +527,9 @@ export default {
     }),
     ...mapState({
       agencies: state => state.agency.agencies,
-      ribs: state => state.rib.ribs
+      ribs: state => state.rib.ribs,
+      suppliesAvecB: state => state.supply.suppliesAvecB,
+      suppliesSansB: state => state.supply.suppliesSansB
     })
   },
 
@@ -537,6 +549,8 @@ export default {
   mounted() {
     this.$store.dispatch("agency/loadAgencies");
     this.$store.dispatch("rib/loadRibs");
+    this.$store.dispatch("supply/loadSuppliesSansB");
+    this.$store.dispatch("supply/loadSuppliesAvecB");
   }
 };
 </script>

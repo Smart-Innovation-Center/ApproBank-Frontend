@@ -44,7 +44,7 @@
                             <p>Nouvelle Demande</p>
                           </a>
                         </li>
-                      <li class="nav-item" v-if="userInfos.roles[0].slug==='adminBanque' || userInfos.roles[0].slug==='validatorOMCI'">
+                      <li class="nav-item" v-if="userInfos.roles[0].slug==='adminBanque' || userInfos.roles[0].slug==='validatorBanque' || userInfos.roles[0].slug==='validatorOMCI'">
                           <a class="nav-link" href="demandes">
                             <i class="material-icons">schedule</i>
                             <p>Demandes en attente</p>
@@ -107,11 +107,17 @@
                       <p>Liste des Agences</p>
                     </a>
                   </li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="#">
+                      <i class="material-icons">palette</i>
+                      <p>Approvisionner une agence</p>
+                    </a>
+                  </li>
                 </ul>
               </div>
             </li>
             <li class="nav-item" v-if="userInfos.roles[0].slug==='validatorOMCI'">
-                    <a class="nav-link" href="#">
+                    <a class="nav-link" href="comptesBanqueOrange">
                       <i class="material-icons">account_balance</i>
                       <p>Comptes Banque Orange</p>
                     </a>
@@ -276,11 +282,11 @@
                     </p>
                   </div>
                   <div class="card-body">
-                    <v-form>
+                    
                       <div class="row">
                         <div class="col-md-8">
                             <v-file-input
-                            @change="Preview_image"
+                            @change="traitementImage"
                             v-model="image"
                             accept="image/*"
                             chips
@@ -300,7 +306,7 @@
                         <div class="col-md-4">
                           <div class="form-group">
                             <v-select
-                              v-model="selectedAgency"
+                              v-model="agencyID"
                               :items="agencies"
                               item-value="id"
                               item-text="code"
@@ -313,68 +319,47 @@
                         </div>
                         <div class="col-md-4">
                           <div class="form-group">
-                            <v-select
-                              v-model="rib.bankID"
-                              :items="banks"
-                              prepend-icon="account_balance"
-                              item-value="id"
-                              item-text="nom"
-                              placeholder="Banque Expéditrice"
-                              single-line
-                              return-object
-                              >
-                            </v-select>
+                            <label for="bankExp"></label>
+                            <select v-model="bankExp" name="bankExp" class="form-control" @change="getRibs">
+                                <option selected disabled value="">Selectionner Banque Expéditrice</option>
+                                <option v-for="bank in banks" :value="bank.id">{{ bank.nom }}</option>
+                            </select>
                           </div>
                         </div>
                         <div class="col-md-4">
                           <div class="form-group">
-                             <v-select
-                              :items="ribs"
-                              prepend-icon="note"
-                              item-value="id"
-                              item-text="description"
-                              placeholder="RIB Expéditeur"
-                              single-line
-                              return-object
-                            >
-                            </v-select>
+                            <label for="ribbankExp"></label>
+                            <select v-model="ribExpID" name="ribbankExp" class="form-control">
+                              <option selected disabled value="">Selectionner RIB Expéditeur</option>
+                              <option v-for="ribbankExp in ribsbankExp" :value="ribbankExp.id">{{ ribbankExp.description }}</option>
+                            </select>
                           </div>
                         </div>
                       </div>
                       <div class="row">
                         <div class="col-md-4">
                           <div class="form-group">
-                            <v-select
-                                v-model="rib.bankID"
-                                :items="banks"
-                                prepend-icon="account_balance"
-                                item-value="id"
-                                item-text="nom"
-                                placeholder="Banque Bénéficiaire"
-                                single-line
-                                return-object
-                              >
-                            </v-select>
+                            <label for="bankBenef"></label>
+                            <select v-model="bankBenef" name="bankBenef" class="form-control" @change="getRibsOrange">
+                                <option selected disabled value="">Selectionner Banque Bénéficiaire</option>
+                                <option v-for="bank in banks" :value="bank.id">{{ bank.nom }}</option>
+                            </select>
                           </div>
                         </div>
                         <div class="col-md-4">
                           <div class="form-group">
-                             <v-select
-                              :items="ribs"
-                              prepend-icon="note"
-                              item-value="id"
-                              item-text="numero"
-                              placeholder="RIB Bénéficiaire"
-                              single-line
-                              return-object
-                            >
-                            </v-select>
+                            <label for="ribbankBenef"></label>
+                            <select v-model="ribBenefID" name="ribbankBenef" class="form-control">
+                              <option selected disabled value="">Selectionner RIB Bénéficiaire</option>
+                              <option v-for="ribbankBenef in ribsbankBenef" :value="ribbankBenef.id">{{ ribbankBenef.description }}</option>
+                            </select>
                           </div>
                         </div>
                         <div class="col-md-4">
                           <div class="form-group">
                             <label>Montant approvisionnement</label>
                             <input
+                            v-model="montant"
                               type="number"
                               class="form-control"
                               min="1000"
@@ -384,14 +369,13 @@
                         </div>
                       </div>
                       <div class="row">
-                      
-                        
                         <div class="col-md-4">
                           <div class="form-group">
                             <label>Date de Traitement</label>
                             <input
-                              type="text"
-                              class="form-control datetimepicker"
+                              v-model="dateTraitement"
+                              type="date"
+                              class="form-control"
                             />
                           </div>
                         </div>
@@ -399,8 +383,9 @@
                           <div class="form-group">
                             <label>Date de Versement</label>
                             <input
-                              type="text"
-                              class="form-control datetimepicker"
+                              v-model="dateVersement"
+                              type="date"
+                              class="form-control"
                             />
                           </div>
                         </div>
@@ -408,6 +393,7 @@
                           <div class="form-group">
                             <label>Numero du bordereau</label>
                             <input
+                              v-model="numeroBordereau"
                               type="text"
                               class="form-control"
                             />
@@ -415,12 +401,9 @@
                         </div>
                       </div>
                       
-                      <button class="btn btn-orange btn-fill pull-center">
-                        Envoyer Demande
-                      </button>
+                      <input type="submit" class="btn btn-orange btn-fill pull-center" value="Envoyer Demande" @click="saveAvecB" />
   
-                      <div class="clearfix"></div>
-                    </v-form>
+                      <div class="clearfix"></div> 
                   </div>
                 </div>
               </div>
@@ -448,12 +431,12 @@
                     </p>
                   </div>
                   <div class="card-body">
-                    <v-form>
+                    <!--<v-form>-->
                       <div class="row">
                         <div class="col-md-4">
                           <div class="form-group">
                             <v-select
-                              v-model="selectedAgency"
+                              v-model="supply.agencyID"
                               :items="agencies"
                               item-value="id"
                               item-text="code"
@@ -496,7 +479,7 @@
                             >
                             </v-select>-->
                             <label for="ribbankExp"></label>
-                            <select  name="ribbankExp" class="form-control">
+                            <select v-model="supply.ribExpID" name="ribbankExp" class="form-control">
                               <option selected disabled value="">Selectionner RIB Expéditeur</option>
                               <option v-for="ribbankExp in ribsbankExp" :value="ribbankExp.id">{{ ribbankExp.description }}</option>
                             </select>
@@ -536,7 +519,7 @@
                             >
                             </v-select>-->
                             <label for="ribbankBenef"></label>
-                            <select name="ribbankBenef" class="form-control">
+                            <select v-model="supply.ribBenefID" name="ribbankBenef" class="form-control">
                               <option selected disabled value="">Selectionner RIB Bénéficiaire</option>
                               <option v-for="ribbankBenef in ribsbankBenef" :value="ribbankBenef.id">{{ ribbankBenef.description }}</option>
                             </select>
@@ -546,6 +529,7 @@
                           <div class="form-group">
                             <label>Montant approvisionnement</label>
                             <input
+                            v-model="supply.montant"
                               type="number"
                               class="form-control"
                               min="1000"
@@ -584,12 +568,12 @@
                       ></v-file-input>
                         </div> -->
                       <!--   -->
-                      <button class="btn btn-orange btn-fill pull-center">
+                      <button class="btn btn-orange btn-fill pull-center" @click="saveSansB">
                         Envoyer Demande
                       </button>
 
                       <div class="clearfix"></div>
-                    </v-form>
+                    <!--</v-form>-->
                   </div>
                 </div>
               </div>
@@ -603,12 +587,39 @@
   </v-app>
 </template>
 <script>
-import { mapGetters, mapState } from "vuex";
+import { mapActions, mapGetters, mapState } from "vuex";
 import axios from "../../axios"
 export default {
   name: "supply",
   data() {
     return {
+      userID: '',
+      agencyID: '',
+      bankExpID: '',
+      ribExpID: '',
+      bankBenefID: '',
+      ribBenefID: '',
+      dateTraitement: '',
+      dateVersement: '',
+      numeroBordereau: '',
+      photoBordereau: null,
+      montant: '',
+      statut: '',
+      supply: {
+        userID: '',
+        agencyID: '',
+        bankExpID: '',
+        ribExpID: '',
+        bankBenefID: '',
+        ribBenefID: '',
+        dateTraitement: '',
+        dateVersement: '',
+        numeroBordereau: '',
+        photoBordereau: '',
+        montant: '',
+        statut: ''
+      }
+     ,
       bankExp: '',
       bankBenef: '',
     banksExp: [],
@@ -636,6 +647,11 @@ export default {
   },
 
   methods: {
+    ...mapActions({
+      //addNotification: "application/addNotification",
+      supplyAd: "supply/addSupply",
+      supplyAd2: "supply/addSupply2"
+    }),
       loadBanksExp() {
         axios.get('/banksAll').then(response => this.banksExp =response.data.banks).catch(error => console.log(error))
       },    
@@ -648,9 +664,70 @@ export default {
       getRibsOrange() {
         axios.get('/ribsOrange', {params: {bank_id: this.bankBenef}}).then(response => this.ribsbankBenef = response.data).catch(error => console.log(error))
       },
-    Preview_image() {
-      this.url= URL.createObjectURL(this.image)
+    traitementImage(event) {
+       this.photoBordereau = event;
+       this.url= URL.createObjectURL(this.image); 
+      // this.supply.photoBordereau = this.url;
+      //console.log(this.supply.photoBordereau);
     },
+    
+    saveAvecB(e) {
+            e.preventDefault();
+              this.userID = this.$store.state.user.userInfos.id;
+
+                      const data = new FormData();
+                      
+                      data.append('userID', this.$store.state.user.userInfos.id);
+                      data.append('agencyID', this.agencyID.id);
+                      data.append('bankExpID', this.bankExp);
+                      data.append('ribBenefID', this.ribBenefID);
+                      data.append('ribExpID', this.ribExpID);
+                      data.append('bankBenefID', this.bankBenef);
+                      data.append('dateTraitement', this.dateTraitement);
+                      data.append('dateVersement', this.dateVersement);
+                      data.append('numeroBordereau', this.numeroBordereau);
+                      data.append('montant', this.montant);
+                      data.append('statut', 'Demande avec bordereau envoyée et en cours d\'approbation');
+                      data.append('photoBordereau', this.photoBordereau);
+                      // const json = JSON.stringify({
+                      //     userID: this.$store.state.user.userInfos.id,
+                      //     agencyID: this.agencyID.id,
+                      //     bankExpID: this.bankExp,
+                      //     ribExpID: this.ribExpID,
+                      //      bankBenefID: this.bankBenef,
+                      //     dateTraitement: this.dateTraitement,
+                      //     dateVersement: this.dateVersement,
+                      //     numeroBordereau: this.numeroBordereau,
+                      //     montant: this.montant,
+                      //     statut: 'Demande envoyée et en cours d\'approbation !'
+                      // });
+                      // data.append('data', json);
+                       this.supplyAd2(data);
+         this.$router.push({ name: "listeDemandes" });
+                      //axios.post("/supplyAdd", data);
+                      // console.log("data => ",data);
+
+        },
+    saveSansB () {
+      
+                      
+                // let currentObj = this;
+                // const config = {
+                //     headers: { 'content-type': 'multipart/form-data' }
+                // }
+                // let formData = new FormData();
+                // formData.append('photoBordereau', this.supply.photoBordereau);
+
+        this.supply.userID = this.$store.state.user.userInfos.id;
+        this.supply.agencyID = this.supply.agencyID.id;
+        this.supply.bankExpID = this.bankExp;
+        this.supply.bankBenefID = this.bankBenef;
+        this.supply.statut = 'Demande sans bordereau envoyée et en cours d\'approbation';
+        console.log('supply',this.supply)
+          this.supplyAd(this.supply);
+         this.$router.push({ name: "listeDemandes" });
+      },
+      
     logout() {
       this.$store.dispatch("user/logoutUser").then(() => {
         this.$router.push({ name: "login" });

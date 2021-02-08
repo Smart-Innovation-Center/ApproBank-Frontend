@@ -44,7 +44,7 @@
                             <p>Nouvelle Demande</p>
                           </a>
                         </li>
-                      <li class="nav-item" v-if="userInfos.roles[0].slug==='adminBanque' || userInfos.roles[0].slug==='validatorOMCI'">
+                      <li class="nav-item" v-if="userInfos.roles[0].slug==='adminBanque' || userInfos.roles[0].slug==='validatorBanque' || userInfos.roles[0].slug==='validatorOMCI'">
                           <a class="nav-link" href="demandes">
                             <i class="material-icons">schedule</i>
                             <p>Demandes en attente</p>
@@ -107,11 +107,17 @@
                       <p>Liste des Agences</p>
                     </a>
                   </li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="#">
+                      <i class="material-icons">palette</i>
+                      <p>Approvisionner une agence</p>
+                    </a>
+                  </li>
                 </ul>
               </div>
             </li>
             <li class="nav-item" v-if="userInfos.roles[0].slug==='validatorOMCI'">
-                    <a class="nav-link" href="#">
+                    <a class="nav-link" href="comptesBanqueOrange">
                       <i class="material-icons">account_balance</i>
                       <p>Comptes Banque Orange</p>
                     </a>
@@ -475,147 +481,145 @@
                 </div>
               </div> -->
               <div class="row">
-              <div class="col-md-12" v-if="userInfos.roles[0].slug==='structureOM' || userInfos.roles[0].slug==='validatorOMCI'">
+              <div class="col-md-12" v-if="userInfos.roles[0].slug==='structureOM'">
                 <template>
-  <v-data-table
-    :headers="headers"
-    :items="ribs"
-    class="elevation-5"
-  >
-      <template v-slot:top>
-        <v-toolbar
-          flat
-        >
-          <v-toolbar-title v-if="userInfos.roles[0].slug==='structureOM'">Mes Relévés d'Identité Banquaire</v-toolbar-title>
-          <v-toolbar-title v-if="userInfos.roles[0].slug==='validatorOMCI'">Relévés d'Identité Banquaire d'ORANGE</v-toolbar-title>
-          <v-divider
-            class="mx-4"
-            inset
-            vertical
-          ></v-divider>
-          <v-spacer></v-spacer>
-          <v-dialog
-            v-model="dialog"
-            max-width="500px"
-          >
-            <template v-slot:activator="{ on, attrs }">
-              <v-btn
-                
-                class="mb-2 btn-orange"
-                v-bind="attrs"
-                v-on="on"
-              >
-                Ajouter
-              </v-btn>
-            </template>
-            <v-card>
-              <v-card-title>
-                <span class="headline">{{ formTitle }}</span>
-              </v-card-title>
+                  <v-data-table
+                    :headers="headers"
+                    :items="ribs"
+                    class="elevation-5"
+                  >
+                  <template v-slot:top>
+                    <v-toolbar
+                      flat
+                    >
+                      <v-toolbar-title v-if="userInfos.roles[0].slug==='structureOM'">Mes Relévés d'Identité Banquaire</v-toolbar-title>
+                        <v-divider
+                          class="mx-4"
+                          inset
+                          vertical
+                        ></v-divider>
+                        <v-spacer></v-spacer>
+                        <v-dialog
+                          v-model="dialog"
+                          max-width="500px"
+                        >
+                        <template v-slot:activator="{ on, attrs }">
+                          <v-btn
+                            
+                            class="mb-2 btn-orange"
+                            v-bind="attrs"
+                            v-on="on"
+                          >
+                            Ajouter
+                          </v-btn>
+                        </template>
+                        <v-card>
+                          <v-card-title>
+                            <span class="headline">{{ formTitle }}</span>
+                          </v-card-title>
 
-              <v-card-text>
-                <v-container>
-                  <v-row>
-                    <v-col
-                      cols="12"
-                      sm="12"
-                      md="12"
-                    >
-                      <v-text-field
-                      label="RIB"
-                      name="numero"
-                      prepend-icon="mdi-note"
-                      type="text"
-                      v-model="editedItem.numero"
-                    ></v-text-field>
-                    </v-col>
-                    <v-col
-                      cols="12"
-                      sm="12"
-                      md="12"
-                    >
-                      <v-select
-                      v-model="editedItem.bankID"
-                      :items="banks"
-                      prepend-icon="account_balance"
-                      item-value="id"
-                      item-text="nom"
-                      placeholder="BANQUE *"
-                      single-line
-                      return-object
-                    >
-                    </v-select>
-                    </v-col>
-                    <v-col
-                      cols="12"
-                      sm="12"
-                      md="12"
-                    >
-                      <textarea
-                      class="form-control"
-                      prepend-icon="reorder"
-                      rows="5"
-                      placeholder="Description"
-                      v-model="editedItem.description"
-                    ></textarea>
-                    </v-col>
-                  </v-row>
-                </v-container>
-              </v-card-text>
+                          <v-card-text>
+                            <v-container>
+                              <v-row>
+                                <v-col
+                                  cols="12"
+                                  sm="12"
+                                  md="12"
+                                >
+                                  <v-text-field
+                                  label="RIB"
+                                  name="numero"
+                                  prepend-icon="mdi-note"
+                                  type="text"
+                                  v-model="editedItem.numero"
+                                ></v-text-field>
+                                </v-col>
+                                <v-col
+                                  cols="12"
+                                  sm="12"
+                                  md="12"
+                                >
+                                  <v-select
+                                  v-model="editedItem.bankID"
+                                  :items="banks"
+                                  prepend-icon="account_balance"
+                                  item-value="id"
+                                  item-text="nom"
+                                  placeholder="BANQUE *"
+                                  single-line
+                                  return-object
+                                >
+                                </v-select>
+                                </v-col>
+                                <v-col
+                                  cols="12"
+                                  sm="12"
+                                  md="12"
+                                >
+                                  <textarea
+                                  class="form-control"
+                                  prepend-icon="reorder"
+                                  rows="5"
+                                  placeholder="Description"
+                                  v-model="editedItem.description"
+                                ></textarea>
+                                </v-col>
+                              </v-row>
+                            </v-container>
+                          </v-card-text>
 
-              <v-card-actions>
-                <v-spacer></v-spacer>
-                <v-btn
-                  class="btn btn-link btn-default"
-                  text
-                  @click="close"
-                >
-                  Annuler
-                </v-btn>
-                <v-btn
-                  class="btn btn-orange"
-                  text
-                  @click="save"
-                >
-                  Enregister
-                </v-btn>
-              </v-card-actions>
-            </v-card>
-          </v-dialog>
-          <v-dialog v-model="dialogDelete" max-width="500px">
-            <v-card>
-              <v-card-title class="headline">Êtes-vous sûr de vouloir supprimer votre RIB : {{editedItem.numero}} </v-card-title>
-              <v-card-actions>
-                <v-spacer></v-spacer>
-                <v-btn color="blue darken-1" class="btn btn-default btn-link" text @click="closeDelete">Annuler</v-btn>
-                <v-btn color="blue darken-1" class="btn btn-danger" text @click="deleteItemConfirm(editedItem.id)">Supprimer</v-btn>
-                <v-spacer></v-spacer>
-              </v-card-actions>
-            </v-card>
-          </v-dialog>
-        </v-toolbar>
-      </template>
-      <template v-slot:item.actions="{ item }">
-        <v-icon
-          small
-          class="mr-2"
-          @click="editItem(item)"
-        >
-          mdi-pencil
-        </v-icon>
-        <v-icon
-          small
-          @click="deleteItem(item)"
-        >
-          mdi-delete
-        </v-icon>
-      </template>
-      <template v-slot:no-data>
-          Aucune donnée à afficher
-      </template>
-  </v-data-table>
-</template>
-
+                          <v-card-actions>
+                            <v-spacer></v-spacer>
+                            <v-btn
+                              class="btn btn-link btn-default"
+                              text
+                              @click="close"
+                            >
+                              Annuler
+                            </v-btn>
+                            <v-btn
+                              class="btn btn-orange"
+                              text
+                              @click="save"
+                            >
+                              Enregister
+                            </v-btn>
+                          </v-card-actions>
+                        </v-card>
+                      </v-dialog>
+                      <v-dialog v-model="dialogDelete" max-width="500px">
+                        <v-card>
+                          <v-card-title class="headline">Êtes-vous sûr de vouloir supprimer votre RIB : {{editedItem.numero}} </v-card-title>
+                          <v-card-actions>
+                            <v-spacer></v-spacer>
+                            <v-btn color="blue darken-1" class="btn btn-default btn-link" text @click="closeDelete">Annuler</v-btn>
+                            <v-btn color="blue darken-1" class="btn btn-danger" text @click="deleteItemConfirm(editedItem.id)">Supprimer</v-btn>
+                            <v-spacer></v-spacer>
+                          </v-card-actions>
+                        </v-card>
+                      </v-dialog>
+                    </v-toolbar>
+                  </template>
+                  <template v-slot:item.actions="{ item }">
+                    <v-icon
+                      small
+                      class="mr-2"
+                      @click="editItem(item)"
+                    >
+                      mdi-pencil
+                    </v-icon>
+                    <v-icon
+                      small
+                      @click="deleteItem(item)"
+                    >
+                      mdi-delete
+                    </v-icon>
+                  </template>
+                  <template v-slot:no-data>
+                      Aucune donnée à afficher
+                  </template>
+                  </v-data-table>
+                </template>
               </div>
             </div>
             </div>
@@ -869,11 +873,8 @@ export default {
       save () {
         if (this.editedIndex > -1) {
           Object.assign(this.ribs[this.editedIndex], this.editedItem);
-        
 
         this.ribUpd(this.editedItem)
-        // this.editedItem.bankID = this.editedItem.bank.id
-        // console.log(this.editedItem.bankID)
         } else {
           
           this.editedItem.userID = this.$store.state.user.userInfos.id;

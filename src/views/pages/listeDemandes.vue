@@ -44,7 +44,7 @@
                             <p>Nouvelle Demande</p>
                           </a>
                         </li>
-                      <li class="nav-item" v-if="userInfos.roles[0].slug==='adminBanque' || userInfos.roles[0].slug==='validatorOMCI'">
+                      <li class="nav-item" v-if="userInfos.roles[0].slug==='adminBanque' || userInfos.roles[0].slug==='validatorBanque' || userInfos.roles[0].slug==='validatorOMCI'">
                           <a class="nav-link" href="demandes">
                             <i class="material-icons">schedule</i>
                             <p>Demandes en attente</p>
@@ -107,11 +107,17 @@
                       <p>Liste des Agences</p>
                     </a>
                   </li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="#">
+                      <i class="material-icons">palette</i>
+                      <p>Approvisionner une agence</p>
+                    </a>
+                  </li>
                 </ul>
               </div>
             </li>
             <li class="nav-item" v-if="userInfos.roles[0].slug==='validatorOMCI'">
-                    <a class="nav-link" href="#">
+                    <a class="nav-link" href="comptesBanqueOrange">
                       <i class="material-icons">account_balance</i>
                       <p>Comptes Banque Orange</p>
                     </a>
@@ -283,7 +289,7 @@
                             #
                           </th>
                           <th>
-                            Date
+                            Date demande
                           </th>
                           <th>
                             Agence
@@ -292,71 +298,49 @@
                             Montant
                           </th>
                           <th>
-                            Bordereau
+                            De ma banque
+                          </th>
+                          <th>
+                            Avec mon RIB
+                          </th>
+                          <th>
+                            Vers la banque
+                          </th>
+                          <th>
+                            Sur leur RIB
                           </th>
                           <th>
                             Statut
                           </th>
                         </thead>
                         <tbody>
-                          <tr>
+                        <tr v-for="(mySupply, index) in mySupplies" :key="mySupply.id">
                             <td>
-                              1
+                              {{ index + 1 }}
                             </td>
                             <td>
-                              12/01/2021
+                              02/02/2021
                             </td>
                             <td class="font-weight-bold">
-                              AGOMCI-PL05
+                              {{ mySupply.agency.code }}
                             </td>
                             <td class="text-orange">
-                              5000000 F CFA
+                              {{ mySupply.montant }} F CFA
                             </td>
                             <td>
-                              Fbd5fks00gkr9yz
+                              {{ mySupply.bank_exp.code }}
+                            </td>
+                            <td>
+                              {{ mySupply.rib_exp.description }} ({{ mySupply.rib_exp.numero }})
+                            </td>
+                            <td>
+                              {{ mySupply.bank_benef.code }}
+                            </td>
+                            <td>
+                              {{ mySupply.rib_benef.description }} ({{ mySupply.rib_benef.numero }})
                             </td>
                             <td class="text-info">
-                              En cours d'approbation (1/2)
-                            </td>
-                          </tr>
-                          <tr>
-                            <td>
-                              2
-                            </td>
-                            <td>
-                              09/01/2021
-                            </td>
-                            <td class="font-weight-bold">
-                              AGOMCI-PL02
-                            </td>
-                            <td class="text-orange">
-                              360000 F CFA
-                            </td>
-                            <td>
-                              Mpkdjud563dcd6549
-                            </td>
-                            <td class="text-success">
-                              Confirmé
-                            </td>
-                          </tr>
-                          <tr>
-                            <td>
-                              3
-                            </td>
-                            <td>
-                              06/01/2021
-                            </td>
-                            <td class="font-weight-bold">
-                              AGOMCI-PL08
-                            </td>
-                            <td class="text-orange">
-                              8520000 F CFA
-                            </td>
-                            <td>
-                              afsd55fgs46df35fg6d
-                            </td>
-                            <td class="text-danger">
-                              Annulé
+                              {{ mySupply.statut }} : {{ mySupply.statut_count }} / {{ mySupply.bank_benef.nombreApprobation }}
                             </td>
                           </tr>
                         </tbody>
@@ -400,77 +384,49 @@
                             Date
                           </th>
                           <th>
-                            Agence
+                            Structure
+                          </th>
+                          <th>
+                            Agence Cible
                           </th>
                           <th>
                             Montant
                           </th>
                           <th>
-                            Bordereau
+                            RIB Expéditeur
+                          </th>
+                          <th>
+                            RIB Bénéficiaire
                           </th>
                           <th>
                             Statut
                           </th>
                         </thead>
                         <tbody>
-                          <tr>
+                          <tr v-for="(supply, index) in supplies" :key="supply.id">
                             <td>
-                              1
+                              {{ index + 1 }}
                             </td>
                             <td>
-                              12/01/2021
+                              {{ supply.created_at | formatDate }}
+                            </td>
+                            <td class="font-weight-bold text-uppercase">
+                              {{ supply.user.name }}
                             </td>
                             <td class="font-weight-bold">
-                              AGOMCI-PL05
+                              {{ supply.agency.code }}
                             </td>
                             <td class="text-orange">
-                              5000000 F CFA
+                              {{ supply.montant }} F CFA
                             </td>
-                            <td>
-                              Fbd5fks00gkr9yz
+                            <td class="font-weight-bold text-uppercase">
+                              {{ supply.rib_exp.numero }}
+                            </td>
+                            <td class="font-weight-bold text-uppercase">
+                             {{ supply.rib_benef.numero }}
                             </td>
                             <td class="text-info">
-                              En cours d'approbation (1/2)
-                            </td>
-                          </tr>
-                          <tr>
-                            <td>
-                              2
-                            </td>
-                            <td>
-                              09/01/2021
-                            </td>
-                            <td class="font-weight-bold">
-                              AGOMCI-PL02
-                            </td>
-                            <td class="text-orange">
-                              360000 F CFA
-                            </td>
-                            <td>
-                              Mpkdjud563dcd6549
-                            </td>
-                            <td class="text-success">
-                              Confirmé
-                            </td>
-                          </tr>
-                          <tr>
-                            <td>
-                              3
-                            </td>
-                            <td>
-                              06/01/2021
-                            </td>
-                            <td class="font-weight-bold">
-                              AGOMCI-PL08
-                            </td>
-                            <td class="text-orange">
-                              8520000 F CFA
-                            </td>
-                            <td>
-                              afsd55fgs46df35fg6d
-                            </td>
-                            <td class="text-danger">
-                              Annulé
+                              {{ supply.statut }} : {{ supply.statut_count }} / {{ supply.bank_benef.nombreApprobation }}
                             </td>
                           </tr>
                         </tbody>
@@ -491,6 +447,9 @@ import { mapGetters, mapState, mapActions } from "vuex";
 export default {
   name: "supply",
   data:()=> ({
+    index: 1,
+    supply: {},
+    mySupply: {},
     dialog: false,
       dialogDelete: false,
       headers: [
@@ -523,16 +482,16 @@ export default {
     selectedRib: []
   }),
   computed: {
-     formTitle () {
-        return this.editedIndex === -1 ? 'Nouveau RIB' : 'Modifier RIB'
-      },
+     
     ...mapGetters({
-      userInfos: "user/userInfos"
+      userInfos: "user/userInfos",
     }),
     ...mapState({
       banks: state => state.bank.banks,
       agencies: state => state.agency.agencies,
-      ribs: state => state.rib.ribs
+      ribs: state => state.rib.ribs,
+      supplies: state => state.supply.supplies,
+      mySupplies: state => state.supply.mySupplies   
     }),
   },
 
@@ -549,75 +508,18 @@ export default {
     },
 
   methods: {
-      ...mapActions({
-      ribAd: "rib/addRib",
-      ribDel: "rib/deleteRib",
-      ribUpd: "rib/updateRib"
-    }),
-      editItem (item) {
-        this.editedIndex = this.ribs.indexOf(item)
-        this.editedItem = Object.assign({}, item)
-        this.editedItem.bankID = this.editedItem.bank.id
-        this.dialog = true
-      },
-      deleteItem (item) {
-        this.editedIndex = this.ribs.indexOf(item)
-        this.editedItem = Object.assign({}, item)
-        this.dialogDelete = true
-      },
-      deleteItemConfirm (id) {
-       
-                this.ribDel(id)
-            
-        this.ribs.splice(this.editedIndex, 1)
-        this.closeDelete()
-      },
-      close () {
-        this.dialog = false
-        this.$nextTick(() => {
-          this.editedItem = Object.assign({}, this.defaultItem)
-          this.editedIndex = -1
-        })
-      },
-      closeDelete () {
-        this.dialogDelete = false
-        this.$nextTick(() => {
-          this.editedItem = Object.assign({}, this.defaultItem)
-          this.editedIndex = -1
-        })
-      },
-      save () {
-        if (this.editedIndex > -1) {
-          Object.assign(this.ribs[this.editedIndex], this.editedItem);
-          
-        this.ribUpd(this.editedItem)
-        // this.editedItem.bankID = this.editedItem.bank.id
-        // console.log(this.editedItem.bankID)
-        } else {
-          this.editedItem.userID = this.$store.state.user.userInfos.id;
-        this.editedItem.bankID = this.editedItem.bankID.id;
-        this.ribAd(this.editedItem);
-        
-          this.ribs.push(this.editedItem)
-        }
-        this.close()
-      },
     logout() {
       this.$store.dispatch("user/logoutUser").then(() => {
         this.$router.push({ name: "login" });
       });
     },
-    vide() {
-        $("#approModal").hide();
-        $('body').removeClass('modal-open');
-        $('.modal-backdrop').remove();
-        $("#table tr").remove(); 
-    }
   },
   mounted() {
     this.$store.dispatch("agency/loadAgencies");
     this.$store.dispatch("bank/loadBanks");
     this.$store.dispatch("rib/loadRibs");
+    this.$store.dispatch("supply/loadSupplies");
+    this.$store.dispatch("supply/loadmySupplies");
   }
 };
 </script>

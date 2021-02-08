@@ -78,6 +78,15 @@ Vue.use(VueRouter)
     }
   },
   {
+    path: '/comptesBanqueOrange',
+    name: 'comptesBanqueOrange',
+    component: () => import(/* webpackChunkName: "demandes" */ '../views/pages/comptesBanqueOrange.vue'),
+    meta: {
+      middleware: [Middlewares.auth],
+      title: 'Comptes Banque Orange'
+    }
+  },
+  {
     path: '/notifications',
     name: 'notifications',
     component: () => import(/* webpackChunkName: "notifications" */ '../views/pages/notifications.vue'),
