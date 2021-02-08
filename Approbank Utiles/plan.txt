@@ -21,13 +21,23 @@
 
 #APPROVISIONNEMENT
 
-	APPROV AVEC BORDEREAU (FILE UPLOAD) (https://dev.to/diogoko/file-upload-using-laravel-and-vue-js-the-right-way-1775)
-	RIB BENEF = RIB FIXE PAR ORANGE POUR CHAQUE BANQUE
+	APPROV AVEC BORDEREAU (FILE UPLOAD) (https://dev.to/diogoko/file-upload-using-laravel-and-vue-js-the-right-way-1775) 🙂️
+	RIB BENEF = RIB FIXE PAR ORANGE POUR CHAQUE BANQUE 🙂️
 
 	LISTE DE MES APPROV AVEC STATUT INTELLIGENT (STRUCTURE)
-	LISTE DE TOUS LES APPROV (ALL)
+	LISTE DE TOUS LES APPROV (ALL) 🙂️
+			
+	LISTE DES DEMANDES A APPROUVER PAR VALIDATORS 
+			/* REQUETE D'AFFICHAGE DES APPROVISIONNEMENTS 
+			DANS L'ESPACE DU VALIDATOR D'UNE BANQUE */
 
-	LISTE DES DEMANDES A APPROUVER PAR VALIDATORS
+			SELECT * FROM supplies
+			INNER JOIN banks ON banks.id = supplies.bank_exp_id
+			INNER JOIN validatorsBank ON validatorsBank.bank_id = banks.id
+			INNER JOIN users ON users.id = validatorsBank.user_id
+			WHERE validatorsBank.bank_id = supplies.bank_exp_id
+			AND users.id = 1;
+
 	API AUTO RECHARGE AGENCE SOLDE
 
 

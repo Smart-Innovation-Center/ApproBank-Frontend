@@ -65,7 +65,7 @@
                 <p>Notifications</p>
               </a>
             </li>
-            <li class="nav-item active" v-if="userInfos.roles[0].slug==='superAdmin' || userInfos.roles[0].slug==='validatorOMCI'">
+            <li class="nav-item active" v-if="userInfos.roles[0].slug==='superAdmin' || userInfos.roles[0].slug==='validatorOMCI' || userInfos.roles[0].slug==='managerOMCI'">
               <a
                 class="nav-link collapsed text-truncate"
                 href="#sousmenuAdmin"
@@ -83,7 +83,7 @@
                       <p>Gestion des Utilisateurs</p>
                     </a>
                   </li>
-                  <li class="nav-item" v-if="userInfos.roles[0].slug==='validatorOMCI'">
+                  <li class="nav-item" v-if="userInfos.roles[0].slug==='validatorOMCI' || userInfos.roles[0].slug==='managerOMCI'">
               <a
                 class="nav-link collapsed text-truncate"
                 href="#sousmenuStructure"
@@ -107,7 +107,7 @@
                       <p>Liste des Agences</p>
                     </a>
                   </li>
-                  <li class="nav-item">
+                  <li class="nav-item" v-if="userInfos.roles[0].slug==='validatorOMCI' || userInfos.roles[0].slug==='managerOMCI'">
                     <a class="nav-link" href="#">
                       <i class="material-icons">palette</i>
                       <p>Approvisionner une agence</p>
@@ -116,7 +116,7 @@
                 </ul>
               </div>
             </li>
-            <li class="nav-item active" v-if="userInfos.roles[0].slug==='validatorOMCI'">
+            <li class="nav-item active" v-if="userInfos.roles[0].slug==='validatorOMCI' || userInfos.roles[0].slug==='managerOMCI'">
                     <a class="nav-link" href="comptesBanqueOrange">
                       <i class="material-icons">account_balance</i>
                       <p>Comptes Banque Orange</p>
@@ -271,7 +271,7 @@
         <div class="content">
           <div class="container-fluid">
               <div class="row">
-              <div class="col-md-12" v-if="userInfos.roles[0].slug==='superAdmin' || userInfos.roles[0].slug==='validatorOMCI'">
+              <div class="col-md-12" v-if="userInfos.roles[0].slug==='superAdmin' || userInfos.roles[0].slug==='validatorOMCI' || userInfos.roles[0].slug==='managerOMCI'">
                 <template>
                   <v-data-table
                     :headers="headers"
@@ -283,7 +283,7 @@
                       flat
                     >
                       <v-toolbar-title v-if="userInfos.roles[0].slug==='structureOM'">Mes Relévés d'Identité Banquaire</v-toolbar-title>
-                      <v-toolbar-title v-if="userInfos.roles[0].slug==='validatorOMCI'">Relévés d'Identité Banquaire d'ORANGE</v-toolbar-title>
+                      <v-toolbar-title v-if="userInfos.roles[0].slug==='validatorOMCI' || userInfos.roles[0].slug==='managerOMCI'">Relévés d'Identité Banquaire d'ORANGE</v-toolbar-title>
                         <v-divider
                           class="mx-4"
                           inset
@@ -346,6 +346,19 @@
                                   cols="12"
                                   sm="12"
                                   md="12"
+                                  v-if="userInfos.roles[0].slug==='validatorOMCI' || userInfos.roles[0].slug==='managerOMCI'"
+                                >
+                                  <v-switch 
+                                    label="Visible pour demande d'approvisionnement" 
+                                    v-model="editedItem.visible"
+                                    color="orange darken-3"
+                                  >
+                                  </v-switch>
+                                </v-col>
+                                <v-col
+                                  cols="12"
+                                  sm="12"
+                                  md="12"
                                 >
                                   <textarea
                                   class="form-control"
@@ -380,7 +393,7 @@
                       </v-dialog>
                       <v-dialog v-model="dialogDelete" max-width="500px">
                         <v-card>
-                          <v-card-title class="headline">Êtes-vous sûr de vouloir supprimer votre RIB : {{editedItem.numero}} </v-card-title>
+                          <v-card-title class="headline">Êtes-vous sûr de vouloir supprimer le RIB : {{editedItem.numero}} </v-card-title>
                           <v-card-actions>
                             <v-spacer></v-spacer>
                             <v-btn color="blue darken-1" class="btn btn-default btn-link" text @click="closeDelete">Annuler</v-btn>
@@ -587,14 +600,16 @@ export default {
         description: "",
         userID: "",
         bankID: "",
-        orange: ""
+        orange: "",
+        visible: true
       },
       defaultItem: {
         numero: "",
         description: "",
         userID: "",
         bankID: "",
-        orange: ""
+        orange: "",
+        visible: true
       },
     selectedAgency: [],
     selectedRib: []

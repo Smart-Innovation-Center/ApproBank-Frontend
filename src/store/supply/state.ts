@@ -1,3 +1,6 @@
 export default {
-    supplies : []
+    supplies : [],
+    suppliesSansB : [],
+    suppliesAvecB : [],
+    mySupplies : []
 };

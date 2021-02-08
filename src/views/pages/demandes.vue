@@ -302,34 +302,34 @@
                             Montant
                           </th>
                           <th>
-                            Banque Bénéficiaire
+                            RIB Expéditeur
                           </th>
                           <th>
                             RIB Bénéficiaire
                           </th>
                           <th>
-                            Statut
+                            Action
                           </th>
                         </thead>
                         <tbody>
-                          <tr>
+                          <tr v-for="(supplySansB, index) in suppliesSansB" :key="supplySansB.id">
                             <td>
-                              1
+                              {{ index + 1 }}
                             </td>
-                            <td>
-                              12/01/2021
+                             <td>
+                              {{ supplySansB.created_at | formatDate }}
                             </td>
                             <td class="font-weight-bold">
-                              SICmoney
+                              {{ supplySansB.user.firstname }} {{ supplySansB.user.lastname }}
                             </td>
                             <td class="text-orange">
-                              5 000 000 F CFA
+                              {{ supplySansB.montant }} F CFA
                             </td>
-                            <td>
-                              Société Générale
+                            <td class="font-weight-bold text-uppercase">
+                              {{ supplySansB.rib_exp.numero }}
                             </td>
-                            <td>
-                              Société Générale
+                            <td class="font-weight-bold text-uppercase">
+                             {{ supplySansB.rib_benef.numero }}
                             </td>
                             <td class="text-info">
                               <button
@@ -509,10 +509,14 @@
 </template>
 <script>
 import { mapGetters, mapState } from "vuex";
+
 export default {
   name: "supply",
   data() {
     return {
+      index: 1,
+      supplySansB: {},
+      supplyAvecB: {},
       selectedAgency: [],
       selectedRib: []
     };
@@ -523,7 +527,9 @@ export default {
     }),
     ...mapState({
       agencies: state => state.agency.agencies,
-      ribs: state => state.rib.ribs
+      ribs: state => state.rib.ribs,
+      suppliesAvecB: state => state.supply.suppliesAvecB,
+      suppliesSansB: state => state.supply.suppliesSansB
     })
   },
 
@@ -543,6 +549,8 @@ export default {
   mounted() {
     this.$store.dispatch("agency/loadAgencies");
     this.$store.dispatch("rib/loadRibs");
+    this.$store.dispatch("supply/loadSuppliesSansB");
+    this.$store.dispatch("supply/loadSuppliesAvecB");
   }
 };
 </script>

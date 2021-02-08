@@ -314,7 +314,7 @@
                           </th>
                         </thead>
                         <tbody>
-                        <tr v-for="(supply, index) in supplies" :key="supply.id">
+                        <tr v-for="(mySupply, index) in mySupplies" :key="mySupply.id">
                             <td>
                               {{ index + 1 }}
                             </td>
@@ -322,25 +322,25 @@
                               02/02/2021
                             </td>
                             <td class="font-weight-bold">
-                              {{ supply.agency.code }}
+                              {{ mySupply.agency.code }}
                             </td>
                             <td class="text-orange">
-                              {{ supply.montant }} F CFA
+                              {{ mySupply.montant }} F CFA
                             </td>
                             <td>
-                              {{ supply.bank_exp.code }}
+                              {{ mySupply.bank_exp.code }}
                             </td>
                             <td>
-                              {{ supply.rib_exp.description }} ({{ supply.rib_exp.numero }})
+                              {{ mySupply.rib_exp.description }} ({{ mySupply.rib_exp.numero }})
                             </td>
                             <td>
-                              {{ supply.bank_benef.code }}
+                              {{ mySupply.bank_benef.code }}
                             </td>
                             <td>
-                              {{ supply.rib_benef.description }} ({{ supply.rib_benef.numero }})
+                              {{ mySupply.rib_benef.description }} ({{ mySupply.rib_benef.numero }})
                             </td>
                             <td class="text-info">
-                              {{ supply.statut }}
+                              {{ mySupply.statut }} : {{ mySupply.statut_count }} / {{ mySupply.bank_benef.nombreApprobation }}
                             </td>
                           </tr>
                         </tbody>
@@ -384,74 +384,49 @@
                             Date
                           </th>
                           <th>
-                            Agence
+                            Structure
+                          </th>
+                          <th>
+                            Agence Cible
                           </th>
                           <th>
                             Montant
+                          </th>
+                          <th>
+                            RIB Expéditeur
+                          </th>
+                          <th>
+                            RIB Bénéficiaire
                           </th>
                           <th>
                             Statut
                           </th>
                         </thead>
                         <tbody>
-                          <tr>
+                          <tr v-for="(supply, index) in supplies" :key="supply.id">
                             <td>
-                              1
+                              {{ index + 1 }}
                             </td>
                             <td>
-                              12/01/2021
+                              {{ supply.created_at | formatDate }}
+                            </td>
+                            <td class="font-weight-bold text-uppercase">
+                              {{ supply.user.name }}
                             </td>
                             <td class="font-weight-bold">
-                              AGOMCI-PL05
+                              {{ supply.agency.code }}
                             </td>
                             <td class="text-orange">
-                              5000000 F CFA
+                              {{ supply.montant }} F CFA
                             </td>
-                            <td>
-                              Fbd5fks00gkr9yz
+                            <td class="font-weight-bold text-uppercase">
+                              {{ supply.rib_exp.numero }}
+                            </td>
+                            <td class="font-weight-bold text-uppercase">
+                             {{ supply.rib_benef.numero }}
                             </td>
                             <td class="text-info">
-                              En cours d'approbation (1/2)
-                            </td>
-                          </tr>
-                          <tr>
-                            <td>
-                              2
-                            </td>
-                            <td>
-                              09/01/2021
-                            </td>
-                            <td class="font-weight-bold">
-                              AGOMCI-PL02
-                            </td>
-                            <td class="text-orange">
-                              360000 F CFA
-                            </td>
-                            <td>
-                              Mpkdjud563dcd6549
-                            </td>
-                            <td class="text-success">
-                              Confirmé
-                            </td>
-                          </tr>
-                          <tr>
-                            <td>
-                              3
-                            </td>
-                            <td>
-                              06/01/2021
-                            </td>
-                            <td class="font-weight-bold">
-                              AGOMCI-PL08
-                            </td>
-                            <td class="text-orange">
-                              8520000 F CFA
-                            </td>
-                            <td>
-                              afsd55fgs46df35fg6d
-                            </td>
-                            <td class="text-danger">
-                              Annulé
+                              {{ supply.statut }} : {{ supply.statut_count }} / {{ supply.bank_benef.nombreApprobation }}
                             </td>
                           </tr>
                         </tbody>
@@ -474,6 +449,7 @@ export default {
   data:()=> ({
     index: 1,
     supply: {},
+    mySupply: {},
     dialog: false,
       dialogDelete: false,
       headers: [
@@ -508,13 +484,14 @@ export default {
   computed: {
      
     ...mapGetters({
-      userInfos: "user/userInfos"
+      userInfos: "user/userInfos",
     }),
     ...mapState({
       banks: state => state.bank.banks,
       agencies: state => state.agency.agencies,
       ribs: state => state.rib.ribs,
-      supplies: state => state.supply.supplies   
+      supplies: state => state.supply.supplies,
+      mySupplies: state => state.supply.mySupplies   
     }),
   },
 
@@ -531,9 +508,6 @@ export default {
     },
 
   methods: {
-      ...mapActions({
-      
-    }),
     logout() {
       this.$store.dispatch("user/logoutUser").then(() => {
         this.$router.push({ name: "login" });
@@ -545,6 +519,7 @@ export default {
     this.$store.dispatch("bank/loadBanks");
     this.$store.dispatch("rib/loadRibs");
     this.$store.dispatch("supply/loadSupplies");
+    this.$store.dispatch("supply/loadmySupplies");
   }
 };
 </script>

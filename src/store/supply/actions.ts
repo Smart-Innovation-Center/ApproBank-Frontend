@@ -7,6 +7,24 @@ export default {
         commit("SET_SUPPLIES", supplies);
       },
 
+      async loadmySupplies({ commit }) {
+        let response = await axios.get("supply",);
+        let mySupplies = response.data;
+        commit("SET_MY_SUPPLIES", mySupplies);
+      },
+
+      async loadSuppliesSansB({ commit }) {
+        let response = await axios.get("supplySansB",);
+        let suppliesSansB = response.data;
+        commit("SET_SUPPLIES_SANS_B", suppliesSansB);
+      },
+
+      async loadSuppliesAvecB({ commit }) {
+        let response = await axios.get("supplyAvecB",);
+        let suppliesAvecB = response.data;
+        commit("SET_SUPPLIES_AVEC_B", suppliesAvecB);
+      },
+
     addSupply(ctx, payload){
           //console.log('payload :>> ', payload);
           

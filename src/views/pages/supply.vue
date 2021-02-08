@@ -687,7 +687,7 @@ export default {
                       data.append('dateVersement', this.dateVersement);
                       data.append('numeroBordereau', this.numeroBordereau);
                       data.append('montant', this.montant);
-                      data.append('statut', 'Demande avec bordereau envoyée et en cours d\'approbation !');
+                      data.append('statut', 'Demande avec bordereau envoyée et en cours d\'approbation');
                       data.append('photoBordereau', this.photoBordereau);
                       // const json = JSON.stringify({
                       //     userID: this.$store.state.user.userInfos.id,
@@ -722,7 +722,7 @@ export default {
         this.supply.agencyID = this.supply.agencyID.id;
         this.supply.bankExpID = this.bankExp;
         this.supply.bankBenefID = this.bankBenef;
-        this.supply.statut = 'Demande sans bordereau envoyée et en cours d\'approbation !';
+        this.supply.statut = 'Demande sans bordereau envoyée et en cours d\'approbation';
         console.log('supply',this.supply)
           this.supplyAd(this.supply);
          this.$router.push({ name: "listeDemandes" });
