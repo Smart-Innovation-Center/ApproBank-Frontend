@@ -505,7 +505,6 @@
                         >
                         <template v-slot:activator="{ on, attrs }">
                           <v-btn
-                            
                             class="mb-2 btn-orange"
                             v-bind="attrs"
                             v-on="on"

@@ -276,12 +276,12 @@
               <div class="col-md-12">
                 <div class="card">
                   <div class="card-header card-header-primary bg-orange">
-                    <h4 class="card-title ">Liste des demandes sans bordereau en attente de validation</h4>
-                    <p class="card-category" v-if="userInfos.roles[0].slug==='adminBanque' || userInfos.roles[0].slug==='validatorBanque'">
+                    <h4 class="card-title font-weight-bold">Liste des demandes sans bordereau en attente de validation</h4>
+                    <p class="card-category font-weight-bold" v-if="userInfos.roles[0].slug==='adminBanque' || userInfos.roles[0].slug==='validatorBanque'">
                       Ici la liste des demandes d'approvisionnement en UVE (à
                       confirmer ou rejeter)
                     </p>
-                    <p class="card-category" v-if="userInfos.roles[0].slug==='validatorOMCI'">
+                    <p class="card-category font-weight-bold" v-if="userInfos.roles[0].slug==='validatorOMCI'">
                       Ici la liste des demandes d'approvisionnement en UVE (vous pouvez juste consulter)
                     </p>
                   </div>
@@ -334,15 +334,16 @@
                             <td class="text-info">
                               <button
                                 data-toggle="modal"
-                                data-target="#infoModal"
+                                data-target="#infoModalSans"
                                 class="btn btn-info btn-sm"
+                                @click="viewSupplySans(supplySansB.id)"
                               >
                                 <i class="material-icons">visibility</i>
                               </button>
                               <button
                                 v-if="userInfos.roles[0].slug==='adminBanque' || userInfos.roles[0].slug==='validatorBanque'"
                                 data-toggle="modal"
-                                data-target="#approModal"
+                                data-target="#approModalSans"
                                 class="btn btn-success btn-sm"
                               >
                                 <i class="material-icons">check</i>
@@ -350,7 +351,7 @@
                               <button
                                 v-if="userInfos.roles[0].slug==='adminBanque' || userInfos.roles[0].slug==='validatorBanque'"
                                 data-toggle="modal"
-                                data-target="#rejModal"
+                                data-target="#rejModalSans"
                                 class="btn btn-danger btn-sm"
                               >
                                 <i class="material-icons">close</i>
@@ -367,8 +368,8 @@
 <div class="col-md-12" v-if="userInfos.roles[0].slug==='validatorOMCI'">
                 <div class="card">
                   <div class="card-header card-header-primary bg-orange">
-                    <h4 class="card-title ">Liste des demandes avec bordereau en attente de validation</h4>
-                    <p class="card-category">
+                    <h4 class="card-title font-weight-bold">Liste des demandes avec bordereau en attente de validation</h4>
+                    <p class="card-category font-weight-bold">
                       Ici la liste des demandes d'approvisionnement en UVE (à
                       confirmer ou rejeter)
                     </p>
@@ -384,46 +385,73 @@
                             Date
                           </th>
                           <th>
-                            Agence
+                            Client
                           </th>
                           <th>
                             Montant
                           </th>
                           <th>
-                            Bordereau
+                            RIB Expéditeur
                           </th>
                           <th>
-                            Statut
+                            RIB Bénéficiaire
+                          </th>
+                          <th>
+                            Numéro Bordereau
+                          </th>
+                          <th>
+                            Photo Bordereau
+                          </th>
+                          <th>
+                            Action
                           </th>
                         </thead>
                         <tbody>
-                          <tr>
+                          <tr v-for="(supplyAvecB, index) in suppliesAvecB" :key="supplyAvecB.id">
                             <td>
-                              1
+                              {{ index + 1 }}
                             </td>
-                            <td>
-                              22/01/2021
+                             <td>
+                              {{ supplyAvecB.created_at | formatDate }}
                             </td>
                             <td class="font-weight-bold">
-                              AGOMCI-PL05
+                              {{ supplyAvecB.user.firstname }} {{ supplyAvecB.user.lastname }}
                             </td>
                             <td class="text-orange">
-                              4 500 000 F CFA
+                              {{ supplyAvecB.montant }} F CFA
                             </td>
-                            <td>
-                              <v-img contain max-height="50" max-width="100" src="assets/img/bordereauVersementCorisBank.png"></v-img>
+                            <td class="font-weight-bold text-uppercase">
+                              {{ supplyAvecB.rib_exp.numero }}
+                            </td>
+                            <td class="font-weight-bold text-uppercase">
+                             {{ supplyAvecB.rib_benef.numero }}
+                            </td>
+                            <td class="font-weight-bold text-uppercase">
+                              {{ supplyAvecB.numero_bordereau }}
+                            </td>
+                            <td class="font-weight-bold text-uppercase">
+                              <img :src="'http://127.0.0.1:8000/storage/'+ supplyAvecB.photo_bordereau" class="my-3" contain height="100" />
                             </td>
                             <td class="text-info">
                               <button
                                 data-toggle="modal"
-                                data-target="#approModal"
+                                data-target="#infoModalAvec"
+                                class="btn btn-info btn-sm"
+                              >
+                                <i class="material-icons">visibility</i>
+                              </button>
+                              <button
+                                v-if="userInfos.roles[0].slug==='managerOMCI' || userInfos.roles[0].slug==='validatorOMCI'"
+                                data-toggle="modal"
+                                data-target="#approModalAvec"
                                 class="btn btn-success btn-sm"
                               >
                                 <i class="material-icons">check</i>
                               </button>
                               <button
+                                v-if="userInfos.roles[0].slug==='managerOMCI' || userInfos.roles[0].slug==='validatorOMCI'"
                                 data-toggle="modal"
-                                data-target="#rejModal"
+                                data-target="#rejModalAvec"
                                 class="btn btn-danger btn-sm"
                               >
                                 <i class="material-icons">close</i>
@@ -505,6 +533,40 @@
         </div>
       </div>
     </div>
+    <div class="modal fade" id="infoModalSans" tabindex="-1" role="">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="card card-signup card-plain">
+            <div class="modal-header">
+              <div
+                class="card-header card-header-primary bg-orange text-center col-md-12"
+              >
+                <button
+                  type="button"
+                  class="close"
+                  data-dismiss="modal"
+                  aria-hidden="true"
+                >
+                  <i class="material-icons">clear</i>
+                </button>
+                <h4 class="title">Informations sur la demande d'Approvisionnement</h4>
+              </div>
+            </div>
+            <div class="modal-body">
+              {{viewSupplySansItem.montant}}
+            </div>
+            <div class="modal-footer justify-content-center">
+              <button
+                class="btn btn-default btn-wd btn-lg"
+                data-dismiss="modal"
+              >
+                Fermer
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </v-app>
 </template>
 <script>
@@ -514,6 +576,10 @@ export default {
   name: "supply",
   data() {
     return {
+      viewSupplySansItem: {
+        firstname: null,
+        montant: null,
+      },
       index: 1,
       supplySansB: {},
       supplyAvecB: {},
@@ -544,6 +610,12 @@ export default {
         $('body').removeClass('modal-open');
         $('.modal-backdrop').remove();
         $("#table tr").remove(); 
+    },
+    viewSupplySans(item) {
+      //this.index = this.supply
+      this.viewSupplySansItem.firstname = this.suppliesSansB.[this.index].user.firstname;
+      this.viewSupplySansItem.montant = this.suppliesSansB.[this.index].montant;
+      $("#infoModalSans").modal("show");
     }
   },
   mounted() {
