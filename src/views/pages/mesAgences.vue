@@ -316,7 +316,7 @@
                               {{ agency.description }}
                             </td>
                             <td>
-                              250.000 UVE
+                              {{ agency.solde }} UVE
                             </td>
                           </tr>
                         </tbody>

@@ -426,7 +426,7 @@
                              {{ supply.rib_benef.numero }}
                             </td>
                             <td class="text-info">
-                              {{ supply.statut }} : {{ supply.statut_count }} / {{ supply.bank_benef.nombreApprobation }}
+                              {{ supply.statut }}
                             </td>
                           </tr>
                         </tbody>

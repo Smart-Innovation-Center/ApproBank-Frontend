@@ -336,7 +336,7 @@
                                 data-toggle="modal"
                                 data-target="#infoModalSans"
                                 class="btn btn-info btn-sm"
-                                @click="viewSupplySans(supplySansB.id)"
+                                @click="viewSupplySans(index)"
                               >
                                 <i class="material-icons">visibility</i>
                               </button>
@@ -430,13 +430,16 @@
                               {{ supplyAvecB.numero_bordereau }}
                             </td>
                             <td class="font-weight-bold text-uppercase">
-                              <img :src="'http://127.0.0.1:8000/storage/'+ supplyAvecB.photo_bordereau" class="my-3" contain height="100" />
+                              <a :href="'http://127.0.0.1:8000/storage/'+ supplyAvecB.photo_bordereau" target="_blank">
+                                <img :src="'http://127.0.0.1:8000/storage/'+ supplyAvecB.photo_bordereau" alt="photoBOrdereau" class="my-3" contain height="100" />
+                              </a>
                             </td>
                             <td class="text-info">
                               <button
                                 data-toggle="modal"
                                 data-target="#infoModalAvec"
                                 class="btn btn-info btn-sm"
+                                @click="viewSupplyAvec(index)"
                               >
                                 <i class="material-icons">visibility</i>
                               </button>
@@ -445,6 +448,7 @@
                                 data-toggle="modal"
                                 data-target="#approModalAvec"
                                 class="btn btn-success btn-sm"
+                                @click="approSupplyAvec(index)"
                               >
                                 <i class="material-icons">check</i>
                               </button>
@@ -460,70 +464,6 @@
                           </tr>
                         </tbody>
                       </table>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <div class="modal fade" id="approModal" tabindex="-1" role="">
-                <div class="modal-dialog modal-login" role="document">
-                  <div class="modal-content">
-                    <div class="card card-signup card-plain">
-                      <div class="modal-header">
-                        <div
-                          class="card-header card-header-success text-center col-md-12"
-                        >
-                          <button
-                            type="button"
-                            class="close"
-                            data-dismiss="modal"
-                            aria-hidden="true"
-                          >
-                            <i class="material-icons">clear</i>
-                          </button>
-                          <h4 class="title">Approuver cette demande</h4>
-                        </div>
-                      </div>
-                      <div class="modal-body">
-                        <v-form>
-                          <div class="card-body">
-                              <v-text-field
-                                    label="Date"
-                                    type="text"
-                                    value="12/01/2021"
-                                    disabled
-                                ></v-text-field>
-                                <v-text-field
-                                    label="Agence"
-                                    type="text"
-                                    value="AGOMCI-PL05"
-                                    disabled
-                                ></v-text-field>
-                                <v-text-field
-                                    label="Montant"
-                                    type="text"
-                                    value="5.000.000 F CFA"
-                                    disabled
-                                ></v-text-field>
-                                <v-text-field
-                                    label="Bordereau"
-                                    type="text"
-                                    value="Fbd5fks00gkr9yz"
-                                    disabled
-                                ></v-text-field>
-                          </div>
-                        </v-form>
-                      </div>
-                      <div class="modal-footer justify-content-center">
-                        <button
-                          type="submit"
-                          class="btn btn-success btn-wd btn-lg"
-                          @click="vide"
-                           onclick='swal({ title:"Succès !", text: "Approuvé !", type: "success", buttonsStyling: false, timer:1000, confirmButtonClass: "btn btn-success"})'
-                        >
-                          Valider
-                        </button>
-                      </div>
                     </div>
                   </div>
                 </div>
@@ -552,8 +492,43 @@
                 <h4 class="title">Informations sur la demande d'Approvisionnement</h4>
               </div>
             </div>
-            <div class="modal-body">
-              {{viewSupplySansItem.montant}}
+            <div class="card-body">
+              <v-text-field
+                label="Date de la demande"
+                type="text"
+                v-model="viewSupplySansItem.created_at"
+                disabled
+              ></v-text-field>
+              <v-text-field
+                label="Nom Client"
+                type="text"
+                v-model="viewSupplySansItem.firstname"
+                disabled
+              ></v-text-field>
+              <v-text-field
+                label="Prénom(s) Client"
+                type="text"
+                v-model="viewSupplySansItem.lastname"
+                disabled
+              ></v-text-field>
+              <v-text-field
+                label="Montant"
+                type="text"
+                v-model="viewSupplySansItem.montant+' F CFA'"
+                disabled
+              ></v-text-field>
+              <v-text-field
+                label="RIB expéditeur"
+                type="text"
+                v-model="viewSupplySansItem.ribexp"
+                disabled
+              ></v-text-field>
+              <v-text-field
+                label="RIB bénéficiaire"
+                type="text"
+                v-model="viewSupplySansItem.ribbenef"
+                disabled
+              ></v-text-field>
             </div>
             <div class="modal-footer justify-content-center">
               <button
@@ -567,10 +542,125 @@
         </div>
       </div>
     </div>
+    <div class="modal fade" id="infoModalAvec" tabindex="-1" role="">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="card card-signup card-plain">
+            <div class="modal-header">
+              <div
+                class="card-header card-header-primary bg-orange text-center col-md-12"
+              >
+                <button
+                  type="button"
+                  class="close"
+                  data-dismiss="modal"
+                  aria-hidden="true"
+                >
+                  <i class="material-icons">clear</i>
+                </button>
+                <h4 class="title">Informations sur la demande d'Approvisionnement</h4>
+              </div>
+            </div>
+            <div class="card-body">
+              <v-card>
+                <v-img
+                  height="200"
+                  :src="'http://127.0.0.1:8000/storage/'+ viewSupplyAvecItem.photo_bordereau" alt="photoBOrdereau"
+                ></v-img>
+                <v-card-title>N° bordereau : {{ viewSupplyAvecItem.numero_bordereau }}</v-card-title>
+                <v-card-text>
+                  <div class="my-4 subtitle-1">
+                    Client
+                  </div>
+                  <div class="h4 font-weight-bold">{{ viewSupplyAvecItem.firstname }} {{ viewSupplyAvecItem.lastname }}</div>
+                  <div class="my-4 subtitle-1">
+                    Montant
+                  </div>
+                  <div class="h4 font-weight-bold text-orange">{{ viewSupplyAvecItem.montant }} F CFA</div>
+                </v-card-text>
+                <v-card-title>Informations Transfert</v-card-title>
+                <v-card-text>
+                  <v-chip-group
+                    active-class="orange darken-3 accent-4 white--text"
+                    column
+                  >
+                    <h5 class="font-weight-bold">RIB Expéditeur : <v-chip>{{ viewSupplyAvecItem.ribexp }}</v-chip></h5>
+                    <br/>
+                    <h5 class="font-weight-bold">RIB Bénéficiaire : <v-chip>{{ viewSupplyAvecItem.ribbenef }}</v-chip></h5>
+                  </v-chip-group>
+                </v-card-text>
+              </v-card>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="modal fade" id="approModalAvec" tabindex="-1" role="">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="card card-signup card-plain">
+            <div class="modal-header">
+              <div
+                class="card-header card-header-success text-center col-md-12"
+              >
+                <button
+                  type="button"
+                  class="close"
+                  data-dismiss="modal"
+                  aria-hidden="true"
+                >
+                  <i class="material-icons">clear</i>
+                </button>
+                <h4 class="title">Approuver la demande d'Approvisionnement</h4>
+              </div>
+            </div>
+            <div class="card-body">
+              <v-card>
+                <v-img
+                  height="200"
+                  :src="'http://127.0.0.1:8000/storage/'+ approSupplyAvecItem.photo_bordereau" alt="photoBOrdereau"
+                ></v-img>
+                <v-card-title>N° bordereau : {{ approSupplyAvecItem.numero_bordereau }}</v-card-title>
+                <v-card-text>
+                  <div class="my-4 subtitle-1">
+                    Client
+                  </div>
+                  <div class="h4 font-weight-bold">{{ approSupplyAvecItem.firstname }} {{ approSupplyAvecItem.lastname }}</div>
+                  <div class="my-4 subtitle-1">
+                    Montant
+                  </div>
+                  <div class="h4 font-weight-bold text-orange">{{ approSupplyAvecItem.montant }} F CFA</div>
+                </v-card-text>
+                <v-card-title>Informations Transfert</v-card-title>
+                <v-card-text>
+                  <v-chip-group
+                    active-class="orange darken-3 accent-4 white--text"
+                    column
+                  >
+                    <h5 class="font-weight-bold">RIB Expéditeur : <v-chip>{{ approSupplyAvecItem.ribexp }}</v-chip></h5>
+                    <br/>
+                    <h5 class="font-weight-bold">RIB Bénéficiaire : <v-chip>{{ approSupplyAvecItem.ribbenef }}</v-chip></h5>
+                  </v-chip-group>
+                </v-card-text>
+              </v-card>
+            </div>
+            <div class="modal-footer justify-content-center">
+              <button
+                type="submit"
+                class="btn btn-success btn-wd btn-lg"
+                @click="approvAvec(approSupplyAvecItem.id)"
+                >
+                Approuver
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </v-app>
 </template>
 <script>
-import { mapGetters, mapState } from "vuex";
+import { mapGetters, mapState, mapActions } from "vuex";
 
 export default {
   name: "supply",
@@ -578,7 +668,24 @@ export default {
     return {
       viewSupplySansItem: {
         firstname: null,
+        lastname: null,
         montant: null,
+        ribexp: null,
+        ribbenef: null
+      },
+      viewSupplyAvecItem: {
+        firstname: null,
+        lastname: null,
+        montant: null,
+        ribexp: null,
+        ribbenef: null
+      },
+      approSupplyAvecItem: {
+        firstname: null,
+        lastname: null,
+        montant: null,
+        ribexp: null,
+        ribbenef: null
       },
       index: 1,
       supplySansB: {},
@@ -600,22 +707,53 @@ export default {
   },
 
   methods: {
+    ...mapActions({
+      validAvec: "supply/validSupplyAvec",
+    }),
     logout() {
       this.$store.dispatch("user/logoutUser").then(() => {
         this.$router.push({ name: "login" });
       });
     },
-    vide() {
-        $("#approModal").hide();
-        $('body').removeClass('modal-open');
-        $('.modal-backdrop').remove();
-        $("#table tr").remove(); 
+    approvAvec(item) {
+      console.log(item)
+      this.validAvec(item)
+      $("#approModalAvec").hide();
+      $('body').removeClass('modal-open');
+      $('.modal-backdrop').remove();
+      this.$router.push({ name: "listeDemandes" });
     },
-    viewSupplySans(item) {
+    viewSupplySans(index) {
+      
       //this.index = this.supply
-      this.viewSupplySansItem.firstname = this.suppliesSansB.[this.index].user.firstname;
-      this.viewSupplySansItem.montant = this.suppliesSansB.[this.index].montant;
+      this.viewSupplySansItem = this.suppliesSansB.[index];
+      console.log(this.viewSupplySansItem);
+      this.viewSupplySansItem.firstname = this.viewSupplySansItem.user.firstname
+      this.viewSupplySansItem.lastname = this.viewSupplySansItem.user.lastname
+      this.viewSupplySansItem.ribexp = this.viewSupplySansItem.rib_exp.numero
+      this.viewSupplySansItem.ribbenef = this.viewSupplySansItem.rib_benef.numero
       $("#infoModalSans").modal("show");
+    },
+    viewSupplyAvec(index) {
+      
+      //this.index = this.supply
+      this.viewSupplyAvecItem = this.suppliesAvecB.[index];
+      console.log(this.viewSupplyAvecItem);
+      this.viewSupplyAvecItem.firstname = this.viewSupplyAvecItem.user.firstname
+      this.viewSupplyAvecItem.lastname = this.viewSupplyAvecItem.user.lastname
+      this.viewSupplyAvecItem.ribexp = this.viewSupplyAvecItem.rib_exp.numero
+      this.viewSupplyAvecItem.ribbenef = this.viewSupplyAvecItem.rib_benef.numero
+      $("#infoModalAvec").modal("show");
+    },
+    approSupplyAvec(index) {
+      //this.index = this.supply
+      this.approSupplyAvecItem = this.suppliesAvecB.[index];
+      console.log(this.approSupplyAvecItem);
+      this.approSupplyAvecItem.firstname = this.approSupplyAvecItem.user.firstname
+      this.approSupplyAvecItem.lastname = this.approSupplyAvecItem.user.lastname
+      this.approSupplyAvecItem.ribexp = this.approSupplyAvecItem.rib_exp.numero
+      this.approSupplyAvecItem.ribbenef = this.approSupplyAvecItem.rib_benef.numero
+      $("#approModalAvec").modal("show");
     }
   },
   mounted() {

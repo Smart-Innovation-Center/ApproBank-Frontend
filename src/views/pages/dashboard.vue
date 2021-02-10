@@ -65,7 +65,7 @@
                 <p>Notifications</p>
               </a>
             </li>
-            <li class="nav-item" v-if="userInfos.roles[0].slug==='superAdmin' || userInfos.roles[0].slug==='validatorOMCI'">
+            <li class="nav-item" v-if="userInfos.roles[0].slug==='superAdmin' || userInfos.roles[0].slug==='validatorOMCI' || userInfos.roles[0].slug==='managerOMCI'">
               <a
                 class="nav-link collapsed text-truncate"
                 href="#sousmenuAdmin"
@@ -77,13 +77,13 @@
               </a>
               <div class="collapse" id="sousmenuAdmin" aria-expanded="false">
                 <ul class="flex-column pl-2 nav">
-                  <li class="nav-item">
+                  <li class="nav-item" v-if="userInfos.roles[0].slug==='managerOMCI'">
                     <a class="nav-link" href="#">
                       <i class="material-icons">groups</i>
                       <p>Gestion des Utilisateurs</p>
                     </a>
                   </li>
-                  <li class="nav-item" v-if="userInfos.roles[0].slug==='validatorOMCI'">
+                  <li class="nav-item" v-if="userInfos.roles[0].slug==='validatorOMCI' || userInfos.roles[0].slug==='managerOMCI'">
               <a
                 class="nav-link collapsed text-truncate"
                 href="#sousmenuStructure"
@@ -116,7 +116,7 @@
                 </ul>
               </div>
             </li>
-            <li class="nav-item" v-if="userInfos.roles[0].slug==='validatorOMCI'">
+            <li class="nav-item" v-if="userInfos.roles[0].slug==='managerOMCI'">
                     <a class="nav-link" href="comptesBanqueOrange">
                       <i class="material-icons">account_balance</i>
                       <p>Comptes Banque Orange</p>

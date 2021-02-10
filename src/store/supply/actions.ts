@@ -70,19 +70,19 @@ export default {
     //   })
     //},
 
-//   updateRib(ctx, payload){
-//       payload.bank_id = payload.bankID.id;
-//     return new Promise((resolve, reject) => {
-//         axios
-//             .post(`ribUpdate/${payload.id}`,payload)
-//             .then(response => {
-//                 resolve(response);
-//             })
-//             .catch((error)=>{
-//                 reject(error);
-//             })
-//     })
-//   },
+    validSupplyAvec(ctx, payload){
+      //console.log('payload :>> ', payload)
+    return new Promise((resolve, reject) => {
+        axios
+            .post(`validSupplyAvecB/${payload}`,payload)
+            .then(response => {
+                resolve(response);
+            })
+            .catch((error)=>{
+                reject(error);
+            })
+    })
+  },
 
 //   deleteRib(ctx, payload){
 //   return new Promise((resolve, reject) => {
