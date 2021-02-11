@@ -89,5 +89,18 @@ export default {
                     reject(error);
                 })
         })
+    },
+    adminBankInfos(ctx){
+        return new Promise((resolve, reject) => {
+            axios
+                .get('adminBank')
+                .then(response => {
+                    ctx.commit('setAdminBankInfo', response.data);
+                    resolve(response);
+                })
+                .catch((error)=>{
+                    reject(error);
+                })
+        })
     }
 }

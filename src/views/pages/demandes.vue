@@ -696,7 +696,8 @@ export default {
   },
   computed: {
     ...mapGetters({
-      userInfos: "user/userInfos"
+      userInfos: "user/userInfos",
+      adminBankInfos: "user/adminBankInfos"
     }),
     ...mapState({
       agencies: state => state.agency.agencies,

@@ -87,6 +87,15 @@ Vue.use(VueRouter)
     }
   },
   {
+    path: '/validateursBanque',
+    name: 'validateursBanque',
+    component: () => import(/* webpackChunkName: "demandes" */ '../views/pages/validateursBanque.vue'),
+    meta: {
+      middleware: [Middlewares.auth],
+      title: 'Validateurs Banque'
+    }
+  },
+  {
     path: '/notifications',
     name: 'notifications',
     component: () => import(/* webpackChunkName: "notifications" */ '../views/pages/notifications.vue'),

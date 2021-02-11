@@ -4,5 +4,8 @@ export default {
     },
     setUserInfos(state, payload){
         state.userInfos = payload;
+    },
+    setAdminBankInfo(state, payload){
+        state.adminBankInfos = payload;
     }
 }

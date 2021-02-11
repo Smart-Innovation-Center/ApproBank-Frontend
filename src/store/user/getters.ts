@@ -4,5 +4,8 @@ export default {
     },
     userInfos(state){
         return state.userInfos;
+    },
+    adminBankInfos(state){
+        return state.adminBankInfos;
     }
 }

@@ -8,6 +8,7 @@ import agency from "./agency/index";
 import bank from "./bank/index";
 import rib from "./rib/index";
 import supply from "./supply/index";
+import validatorBank from "./validatorBank/index";
 
 Vue.use(Vuex);
 
@@ -21,6 +22,7 @@ export default new Vuex.Store({
     agency,
     bank,
     rib,
-    supply
+    supply,
+    validatorBank
   }
 });

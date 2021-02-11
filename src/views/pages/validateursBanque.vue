@@ -65,7 +65,7 @@
                 <p>Notifications</p>
               </a>
             </li>
-            <li class="nav-item active" v-if="userInfos.roles[0].slug==='superAdmin' || userInfos.roles[0].slug==='validatorOMCI' || userInfos.roles[0].slug==='managerOMCI'">
+            <li class="nav-item active" v-if="userInfos.roles[0].slug==='superAdmin' || userInfos.roles[0].slug==='validatorOMCI' || userInfos.roles[0].slug==='managerOMCI' || userInfos.roles[0].slug==='adminBanque'">
               <a
                 class="nav-link collapsed text-truncate"
                 href="#sousmenuAdmin"
@@ -77,6 +77,12 @@
               </a>
               <div class="collapse" id="sousmenuAdmin" aria-expanded="false">
                 <ul class="flex-column pl-2 nav">
+                  <li class="nav-item active" v-if="userInfos.roles[0].slug==='adminBanque'">
+                    <a class="nav-link" href="validateursBanque">
+                      <i class="material-icons">done_all</i>
+                      <p>Validateurs</p>
+                    </a>
+                  </li>
                   <li class="nav-item">
                     <a class="nav-link" href="#">
                       <i class="material-icons">groups</i>
@@ -116,7 +122,7 @@
                 </ul>
               </div>
             </li>
-            <li class="nav-item active" v-if="userInfos.roles[0].slug==='validatorOMCI' || userInfos.roles[0].slug==='managerOMCI'">
+            <li class="nav-item" v-if="userInfos.roles[0].slug==='validatorOMCI' || userInfos.roles[0].slug==='managerOMCI'">
                     <a class="nav-link" href="comptesBanqueOrange">
                       <i class="material-icons">account_balance</i>
                       <p>Comptes Banque Orange</p>
@@ -187,7 +193,7 @@
         >
           <div class="container-fluid">
             <div class="navbar-wrapper">
-              <a class="navbar-brand" href="javascript:;">Comptes Banque Orange</a>
+              <a class="navbar-brand" href="javascript:;">Validateurs de la Banque : <span class="font-weight-bold">{{ adminBankInfos[0].bank.nom }} ({{ adminBankInfos[0].bank.code }})</span></a>
             </div>
             <button
               class="navbar-toggler"
@@ -271,7 +277,7 @@
         <div class="content">
           <div class="container-fluid">
               <div class="row">
-              <div class="col-md-12" v-if="userInfos.roles[0].slug==='superAdmin' || userInfos.roles[0].slug==='validatorOMCI' || userInfos.roles[0].slug==='managerOMCI'">
+              <div class="col-md-12" v-if="userInfos.roles[0].slug==='adminBanque'">
                 <template>
                   <v-data-table
                     :headers="headers"
@@ -282,8 +288,7 @@
                     <v-toolbar
                       flat
                     >
-                      <v-toolbar-title v-if="userInfos.roles[0].slug==='structureOM'">Mes Relévés d'Identité Banquaire</v-toolbar-title>
-                      <v-toolbar-title v-if="userInfos.roles[0].slug==='validatorOMCI' || userInfos.roles[0].slug==='managerOMCI'">Relévés d'Identité Banquaire d'ORANGE</v-toolbar-title>
+                      <v-toolbar-title>Liste des validateurs de la banque ({{ nombreVal }} / {{ adminBankInfos[0].bank.nombreApprobation }})</v-toolbar-title>
                         <v-divider
                           class="mx-4"
                           inset
@@ -301,7 +306,7 @@
                             v-bind="attrs"
                             v-on="on"
                           >
-                            Ajouter
+                            Ajouter 
                           </v-btn>
                         </template>
                         <v-card>
@@ -431,192 +436,54 @@
         </div>
       </div>
     </div>
-    <!-- <div class="modal fade" id="addRIBModal" tabindex="-1" role="">
-      <div class="modal-dialog modal-login" role="document">
-        <div class="modal-content">
-          <div class="card card-signup card-plain">
-            <div class="modal-header">
-              <div
-                class="card-header card-header-primary bg-orange text-center col-md-12"
-              >
-                <button
-                  type="button"
-                  class="close"
-                  data-dismiss="modal"
-                  aria-hidden="true"
-                >
-                  <i class="material-icons">clear</i>
-                </button>
-                <h4 class="title">Ajouter un RIB</h4>
-              </div>
-            </div>
-            <div class="modal-body">
-              <v-form ref="addRibForm" :value="formValid">
-                <div class="card-body">
-                  <v-text-field
-                    label="RIB"
-                    name="numero"
-                    prepend-icon="mdi-note"
-                    type="text"
-                    v-model="newRib.numero"
-                  ></v-text-field>
-
-                  <v-select
-                    v-model="newRib.bankID"
-                    :items="banks"
-                    prepend-icon="account_balance"
-                    item-value="id"
-                    item-text="nom"
-                    placeholder="BANQUE *"
-                    single-line
-                    return-object
-                  >
-                  </v-select>
-
-                  <textarea
-                    class="form-control"
-                    prepend-icon="reorder"
-                    rows="5"
-                    placeholder="Description"
-                    v-model="newRib.description"
-                  ></textarea>
-                </div>
-              </v-form>
-            </div>
-            <div class="modal-footer justify-content-center">
-              <button
-                type="submit"
-                class="btn btn-primary btn-wd btn-lg"
-                @click="addNewRib()"
-              >
-                Ajouter
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="modal fade" id="editRIBModal" tabindex="-1" role="">
-      <div class="modal-dialog modal-login" role="document">
-        <div class="modal-content">
-          <div class="card card-signup card-plain">
-            <div class="modal-header">
-              <div
-                class="card-header card-header-primary bg-black text-center col-md-12"
-              >
-                <button
-                  type="button"
-                  class="close"
-                  data-dismiss="modal"
-                  aria-hidden="true"
-                >
-                  <i class="material-icons">clear</i>
-                </button>
-                <h4 class="title">Modifier RIB</h4>
-              </div>
-            </div>
-            <div class="modal-body">
-              <v-form ref="editRibForm" :value="formValid">
-                <div class="card-body">
-                  <v-text-field
-                    label="RIB"
-                    name="numero"
-                    prepend-icon="mdi-note"
-                    type="text"
-                    v-model="rib.numero"
-                  ></v-text-field>
-
-                  <v-select
-                    v-model="rib.bankID"
-                    :items="banks"
-                    prepend-icon="account_balance"
-                    item-value="id"
-                    item-text="nom"
-                    placeholder="BANQUE *"
-                    single-line
-                    return-object
-                  >
-                  </v-select>
-
-                  <textarea
-                    class="form-control"
-                    prepend-icon="reorder"
-                    rows="5"
-                    placeholder="Description"
-                    v-model="rib.description"
-                  ></textarea>
-                </div>
-              </v-form>
-            </div>
-            <div class="modal-footer justify-content-center">
-              <button
-                type="submit"
-                class="btn btn-primary btn-wd btn-lg"
-                @click="updateRib()"
-              >
-                Modifier
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div> -->
   </v-app>
 </template>
 <script>
 import { mapActions, mapGetters, mapState } from "vuex";
-
 export default {
-  name: "comptesBanqueOrange",
+  name: "validateursBanque",
   data:() => ({
-      // selectedBank: [],
-      // formValid: false,
-      // index: 1,
-      // newRib: {
-      //   numero: "",
-      //   description: "",
-      //   userID: "",
-      //   bankID: ""
-      // },
-      // rib: {}
+      nombreVal: null,
       dialog: false,
       dialogDelete: false,
       headers: [
         {
-          text: 'RIB',
+          text: 'Nom Utilisateur',
           align: 'start',
           sortable: false,
-          value: 'numero',
+          value: 'name',
         },
-        { text: 'Banque', value: 'bank.nom' },
-        { text: 'Description', value: 'description' },
+        { text: 'Nom de famille', value: 'firstname' },
+        { text: 'Prénom(s)', value: 'lastname' },
+        { text: 'Email', value: 'email' },
+        //{ text: 'Nombre de validations', value: '' },
         //{ text: 'Date', value: 'created_at' },
         { text: 'Actions', value: 'actions', sortable: false },
       ],
-      rib: {},
+      validatorBank: {},
       editedIndex: -1,
       editedItem: {
-        numero: "",
-        description: "",
-        userID: "",
-        bankID: "",
-        orange: "",
-        visible: true
+        name: "",
+        firstname: "",
+        lastname: "",
+        phone: "",
+        email: "",
+        password: ""
       },
       defaultItem: {
-        numero: "",
-        description: "",
-        userID: "",
-        bankID: "",
-        orange: "",
-        visible: true
+        name: "",
+        firstname: "",
+        lastname: "",
+        phone: "",
+        email: "",
+        password: ""
       },
     selectedAgency: [],
     selectedRib: []
   }),
   computed: {
     formTitle () {
-        return this.editedIndex === -1 ? 'Nouveau RIB' : 'Modifier RIB'
+        return this.editedIndex === -1 ? 'Nouveau Validateur' : 'Modifier Validateur'
       },
     ...mapGetters({
       userInfos: "user/userInfos",
@@ -625,8 +492,14 @@ export default {
     ...mapState({
       banks: state => state.bank.banks,
       agencies: state => state.agency.agencies,
-      ribs: state => state.rib.ribs
+      ribs: state => state.rib.ribs,
+      validatorsBank: state => state.validatorBank.validatorsBank
     }),
+    // validatorsCounter(){
+    //         const payload = this.adminBankInfos[0].bank.id;
+    //         console.log(payload);
+    //        axios.get(`validatorsByBank/${payload}`,payload).then(response => console.log(response)).catch(error => console.log(error))
+    //     },
   },
   watch: {
       dialog (val) {
@@ -640,27 +513,31 @@ export default {
     },
   methods: {
     ...mapActions({
-      addNotification: "application/addNotification",
-      ribAd: "rib/addRib",
-      ribDel: "rib/deleteRib",
-      ribUpd: "rib/updateRib"
+      registerUser: "user/registerUser",
+      loadVal: "validatorBank/loadValidatorsBank",
+      validatorBankAd: "validatorBank/addValidatorBank",
+      validatorBankDel: "validatorBank/deleteValidatorBank",
+      validatorBankUpd: "validatorBank/updateValidatorBank"
     }),
+    // load(){
+    //     this.loadVal(adminBankInfos[0].bank);
+    // },
     editItem (item) {
-        this.editedIndex = this.ribs.indexOf(item)
+        this.editedIndex = this.validatorsBank.indexOf(item)
         this.editedItem = Object.assign({}, item)
-        this.editedItem.bankID = this.editedItem.bank.id
+        //this.editedItem.bankID = this.editedItem.bank.id
         this.dialog = true
       },
       deleteItem (item) {
-        this.editedIndex = this.ribs.indexOf(item)
+        this.editedIndex = this.validatorsBank.indexOf(item)
         this.editedItem = Object.assign({}, item)
         this.dialogDelete = true
       },
       deleteItemConfirm (id) {
        
-                this.ribDel(id)
+                this.validatorBankDel(id)
             
-        this.ribs.splice(this.editedIndex, 1)
+        this.validatorsBank.splice(this.editedIndex, 1)
         this.closeDelete()
       },
       close () {
@@ -679,25 +556,14 @@ export default {
       },
       save () {
         if (this.editedIndex > -1) {
-          Object.assign(this.ribs[this.editedIndex], this.editedItem);
+          Object.assign(this.validatorsBank[this.editedIndex], this.editedItem);
 
-        this.ribUpd(this.editedItem)
+        this.validatorBankUpd(this.editedItem)
         } else {
-          
-          this.editedItem.userID = this.$store.state.user.userInfos.id;
-        this.editedItem.bankID = this.editedItem.bankID.id;
-
-        //si c'est une structure qui ajoute le rib alors mettre "orange" à 0 pour dire que c'est pas un rib de ORANGE
-          if(this.$store.state.user.userInfos.roles[0].slug==='structureOM'){
-            this.editedItem.orange = "0"
-          }
-
-          if(this.$store.state.user.userInfos.roles[0].slug==='validatorOMCI'){
-            this.editedItem.orange = "1"
-          }
-        this.ribAd(this.editedItem);
+         
+        this.validatorBankAd(this.editedItem);
         
-          this.ribs.push(this.editedItem)
+          this.validatorsBank.push(this.editedItem)
         }
         this.close()
       },
@@ -706,49 +572,13 @@ export default {
         this.$router.push({ name: "login" });
       });
     },
-    // addNewRib() {
-    //   if (this.$refs.addRibForm.validate()) {
-    //     this.newRib.userID = this.$store.state.user.userInfos.id;
-    //     this.newRib.bankID = this.newRib.bankID.id;
-    //     this.ribAd(this.newRib)
-    //       .then(() => {
-    //         this.addNotification({
-    //           show: true,
-    //           text1: "Rib ajouté avec succès :",
-    //           text2: "Vous pouvez effectuer une transaction !"
-    //         }).then(() => {
-    //           this.$store.dispatch("rib/loadRibs");
-    //           // eslint-disable-next-line no-undef
-    //           $("#addRIBModal").modal("hide");
-    //         });
-    //       })
-    //       .catch(() => {
-    //         this.addNotification({
-    //           show: true,
-    //           text1: "Echec de l'ajout du RIB :",
-    //           text2: "Veuillez vérifier les informations fournies !"
-    //         });
-    //       });
-    //   }
-    // },
-    // editRib() {
-    //   // eslint-disable-next-line no-undef
-    //   $("#editRIBModal").modal("show");
-    // },
-    // updateRib() {
-    //   console.log("update RIB");
-    // }
   },
-  vide() {
-        $("#approModal").hide();
-        $('body').removeClass('modal-open');
-        $('.modal-backdrop').remove();
-        $("#table tr").remove(); 
-    },
   mounted() {
     this.$store.dispatch("bank/loadBanks");
     this.$store.dispatch("rib/loadRibs");
+    //this.load();
     this.$store.dispatch("agency/loadAgencies");
+    this.$store.dispatch("user/adminBankInfos");
   }
 };
 </script>

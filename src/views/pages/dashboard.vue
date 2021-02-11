@@ -65,7 +65,7 @@
                 <p>Notifications</p>
               </a>
             </li>
-            <li class="nav-item" v-if="userInfos.roles[0].slug==='superAdmin' || userInfos.roles[0].slug==='validatorOMCI' || userInfos.roles[0].slug==='managerOMCI'">
+            <li class="nav-item" v-if="userInfos.roles[0].slug==='superAdmin' || userInfos.roles[0].slug==='validatorOMCI' || userInfos.roles[0].slug==='managerOMCI' || userInfos.roles[0].slug==='adminBanque'">
               <a
                 class="nav-link collapsed text-truncate"
                 href="#sousmenuAdmin"
@@ -77,6 +77,12 @@
               </a>
               <div class="collapse" id="sousmenuAdmin" aria-expanded="false">
                 <ul class="flex-column pl-2 nav">
+                  <li class="nav-item" v-if="userInfos.roles[0].slug==='adminBanque'">
+                    <a class="nav-link" href="validateursBanque">
+                      <i class="material-icons">done_all</i>
+                      <p>Validateurs</p>
+                    </a>
+                  </li>
                   <li class="nav-item" v-if="userInfos.roles[0].slug==='managerOMCI'">
                     <a class="nav-link" href="#">
                       <i class="material-icons">groups</i>
@@ -372,13 +378,15 @@ export default {
   }),
   computed: {
     ...mapGetters({
-      userInfos: "user/userInfos"
+      userInfos: "user/userInfos",
+      adminBankInfos: "user/adminBankInfos"
     }),
   },
   mounted() {
     this.$store.dispatch("user/userInfos");
+    this.$store.dispatch("user/adminBankInfos");
   },
-  methods: {
+  methods: {  
     logout() {
       this.$store.dispatch("user/logoutUser").then(() => {
         this.$router.push({ name: "login" });
