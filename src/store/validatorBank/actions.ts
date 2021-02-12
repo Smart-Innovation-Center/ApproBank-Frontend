@@ -1,7 +1,7 @@
 import axios from "../../axios"
 
 export default {
-    loadValidatorsBank({commit}, payload){
+    loadValidatorsBank({ commit, state }, payload){
         console.log('payload => ',payload)
         return new Promise((resolve, reject) => {
                 axios

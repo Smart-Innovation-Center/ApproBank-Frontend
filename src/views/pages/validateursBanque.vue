@@ -194,6 +194,7 @@
           <div class="container-fluid">
             <div class="navbar-wrapper">
               <a class="navbar-brand" href="javascript:;">Validateurs de la Banque : <span class="font-weight-bold">{{ adminBankInfos[0].bank.nom }} ({{ adminBankInfos[0].bank.code }})</span></a>
+            
             </div>
             <button
               class="navbar-toggler"
@@ -281,14 +282,14 @@
                 <template>
                   <v-data-table
                     :headers="headers"
-                    :items="ribs"
+                    :items="validatorsBank.data"
                     class="elevation-5"
                   >
                   <template v-slot:top>
                     <v-toolbar
                       flat
                     >
-                      <v-toolbar-title>Liste des validateurs de la banque ({{ nombreVal }} / {{ adminBankInfos[0].bank.nombreApprobation }})</v-toolbar-title>
+                      <v-toolbar-title>Liste des validateurs de la banque ({{ validatorsBank.data.length }} / {{ adminBankInfos[0].bank.nombreApprobation }})</v-toolbar-title>
                         <v-divider
                           class="mx-4"
                           inset
@@ -444,6 +445,7 @@ export default {
   name: "validateursBanque",
   data:() => ({
       nombreVal: null,
+      banq: 1,
       dialog: false,
       dialogDelete: false,
       headers: [
@@ -451,11 +453,13 @@ export default {
           text: 'Nom Utilisateur',
           align: 'start',
           sortable: false,
-          value: 'name',
+          value: 'user.name',
         },
-        { text: 'Nom de famille', value: 'firstname' },
-        { text: 'Prénom(s)', value: 'lastname' },
-        { text: 'Email', value: 'email' },
+        { text: 'Nom de famille', value: 'user.firstname' },
+        { text: 'Prénom(s)', value: 'user.lastname' },
+        { text: 'Email', value: 'user.email' },
+        { text: 'Telephone', value: 'user.phone' },
+        { text: 'Prioritaire', value: 'isFirst' },
         //{ text: 'Nombre de validations', value: '' },
         //{ text: 'Date', value: 'created_at' },
         { text: 'Actions', value: 'actions', sortable: false },
@@ -510,6 +514,7 @@ export default {
       },
     },
     created () {
+      this.banq = [this.adminBankInfos[0].bank.id]
     },
   methods: {
     ...mapActions({
@@ -521,7 +526,7 @@ export default {
     }),
     // load(){
     //     this.loadVal(adminBankInfos[0].bank);
-    // },
+    // }
     editItem (item) {
         this.editedIndex = this.validatorsBank.indexOf(item)
         this.editedItem = Object.assign({}, item)
@@ -576,7 +581,7 @@ export default {
   mounted() {
     this.$store.dispatch("bank/loadBanks");
     this.$store.dispatch("rib/loadRibs");
-    //this.load();
+    this.$store.dispatch('validatorBank/loadValidatorsBank', [this.banq]);
     this.$store.dispatch("agency/loadAgencies");
     this.$store.dispatch("user/adminBankInfos");
   }
