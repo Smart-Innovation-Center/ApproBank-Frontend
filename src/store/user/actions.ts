@@ -102,5 +102,19 @@ export default {
                     reject(error);
                 })
         })
+    },
+
+    validatorsBankInfos(ctx){
+        return new Promise((resolve, reject) => {
+            axios
+                .get('validatorsBankbyAdmin')
+                .then(response => {
+                    ctx.commit('setValidatorsBankInfo', response.data);
+                    resolve(response);
+                })
+                .catch((error)=>{
+                    reject(error);
+                })
+        })
     }
 }

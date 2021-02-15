@@ -1,36 +1,19 @@
 import axios from "../../axios"
 
 export default {
-    loadValidatorsBank({ commit, state }, payload){
-        console.log('payload => ',payload)
-        return new Promise((resolve, reject) => {
-                axios
-                    .get(`validatorsByBank/${payload}`,payload)
-                    .then(response => {
-                        resolve(response);
-                        console.log(response)
-                        commit("SET_VALIDATORS_BANK", response);
-                    })
-                    .catch((error)=>{
-                        reject(error);
-                    })
-            })
-        
-      },
-
       addValidatorBank(ctx, payload){
-          //console.log('payload :>> ', payload);
+          console.log('payload :>> ', payload);
           
-        // return new Promise((resolve, reject) => {
-        //     axios
-        //         .post('validatorBankAdd', payload)
-        //         .then(response => {
-        //             resolve(response);
-        //         })
-        //         .catch((error)=>{
-        //             reject(error);
-        //         })
-        // })
+        return new Promise((resolve, reject) => {
+            axios
+                .post('validatorBankAdd', payload)
+                .then(response => {
+                    resolve(response);
+                })
+                .catch((error)=>{
+                    reject(error);
+                })
+        })
     },
 
     editValidatorBank(ctx, payload){

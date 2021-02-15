@@ -7,5 +7,8 @@ export default {
     },
     setAdminBankInfo(state, payload){
         state.adminBankInfos = payload;
+    },
+    setValidatorsBankInfo(state, payload){
+        state.validatorsBankInfos = payload;
     }
 }

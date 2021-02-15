@@ -276,7 +276,7 @@
               <div class="col-md-12" v-if="userInfos.roles[0].slug==='structureOM'">
                 <div class="card bg-black">
                   <div class="card-header card-header-primary bg-orange">
-                    <h4 class="card-title ">Mes Opérations (Structure)</h4>
+                    <h4 class="card-title ">Mes Opérations</h4>
                     <p class="card-category">
                       Ici la liste de vos opérations d'approvisionnement
                     </p>

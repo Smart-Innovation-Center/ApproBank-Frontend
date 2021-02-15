@@ -7,5 +7,8 @@ export default {
     },
     adminBankInfos(state){
         return state.adminBankInfos;
+    },
+    validatorsBankInfos(state){
+        return state.validatorsBankInfos;
     }
 }

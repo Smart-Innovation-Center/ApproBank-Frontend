@@ -1,6 +1,6 @@
 <template>
   <v-app>
-    <div class="wrapper ">
+    <div class="wrapper">
       <div class="sidebar" data-color="orange" data-background-color="black">
         <div class="logo text-center">
           <a href="../"><h2 class="text-light text-uppercase">Approbank</h2></a>
@@ -282,14 +282,14 @@
                 <template>
                   <v-data-table
                     :headers="headers"
-                    :items="validatorsBank.data"
+                    :items="validatorsBankInfos"
                     class="elevation-5"
                   >
                   <template v-slot:top>
                     <v-toolbar
                       flat
                     >
-                      <v-toolbar-title>Liste des validateurs de la banque ({{ validatorsBank.data.length }} / {{ adminBankInfos[0].bank.nombreApprobation }})</v-toolbar-title>
+                      <v-toolbar-title>Liste des validateurs de la banque ({{ validatorsBankInfos.length }} / {{ adminBankInfos[0].bank.nombreApprobation }})</v-toolbar-title>
                         <v-divider
                           class="mx-4"
                           inset
@@ -316,66 +316,32 @@
                           </v-card-title>
 
                           <v-card-text>
-                            <v-container>
-                              <v-row>
-                                <v-col
-                                  cols="12"
-                                  sm="12"
-                                  md="12"
-                                >
-                                  <v-text-field
-                                  label="RIB"
-                                  name="numero"
-                                  prepend-icon="mdi-note"
-                                  type="text"
-                                  v-model="editedItem.numero"
-                                ></v-text-field>
-                                </v-col>
-                                <v-col
-                                  cols="12"
-                                  sm="12"
-                                  md="12"
-                                >
-                                  <v-select
-                                  v-model="editedItem.bankID"
-                                  :items="banks"
-                                  prepend-icon="account_balance"
-                                  item-value="id"
-                                  item-text="nom"
-                                  placeholder="BANQUE *"
-                                  single-line
-                                  return-object
-                                >
-                                </v-select>
-                                </v-col>
-                                <v-col
-                                  cols="12"
-                                  sm="12"
-                                  md="12"
-                                  v-if="userInfos.roles[0].slug==='validatorOMCI' || userInfos.roles[0].slug==='managerOMCI'"
-                                >
-                                  <v-switch 
-                                    label="Visible pour demande d'approvisionnement" 
-                                    v-model="editedItem.visible"
-                                    color="orange darken-3"
-                                  >
-                                  </v-switch>
-                                </v-col>
-                                <v-col
-                                  cols="12"
-                                  sm="12"
-                                  md="12"
-                                >
-                                  <textarea
-                                  class="form-control"
-                                  prepend-icon="reorder"
-                                  rows="5"
-                                  placeholder="Description"
-                                  v-model="editedItem.description"
-                                ></textarea>
-                                </v-col>
-                              </v-row>
-                            </v-container>
+                                <v-form>
+                  <v-text-field
+                    label="Nom d'Utilisateur"
+                    name="name"
+                    prepend-icon="mdi-account"
+                    type="text"
+                    v-model="editedItem.name"
+                  ></v-text-field>
+
+                  <v-text-field
+                    label="Email"
+                    name="email"
+                    prepend-icon="mdi-email"
+                    type="email"
+                    v-model="editedItem.email"
+                  ></v-text-field>
+
+                  <v-text-field
+                    id="password"
+                    label="Mot de Passe"
+                    name="password"
+                    prepend-icon="mdi-lock"
+                    type="password"
+                    v-model="editedItem.password"
+                  ></v-text-field>
+                </v-form>
                           </v-card-text>
 
                           <v-card-actions>
@@ -445,7 +411,6 @@ export default {
   name: "validateursBanque",
   data:() => ({
       nombreVal: null,
-      banq: 1,
       dialog: false,
       dialogDelete: false,
       headers: [
@@ -472,7 +437,8 @@ export default {
         lastname: "",
         phone: "",
         email: "",
-        password: ""
+        password: "",
+        isFirst: false
       },
       defaultItem: {
         name: "",
@@ -480,7 +446,8 @@ export default {
         lastname: "",
         phone: "",
         email: "",
-        password: ""
+        password: "",
+        isFirst: false
       },
     selectedAgency: [],
     selectedRib: []
@@ -491,13 +458,14 @@ export default {
       },
     ...mapGetters({
       userInfos: "user/userInfos",
-      adminBankInfos: "user/adminBankInfos"
+      adminBankInfos: "user/adminBankInfos",
+      validatorsBankInfos: "user/validatorsBankInfos"
     }),
     ...mapState({
       banks: state => state.bank.banks,
       agencies: state => state.agency.agencies,
       ribs: state => state.rib.ribs,
-      validatorsBank: state => state.validatorBank.validatorsBank
+      //validatorsBank: state => state.validatorBank.validatorsBank
     }),
     // validatorsCounter(){
     //         const payload = this.adminBankInfos[0].bank.id;
@@ -512,9 +480,6 @@ export default {
       dialogDelete (val) {
         val || this.closeDelete()
       },
-    },
-    created () {
-      this.banq = [this.adminBankInfos[0].bank.id]
     },
   methods: {
     ...mapActions({
@@ -565,10 +530,11 @@ export default {
 
         this.validatorBankUpd(this.editedItem)
         } else {
-         
+
         this.validatorBankAd(this.editedItem);
         
-          this.validatorsBank.push(this.editedItem)
+            this.validatorsBank.push(this.editedItem)
+         
         }
         this.close()
       },
@@ -581,9 +547,9 @@ export default {
   mounted() {
     this.$store.dispatch("bank/loadBanks");
     this.$store.dispatch("rib/loadRibs");
-    this.$store.dispatch('validatorBank/loadValidatorsBank', [this.banq]);
     this.$store.dispatch("agency/loadAgencies");
     this.$store.dispatch("user/adminBankInfos");
+    this.$store.dispatch("user/validatorsBankInfos");
   }
 };
 </script>
