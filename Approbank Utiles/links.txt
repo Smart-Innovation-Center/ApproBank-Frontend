@@ -1,0 +1,4 @@
+https://www.tutsmake.com/laravel-8-vue-js-crud-tutorial-example/
+https://www.youtube.com/watch?v=B_SY4qGq0rg
+https://vuetifyjs.com/en/styles/colors/#material-colors
+https://laracasts.com/discuss/channels/laravel/making-dynamic-dropdown-with-vuejs
