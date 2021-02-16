@@ -318,6 +318,7 @@
                           <v-card-text>
                                 <v-form>
                   <v-text-field
+                  v-if="!edit"
                     label="Nom d'Utilisateur"
                     name="name"
                     prepend-icon="mdi-account"
@@ -326,6 +327,7 @@
                   ></v-text-field>
 
                   <v-text-field
+                  v-if="!edit"
                     label="Email"
                     name="email"
                     prepend-icon="mdi-email"
@@ -334,6 +336,7 @@
                   ></v-text-field>
 
                   <v-text-field
+                  v-if="!edit"
                     id="password"
                     label="Mot de Passe"
                     name="password"
@@ -341,6 +344,13 @@
                     type="password"
                     v-model="editedItem.password"
                   ></v-text-field>
+
+                  <v-switch 
+                    label="Prioritaire" 
+                    v-model="editedItem.isFirst"
+                    color="orange darken-3"
+                  >
+                  </v-switch>
                 </v-form>
                           </v-card-text>
 
@@ -365,7 +375,7 @@
                       </v-dialog>
                       <v-dialog v-model="dialogDelete" max-width="500px">
                         <v-card>
-                          <v-card-title class="headline">Êtes-vous sûr de vouloir supprimer le RIB : {{editedItem.numero}} </v-card-title>
+                          <v-card-title class="headline">Êtes-vous sûr de vouloir supprimer le validateur ?</v-card-title>
                           <v-card-actions>
                             <v-spacer></v-spacer>
                             <v-btn color="blue darken-1" class="btn btn-default btn-link" text @click="closeDelete">Annuler</v-btn>
@@ -410,6 +420,7 @@ import { mapActions, mapGetters, mapState } from "vuex";
 export default {
   name: "validateursBanque",
   data:() => ({
+    edit: false,
       nombreVal: null,
       dialog: false,
       dialogDelete: false,
@@ -438,7 +449,8 @@ export default {
         phone: "",
         email: "",
         password: "",
-        isFirst: false
+        isFirst: false,
+        bank_id: ""
       },
       defaultItem: {
         name: "",
@@ -447,14 +459,15 @@ export default {
         phone: "",
         email: "",
         password: "",
-        isFirst: false
+        isFirst: false,
+        bank_id: ""
       },
     selectedAgency: [],
     selectedRib: []
   }),
   computed: {
     formTitle () {
-        return this.editedIndex === -1 ? 'Nouveau Validateur' : 'Modifier Validateur'
+        return this.editedIndex === -1 ? 'Nouveau Validateur' : 'Modifier Priorité Validateur'
       },
     ...mapGetters({
       userInfos: "user/userInfos",
@@ -493,21 +506,22 @@ export default {
     //     this.loadVal(adminBankInfos[0].bank);
     // }
     editItem (item) {
-        this.editedIndex = this.validatorsBank.indexOf(item)
+        this.editedIndex = this.validatorsBankInfos.indexOf(item)
+        // console.log(this.editedIndex)
         this.editedItem = Object.assign({}, item)
         //this.editedItem.bankID = this.editedItem.bank.id
+        // console.log(this.editedItem)
+        this.edit = true
         this.dialog = true
       },
       deleteItem (item) {
-        this.editedIndex = this.validatorsBank.indexOf(item)
+        this.editedIndex = this.validatorsBankInfos.indexOf(item)
         this.editedItem = Object.assign({}, item)
         this.dialogDelete = true
       },
       deleteItemConfirm (id) {
-       
-                this.validatorBankDel(id)
-            
-        this.validatorsBank.splice(this.editedIndex, 1)
+        this.validatorBankDel(id)    
+        this.validatorsBankInfos.splice(this.editedIndex, 1)
         this.closeDelete()
       },
       close () {
@@ -526,14 +540,14 @@ export default {
       },
       save () {
         if (this.editedIndex > -1) {
-          Object.assign(this.validatorsBank[this.editedIndex], this.editedItem);
-
+          Object.assign(this.validatorsBankInfos[this.editedIndex], this.editedItem);
+          
         this.validatorBankUpd(this.editedItem)
         } else {
 
+        this.editedItem.bank_id = this.adminBankInfos[0].bank_id;
         this.validatorBankAd(this.editedItem);
-        
-            this.validatorsBank.push(this.editedItem)
+        this.validatorsBankInfos.push(this.editedItem);
          
         }
         this.close()

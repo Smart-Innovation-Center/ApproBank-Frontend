@@ -8,6 +8,7 @@ export default {
             axios
                 .post('validatorBankAdd', payload)
                 .then(response => {
+                    console.log(response);
                     resolve(response);
                 })
                 .catch((error)=>{
@@ -16,46 +17,32 @@ export default {
         })
     },
 
-    editValidatorBank(ctx, payload){
-        //console.log('payload :>> ', payload);
-        
-    //   return new Promise((resolve, reject) => {
-    //       axios
-    //           .post('ribEdit', payload)
-    //           .then(response => {
-    //               resolve(response);
-    //           })
-    //           .catch((error)=>{
-    //               reject(error);
-    //           })
-    //   })
-  },
-
   updateValidatorBank(ctx, payload){
-    //   payload.bank_id = payload.bankID.id;
-    // return new Promise((resolve, reject) => {
-    //     axios
-    //         .post(`ribUpdate/${payload.id}`,payload)
-    //         .then(response => {
-    //             resolve(response);
-    //         })
-    //         .catch((error)=>{
-    //             reject(error);
-    //         })
-    // })
+    console.log(payload)
+    return new Promise((resolve, reject) => {
+        axios
+            .post(`validatorBankUpdate/${payload.id}`,payload)
+            .then(response => {
+                console.log(response);
+                resolve(response);
+            })
+            .catch((error)=>{
+                reject(error);
+            })
+    })
   },
 
   deleteValidatorBank(ctx, payload){
-        // return new Promise((resolve, reject) => {
-        //     axios
-        //         .delete(`ribDelete/${payload}`)
-        //         .then(response => {
-        //             resolve(response);
-        //         })
-        //         .catch((error)=>{
-        //             reject(error);
-        //         })
-        // })
+        return new Promise((resolve, reject) => {
+            axios
+                .delete(`validatorBankDelete/${payload}`)
+                .then(response => {
+                    resolve(response);
+                })
+                .catch((error)=>{
+                    reject(error);
+                })
+        })
     },
 
 }
