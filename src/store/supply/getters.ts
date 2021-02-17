@@ -5,6 +5,9 @@ export default {
     suppliesSansB(state){
         return state.suppliesSansB;
     },
+    suppliesSansBforV(state){
+        return state.suppliesSansBforV;
+    },
     suppliesAvecB(state){
         return state.suppliesAvecB;
     },

@@ -19,6 +19,12 @@ export default {
         commit("SET_SUPPLIES_SANS_B", suppliesSansB);
       },
 
+      async loadSuppliesSansBforV({ commit }) {
+        let response = await axios.get("supplySansBforV",);
+        let suppliesSansBforV = response.data;
+        commit("SET_SUPPLIES_SANS_B_FOR_V", suppliesSansBforV);
+      },
+
       async loadSuppliesAvecB({ commit }) {
         let response = await axios.get("supplyAvecB",);
         let suppliesAvecB = response.data;
@@ -83,6 +89,21 @@ export default {
             })
     })
   },
+
+  validSupplySans(ctx, payload){
+    //console.log('payload :>> ', payload)
+  return new Promise((resolve, reject) => {
+      axios
+          .post(`validSupplySansB/${payload}`,payload)
+          .then(response => {
+              console.log(response)
+             resolve(response);
+          })
+          .catch((error)=>{
+              reject(error);
+          })
+  })
+},
 
 //   deleteRib(ctx, payload){
 //   return new Promise((resolve, reject) => {

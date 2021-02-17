@@ -5,6 +5,9 @@ export default {
     SET_SUPPLIES_SANS_B(state, suppliesSansB) {
       state.suppliesSansB = suppliesSansB;
     },
+    SET_SUPPLIES_SANS_B_FOR_V(state, suppliesSansBforV) {
+      state.suppliesSansBforV = suppliesSansBforV;
+    },
     SET_SUPPLIES_AVEC_B(state, suppliesAvecB) {
       state.suppliesAvecB = suppliesAvecB;
     },

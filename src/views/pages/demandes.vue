@@ -311,7 +311,7 @@
                             Action
                           </th>
                         </thead>
-                        <tbody>
+                        <tbody v-if="userInfos.roles[0].slug==='superAdmin' || userInfos.roles[0].slug==='validatorOMCI' || userInfos.roles[0].slug==='managerOMCI'">
                           <tr v-for="(supplySansB, index) in suppliesSansB" :key="supplySansB.id">
                             <td>
                               {{ index + 1 }}
@@ -350,6 +350,55 @@
                               </button>
                               <button
                                 v-if="userInfos.roles[0].slug==='adminBanque' || userInfos.roles[0].slug==='validatorBanque'"
+                                data-toggle="modal"
+                                data-target="#rejModalSans"
+                                class="btn btn-danger btn-sm"
+                              >
+                                <i class="material-icons">close</i>
+                              </button>
+                            </td>
+                          </tr>
+                        </tbody>
+                        <tbody v-if="userInfos.roles[0].slug==='validatorBanque'">
+                          <tr v-for="(suppliesSansBforV, index) in suppliesSansBforV" :key="suppliesSansBforV.id">
+                            <td>
+                              {{ index + 1 }}
+                            </td>
+                             <td>
+                              {{ suppliesSansBforV.supply.created_at | formatDate }}
+                            </td>
+                            <td class="font-weight-bold">
+                              {{ suppliesSansBforV.supply.user.firstname }} {{ suppliesSansBforV.supply.user.lastname }}
+                            </td>
+                            <td class="text-orange">
+                              {{ suppliesSansBforV.supply.montant }} F CFA
+                            </td>
+                            <td class="font-weight-bold text-uppercase">
+                              {{ suppliesSansBforV.supply.rib_exp.numero }}
+                            </td>
+                            <td class="font-weight-bold text-uppercase">
+                             {{ suppliesSansBforV.supply.rib_benef.numero }}
+                            </td>
+                            <td class="text-info">
+                              <button
+                                data-toggle="modal"
+                                data-target="#infoModalSans"
+                                class="btn btn-info btn-sm"
+                                @click="viewSupplySans(index)"
+                              >
+                                <i class="material-icons">visibility</i>
+                              </button>
+                              <button
+                                v-if="userInfos.roles[0].slug==='validatorBanque'"
+                                data-toggle="modal"
+                                data-target="#approModalSans"
+                                class="btn btn-success btn-sm"
+                                @click="approSupplySans(index)"
+                              >
+                                <i class="material-icons">check</i>
+                              </button>
+                              <button
+                                v-if="userInfos.roles[0].slug==='validatorBanque'"
                                 data-toggle="modal"
                                 data-target="#rejModalSans"
                                 class="btn btn-danger btn-sm"
@@ -542,6 +591,63 @@
         </div>
       </div>
     </div>
+    <div class="modal fade" id="approModalSans" tabindex="-1" role="">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="card card-signup card-plain">
+            <div class="modal-header">
+              <div
+                class="card-header card-header-success text-center col-md-12"
+              >
+                <button
+                  type="button"
+                  class="close"
+                  data-dismiss="modal"
+                  aria-hidden="true"
+                >
+                  <i class="material-icons">clear</i>
+                </button>
+                <h4 class="title">Approuver la demande d'Approvisionnement</h4>
+              </div>
+            </div>
+            <div class="card-body">
+              <v-card>
+                <v-card-text>
+                  <div class="my-4 subtitle-1">
+                    Client
+                  </div>
+                  <div class="h4 font-weight-bold">{{ approSupplySansItem.firstname }} {{ approSupplySansItem.lastname }}</div>
+                  <div class="my-4 subtitle-1">
+                    Montant
+                  </div>
+                  <div class="h4 font-weight-bold text-orange">{{ approSupplySansItem.montant }} F CFA</div>
+                </v-card-text>
+                <v-card-title>Informations Transfert</v-card-title>
+                <v-card-text>
+                  <v-chip-group
+                    active-class="orange darken-3 accent-4 white--text"
+                    column
+                  >
+                    <h5 class="font-weight-bold">RIB Expéditeur : <v-chip>{{ approSupplySansItem.ribexp }}</v-chip></h5>
+                    <br/>
+                    <h5 class="font-weight-bold">RIB Bénéficiaire : <v-chip>{{ approSupplySansItem.ribbenef }}</v-chip></h5>
+                  </v-chip-group>
+                </v-card-text>
+              </v-card>
+            </div>
+            <div class="modal-footer justify-content-center">
+              <button
+                type="submit"
+                class="btn btn-success btn-wd btn-lg"
+                @click="approvSans(approSupplySansItem.id)"
+                >
+                Approuver
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
     <div class="modal fade" id="infoModalAvec" tabindex="-1" role="">
       <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -673,6 +779,13 @@ export default {
         ribexp: null,
         ribbenef: null
       },
+      viewSupplySansItemforV: {
+        firstname: null,
+        lastname: null,
+        montant: null,
+        ribexp: null,
+        ribbenef: null
+      },
       viewSupplyAvecItem: {
         firstname: null,
         lastname: null,
@@ -687,8 +800,16 @@ export default {
         ribexp: null,
         ribbenef: null
       },
+      approSupplySansItem: {
+        firstname: null,
+        lastname: null,
+        montant: null,
+        ribexp: null,
+        ribbenef: null
+      },
       index: 1,
       supplySansB: {},
+      supplySansBforV: {},
       supplyAvecB: {},
       selectedAgency: [],
       selectedRib: []
@@ -703,13 +824,15 @@ export default {
       agencies: state => state.agency.agencies,
       ribs: state => state.rib.ribs,
       suppliesAvecB: state => state.supply.suppliesAvecB,
-      suppliesSansB: state => state.supply.suppliesSansB
+      suppliesSansB: state => state.supply.suppliesSansB,
+      suppliesSansBforV: state => state.supply.suppliesSansBforV
     })
   },
 
   methods: {
     ...mapActions({
       validAvec: "supply/validSupplyAvec",
+      validSans: "supply/validSupplySans",
     }),
     logout() {
       this.$store.dispatch("user/logoutUser").then(() => {
@@ -724,11 +847,19 @@ export default {
       $('.modal-backdrop').remove();
       this.$router.push({ name: "listeDemandes" });
     },
+    approvSans(item) {
+      //console.log(item)
+      this.validSans(item)
+      $("#approModalSans").hide();
+      $('body').removeClass('modal-open');
+      $('.modal-backdrop').remove();
+      this.$router.push({ name: "listeDemandes" });
+    },
     viewSupplySans(index) {
       
       //this.index = this.supply
       this.viewSupplySansItem = this.suppliesSansB.[index];
-      console.log(this.viewSupplySansItem);
+      //console.log(this.viewSupplySansItem);
       this.viewSupplySansItem.firstname = this.viewSupplySansItem.user.firstname
       this.viewSupplySansItem.lastname = this.viewSupplySansItem.user.lastname
       this.viewSupplySansItem.ribexp = this.viewSupplySansItem.rib_exp.numero
@@ -755,12 +886,23 @@ export default {
       this.approSupplyAvecItem.ribexp = this.approSupplyAvecItem.rib_exp.numero
       this.approSupplyAvecItem.ribbenef = this.approSupplyAvecItem.rib_benef.numero
       $("#approModalAvec").modal("show");
+    },
+    approSupplySans(index) {
+      //this.index = this.supply
+      this.approSupplySansItem = this.suppliesSansB.[index];
+      //console.log(this.approSupplySansItem);
+      this.approSupplySansItem.firstname = this.approSupplySansItem.user.firstname
+      this.approSupplySansItem.lastname = this.approSupplySansItem.user.lastname
+      this.approSupplySansItem.ribexp = this.approSupplySansItem.rib_exp.numero
+      this.approSupplySansItem.ribbenef = this.approSupplySansItem.rib_benef.numero
+      $("#approModalSans").modal("show");
     }
   },
   mounted() {
     this.$store.dispatch("agency/loadAgencies");
     this.$store.dispatch("rib/loadRibs");
     this.$store.dispatch("supply/loadSuppliesSansB");
+    this.$store.dispatch("supply/loadSuppliesSansBforV");
     this.$store.dispatch("supply/loadSuppliesAvecB");
   }
 };

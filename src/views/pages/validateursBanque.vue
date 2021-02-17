@@ -317,13 +317,40 @@
 
                           <v-card-text>
                                 <v-form>
+                                  <v-text-field
+                  v-if="!edit"
+                    label="Nom de famille"
+                    name="firstname"
+                    prepend-icon="mdi-account"
+                    type="text"
+                    v-model="editedItem.user.firstname"
+                  ></v-text-field>
+
+                  <v-text-field
+                  v-if="!edit"
+                    label="Prénom(s)"
+                    name="lastname"
+                    prepend-icon="mdi-account"
+                    type="text"
+                    v-model="editedItem.user.lastname"
+                  ></v-text-field>
+
+                  <v-text-field
+                  v-if="!edit"
+                    label="Téléphone"
+                    name="phone"
+                    prepend-icon="mdi-phone"
+                    type="text"
+                    v-model="editedItem.user.phone"
+                  ></v-text-field>
+
                   <v-text-field
                   v-if="!edit"
                     label="Nom d'Utilisateur"
                     name="name"
                     prepend-icon="mdi-account"
                     type="text"
-                    v-model="editedItem.name"
+                    v-model="editedItem.user.name"
                   ></v-text-field>
 
                   <v-text-field
@@ -332,7 +359,7 @@
                     name="email"
                     prepend-icon="mdi-email"
                     type="email"
-                    v-model="editedItem.email"
+                    v-model="editedItem.user.email"
                   ></v-text-field>
 
                   <v-text-field
@@ -342,7 +369,7 @@
                     name="password"
                     prepend-icon="mdi-lock"
                     type="password"
-                    v-model="editedItem.password"
+                    v-model="editedItem.user.password"
                   ></v-text-field>
 
                   <v-switch 
@@ -443,6 +470,14 @@ export default {
       validatorBank: {},
       editedIndex: -1,
       editedItem: {
+        user: {
+            name: "",
+            firstname: "",
+            lastname: "",
+            phone: "",
+            email: "",
+            password: "",
+        },
         name: "",
         firstname: "",
         lastname: "",
@@ -453,6 +488,14 @@ export default {
         bank_id: ""
       },
       defaultItem: {
+         user: {
+            name: "",
+            firstname: "",
+            lastname: "",
+            phone: "",
+            email: "",
+            password: "",
+        },
         name: "",
         firstname: "",
         lastname: "",
@@ -546,6 +589,12 @@ export default {
         } else {
 
         this.editedItem.bank_id = this.adminBankInfos[0].bank_id;
+        this.editedItem.name = this.editedItem.user.name;
+        this.editedItem.firstname = this.editedItem.user.firstname;
+        this.editedItem.lastname = this.editedItem.user.lastname;
+        this.editedItem.email = this.editedItem.user.email;
+        this.editedItem.phone = this.editedItem.user.phone;
+        this.editedItem.password = this.editedItem.user.password;
         this.validatorBankAd(this.editedItem);
         this.validatorsBankInfos.push(this.editedItem);
          
