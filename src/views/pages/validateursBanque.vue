@@ -59,7 +59,7 @@
                       </ul>
                     </div>
                   </li>
-            <li class="nav-item ">
+            <li class="nav-item" v-if="userInfos.roles[0].slug!=='superAdmin' && userInfos.roles[0].slug!=='supervisor'">
               <a class="nav-link" href="notifications">
                 <i class="material-icons">notifications</i>
                 <p>Notifications</p>
@@ -83,10 +83,10 @@
                       <p>Validateurs</p>
                     </a>
                   </li>
-                  <li class="nav-item">
-                    <a class="nav-link" href="#">
-                      <i class="material-icons">groups</i>
-                      <p>Gestion des Utilisateurs</p>
+                  <li class="nav-item" v-if="userInfos.roles[0].slug==='managerOMCI'">
+                    <a class="nav-link" href="validateursBanque">
+                      <i class="material-icons">done_all</i>
+                      <p>Validateurs</p>
                     </a>
                   </li>
                   <li class="nav-item" v-if="userInfos.roles[0].slug==='validatorOMCI' || userInfos.roles[0].slug==='managerOMCI'">
@@ -111,12 +111,6 @@
                     <a class="nav-link" href="#">
                       <i class="material-icons">palette</i>
                       <p>Liste des Agences</p>
-                    </a>
-                  </li>
-                  <li class="nav-item" v-if="userInfos.roles[0].slug==='validatorOMCI' || userInfos.roles[0].slug==='managerOMCI'">
-                    <a class="nav-link" href="#">
-                      <i class="material-icons">palette</i>
-                      <p>Approvisionner une agence</p>
                     </a>
                   </li>
                 </ul>

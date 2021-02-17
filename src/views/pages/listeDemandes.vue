@@ -59,13 +59,13 @@
                       </ul>
                     </div>
                   </li>
-            <li class="nav-item ">
+            <li class="nav-item" v-if="userInfos.roles[0].slug!=='superAdmin' && userInfos.roles[0].slug!=='supervisor'">
               <a class="nav-link" href="notifications">
                 <i class="material-icons">notifications</i>
                 <p>Notifications</p>
               </a>
             </li>
-            <li class="nav-item" v-if="userInfos.roles[0].slug==='superAdmin' || userInfos.roles[0].slug==='validatorOMCI'">
+            <li class="nav-item" v-if="userInfos.roles[0].slug==='validatorOMCI' || userInfos.roles[0].slug==='managerOMCI' || userInfos.roles[0].slug==='adminBanque'">
               <a
                 class="nav-link collapsed text-truncate"
                 href="#sousmenuAdmin"
@@ -77,13 +77,13 @@
               </a>
               <div class="collapse" id="sousmenuAdmin" aria-expanded="false">
                 <ul class="flex-column pl-2 nav">
-                  <li class="nav-item">
-                    <a class="nav-link" href="#">
-                      <i class="material-icons">groups</i>
-                      <p>Gestion des Utilisateurs</p>
+                  <li class="nav-item" v-if="userInfos.roles[0].slug==='managerOMCI'">
+                    <a class="nav-link" href="validateursBanque">
+                      <i class="material-icons">done_all</i>
+                      <p>Validateurs</p>
                     </a>
                   </li>
-                  <li class="nav-item" v-if="userInfos.roles[0].slug==='validatorOMCI'">
+                  <li class="nav-item" v-if="userInfos.roles[0].slug==='validatorOMCI' || userInfos.roles[0].slug==='managerOMCI'">
               <a
                 class="nav-link collapsed text-truncate"
                 href="#sousmenuStructure"
@@ -107,16 +107,10 @@
                       <p>Liste des Agences</p>
                     </a>
                   </li>
-                  <li class="nav-item">
-                    <a class="nav-link" href="#">
-                      <i class="material-icons">palette</i>
-                      <p>Approvisionner une agence</p>
-                    </a>
-                  </li>
                 </ul>
               </div>
             </li>
-            <li class="nav-item" v-if="userInfos.roles[0].slug==='validatorOMCI'">
+            <li class="nav-item" v-if="userInfos.roles[0].slug==='managerOMCI'">
                     <a class="nav-link" href="comptesBanqueOrange">
                       <i class="material-icons">account_balance</i>
                       <p>Comptes Banque Orange</p>
@@ -147,6 +141,12 @@
                     <a class="nav-link" href="#">
                       <i class="material-icons">palette</i>
                       <p>Affichage</p>
+                    </a>
+                  </li>
+                  <li class="nav-item" v-if="userInfos.roles[0].slug==='superAdmin'">
+                    <a class="nav-link" href="#">
+                      <i class="material-icons">groups</i>
+                      <p>Gestion des Utilisateurs</p>
                     </a>
                   </li>
                   <li class="nav-item" v-if="userInfos.roles[0].slug==='superAdmin'">
@@ -319,7 +319,7 @@
                               {{ index + 1 }}
                             </td>
                             <td>
-                              02/02/2021
+                              {{ mySupply.created_at | formatDate }}
                             </td>
                             <td class="font-weight-bold">
                               {{ mySupply.agency.code }}
