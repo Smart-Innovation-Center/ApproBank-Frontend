@@ -6,4 +6,12 @@ export default {
         let agencies = response.data;
         commit("SET_AGENCIES", agencies);
       },
+
+      async loadSoldeStructure({ commit }) {
+        let response = await axios.get("soldeStructure",);
+        //console.log("solde =>",response)
+        let soldeStructure = response;
+        commit("SET_SOLDE_STRUCTURE", soldeStructure);
+      },
+
 }

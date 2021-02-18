@@ -1,3 +1,4 @@
 export default {
-    agencies : []
+    agencies : [],
+    soldeStructure : []
 };

@@ -286,7 +286,7 @@
                       <i class="material-icons">savings</i>
                     </div>
                     <p class="card-category">Solde (en UVE)</p>
-                    <h3 class="card-title"><strong>{{ userInfos.solde }}</strong></h3>
+                    <h3 class="card-title"><strong>{{ soldeStructure.data }}</strong></h3>
                   </div>
                   <div class="card-footer">
                     <a href="supply" class="btn btn-primary btn-round">
@@ -370,21 +370,28 @@
   </v-app>
 </template>
 <script>
-import { mapGetters } from "vuex";
+import { mapGetters, mapState } from "vuex";
 export default {
   name: "dashboard",
   data: () => ({
     loading: false,
+    agency: {}
   }),
   computed: {
     ...mapGetters({
       userInfos: "user/userInfos",
       adminBankInfos: "user/adminBankInfos"
     }),
+    ...mapState({
+      soldeStructure: state => state.agency.soldeStructure,
+      //agencies: state => state.agency.agencies,
+    }),
   },
   mounted() {
     this.$store.dispatch("user/userInfos");
     this.$store.dispatch("user/adminBankInfos");
+    //this.$store.dispatch("agency/loadAgencies");
+    this.$store.dispatch("agency/loadSoldeStructure");
   },
   methods: {  
     logout() {

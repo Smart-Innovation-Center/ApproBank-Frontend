@@ -340,7 +340,7 @@
                               {{ mySupply.rib_benef.description }} ({{ mySupply.rib_benef.numero }})
                             </td>
                             <td class="text-info">
-                              {{ mySupply.statut }} : {{ mySupply.statut_count }} / {{ mySupply.bank_benef.nombreApprobation }}
+                              {{ mySupply.statut }} 
                             </td>
                           </tr>
                         </tbody>

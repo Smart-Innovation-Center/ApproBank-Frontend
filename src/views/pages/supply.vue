@@ -684,6 +684,7 @@ export default {
                       data.append('montant', this.montant);
                       data.append('statut', 'Demande avec bordereau envoyée et en cours d\'approbation');
                       data.append('photoBordereau', this.photoBordereau);
+                      //console.log(this.photoBordereau);
                       // const json = JSON.stringify({
                       //     userID: this.$store.state.user.userInfos.id,
                       //     agencyID: this.agencyID.id,
