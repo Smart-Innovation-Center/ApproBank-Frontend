@@ -273,23 +273,43 @@
           <div class="container-fluid">
               <div class="row">
               <div class="col-md-12" v-if="userInfos.roles[0].slug==='adminBanque'">
+                <v-card>
                 <template>
+
                   <v-data-table
                     :headers="headers"
                     :items="validatorsBankInfos"
-                    class="elevation-5"
+                    :single-select="singleSelect"
+                    hide-select
+                    class="elevation-1"
+                    :sort-by="['priorite']"
+                    :search="search"
+                    loading
+                    loading-text="Chargement... Veuillez patienter"
+                    no-results-text='Aucune donnée à afficher'
+                    rows-per-page-text='Données '
+                    :rows-per-page-items="[5, 10, 20, 100, {text:'Tous', value: -1}] "
                   >
                   <template v-slot:top>
+                    
                     <v-toolbar
                       flat
                     >
                       <v-toolbar-title>Liste des validateurs de la banque ({{ validatorsBankInfos.length }} / {{ adminBankInfos[0].bank.nombreApprobation }})</v-toolbar-title>
                         <v-divider
-                          class="mx-4"
+                          class="mx-15"
                           inset
                           vertical
                         ></v-divider>
+                        <v-text-field
+        v-model="search"
+        append-icon="mdi-magnify"
+        label="Recherche"
+        single-line
+        hide-details
+      ></v-text-field>
                         <v-spacer></v-spacer>
+                        
                         <v-dialog
                           v-model="dialog"
                           max-width="500px"
@@ -303,7 +323,10 @@
                           >
                             Ajouter 
                           </v-btn>
+
+                          
                         </template>
+                        
                         <v-card>
                           <v-card-title>
                             <span class="headline">{{ formTitle }}</span>
@@ -366,12 +389,17 @@
                     v-model="editedItem.user.password"
                   ></v-text-field>
 
-                  <v-switch 
-                    label="Prioritaire" 
-                    v-model="editedItem.isFirst"
-                    color="orange darken-3"
-                  >
-                  </v-switch>
+                  <v-text-field
+                    id="priorite"
+                    label="Priorité"
+                    name="priorite"
+                    prepend-icon="mdi-lock"
+                    type="number"
+                    required="required"
+                    v-model="editedItem.priorite"
+                    min="1"
+                    :max="adminBankInfos[0].bank.nombreApprobation"
+                  ></v-text-field>
                 </v-form>
                           </v-card-text>
 
@@ -396,7 +424,7 @@
                       </v-dialog>
                       <v-dialog v-model="dialogDelete" max-width="500px">
                         <v-card>
-                          <v-card-title class="headline">Êtes-vous sûr de vouloir supprimer le validateur ?</v-card-title>
+                          <v-card-title class="headline">Êtes-vous sûr de supprimer {{ editedItem.user.name }} ?</v-card-title>
                           <v-card-actions>
                             <v-spacer></v-spacer>
                             <v-btn color="blue darken-1" class="btn btn-default btn-link" text @click="closeDelete">Annuler</v-btn>
@@ -405,7 +433,17 @@
                           </v-card-actions>
                         </v-card>
                       </v-dialog>
+                      
                     </v-toolbar>
+                    
+                    <!-- <v-switch
+        v-model="singleSelect"
+        label="Selection unique"
+        class="pa-3"
+        color="orange darken-3"
+      ></v-switch> -->
+
+      
                   </template>
                   <template v-slot:item.actions="{ item }">
                     <v-icon
@@ -427,6 +465,7 @@
                   </template>
                   </v-data-table>
                 </template>
+                </v-card>
               </div>
             </div>
             </div>
@@ -441,6 +480,9 @@ import { mapActions, mapGetters, mapState } from "vuex";
 export default {
   name: "validateursBanque",
   data:() => ({
+    search: '',
+    //singleSelect: false,
+    //selected: [],
     edit: false,
       nombreVal: null,
       dialog: false,
@@ -449,14 +491,13 @@ export default {
         {
           text: 'Nom Utilisateur',
           align: 'start',
-          sortable: false,
           value: 'user.name',
         },
         { text: 'Nom de famille', value: 'user.firstname' },
         { text: 'Prénom(s)', value: 'user.lastname' },
         { text: 'Email', value: 'user.email' },
         { text: 'Telephone', value: 'user.phone' },
-        { text: 'Prioritaire', value: 'isFirst' },
+        { text: 'Priorité', value: 'priorite'},
         //{ text: 'Nombre de validations', value: '' },
         //{ text: 'Date', value: 'created_at' },
         { text: 'Actions', value: 'actions', sortable: false },
@@ -478,7 +519,7 @@ export default {
         phone: "",
         email: "",
         password: "",
-        isFirst: false,
+        priorite: "",
         bank_id: ""
       },
       defaultItem: {
@@ -496,7 +537,7 @@ export default {
         phone: "",
         email: "",
         password: "",
-        isFirst: false,
+        priorite: "",
         bank_id: ""
       },
     selectedAgency: [],

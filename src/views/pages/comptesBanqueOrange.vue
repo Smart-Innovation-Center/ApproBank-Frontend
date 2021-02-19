@@ -686,10 +686,11 @@ export default {
             this.editedItem.orange = "0"
           }
 
-          if(this.$store.state.user.userInfos.roles[0].slug==='validatorOMCI'){
+          if(this.$store.state.user.userInfos.roles[0].slug==='managerOMCI'){
             this.editedItem.orange = "1"
           }
         this.ribAd(this.editedItem);
+        
         
           this.ribs.push(this.editedItem)
         }
