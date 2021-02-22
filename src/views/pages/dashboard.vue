@@ -302,7 +302,8 @@
                       <i class="material-icons">account_balance_wallet</i>
                     </div>
                     <p class="card-category">Approvisionnements</p>
-                    <h3 class="card-title">2</h3>
+                    <h3 class="card-title" v-if="userInfos.roles[0].slug=='structureOM'">{{ mySupplies.length }}</h3>
+                    <h3 class="card-title" v-if="userInfos.roles[0].slug!=='structureOM'">{{ supplies.length }}</h3>
                   </div>
                   <div class="card-footer">
                     <a href="listeDemandes" class="btn btn-primary btn-round">
@@ -375,7 +376,9 @@ export default {
   name: "dashboard",
   data: () => ({
     loading: false,
-    agency: {}
+    agency: {},
+    supply: {},
+    mySupply: {},
   }),
   computed: {
     ...mapGetters({
@@ -384,6 +387,8 @@ export default {
     }),
     ...mapState({
       soldeStructure: state => state.agency.soldeStructure,
+      supplies: state => state.supply.supplies,
+      mySupplies: state => state.supply.mySupplies 
       //agencies: state => state.agency.agencies,
     }),
   },
@@ -392,6 +397,8 @@ export default {
     this.$store.dispatch("user/adminBankInfos");
     //this.$store.dispatch("agency/loadAgencies");
     this.$store.dispatch("agency/loadSoldeStructure");
+    this.$store.dispatch("supply/loadSupplies");
+    this.$store.dispatch("supply/loadmySupplies");
   },
   methods: {  
     logout() {

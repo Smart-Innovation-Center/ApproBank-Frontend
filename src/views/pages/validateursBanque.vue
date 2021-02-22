@@ -279,7 +279,6 @@
                   <v-data-table
                     :headers="headers"
                     :items="validatorsBankInfos"
-                    :single-select="singleSelect"
                     hide-select
                     class="elevation-1"
                     :sort-by="['priorite']"
@@ -287,8 +286,7 @@
                     loading
                     loading-text="Chargement... Veuillez patienter"
                     no-results-text='Aucune donnée à afficher'
-                    rows-per-page-text='Données '
-                    :rows-per-page-items="[5, 10, 20, 100, {text:'Tous', value: -1}] "
+                    footer-props.items-per-page-text='Données '
                   >
                   <template v-slot:top>
                     
@@ -502,7 +500,6 @@ export default {
         //{ text: 'Date', value: 'created_at' },
         { text: 'Actions', value: 'actions', sortable: false },
       ],
-      validatorBank: {},
       editedIndex: -1,
       editedItem: {
         user: {
