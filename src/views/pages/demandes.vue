@@ -334,7 +334,7 @@
                               >
                                 <i class="material-icons">visibility</i>
                               </button>
-                              <button
+                              <!-- <button
                                 v-if="userInfos.roles[0].slug==='adminBanque' || userInfos.roles[0].slug==='validatorBanque'"
                                 data-toggle="modal"
                                 data-target="#approModalSans"
@@ -349,7 +349,7 @@
                                 class="btn btn-danger btn-sm"
                               >
                                 <i class="material-icons">close</i>
-                              </button>
+                              </button> -->
                             </td>
                           </tr>
                         </tbody>
@@ -396,6 +396,7 @@
                                 data-toggle="modal"
                                 data-target="#rejModalSans"
                                 class="btn btn-danger btn-sm"
+                                @click="rejSupplySans(index)"
                               >
                                 <i class="material-icons">close</i>
                               </button>
@@ -500,6 +501,7 @@
                                 data-toggle="modal"
                                 data-target="#rejModalAvec"
                                 class="btn btn-danger btn-sm"
+                                @click="rejSupplyAvec(index)"
                               >
                                 <i class="material-icons">close</i>
                               </button>
@@ -757,6 +759,91 @@
         </div>
       </div>
     </div>
+    <div class="modal fade" id="rejModalAvec" tabindex="-1" role="">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="card card-signup card-plain">
+            <div class="modal-header">
+              <div
+                class="card-header card-header-danger text-center col-md-12"
+              >
+                <button
+                  type="button"
+                  class="close"
+                  data-dismiss="modal"
+                  aria-hidden="true"
+                >
+                  <i class="material-icons">clear</i>
+                </button>
+                <h4 class="title">Rejeter la demande d'Approvisionnement</h4>
+              </div>
+            </div>
+            <div class="card-body">
+              <v-card>
+                <v-img
+                  height="200"
+                  :src="'http://127.0.0.1:8000/storage/'+ rejSupplyAvecItem.photo_bordereau" alt="photoBOrdereau"
+                ></v-img>
+                <v-card-title>
+                  Êtes-vous certain de vouloir rejeter la demande d'approvisionnement avec bordereau dont les détails suivent : <br>
+                  N° bordereau : {{ rejSupplyAvecItem.numero_bordereau }} <br>
+                  Client : {{ rejSupplyAvecItem.firstname }} {{ rejSupplyAvecItem.lastname }} <br>
+                  Montant : {{ rejSupplyAvecItem.montant }} F CFA
+                </v-card-title>
+              </v-card>
+            </div>
+            <div class="modal-footer justify-content-center">
+              <button
+                type="submit"
+                class="btn btn-danger btn-wd btn-lg"
+                @click="rejAvec(rejSupplyAvecItem.id)"
+                >
+                Rejeter
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="modal fade" id="rejModalSans" tabindex="-1" role="">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="card card-signup card-plain">
+            <div class="modal-header">
+              <div
+                class="card-header card-header-danger text-center col-md-12"
+              >
+                <button
+                  type="button"
+                  class="close"
+                  data-dismiss="modal"
+                  aria-hidden="true"
+                >
+                  <i class="material-icons">clear</i>
+                </button>
+                <h4 class="title">Rejeter la demande d'Approvisionnement</h4>
+              </div>
+            </div>
+            <div class="card-body">
+              <v-card-title>
+                Êtes-vous certain de vouloir rejeter la demande d'approvisionnement dont les détails suivent : <br>
+                Client : {{ rejSupplySansItem.firstname }} {{ rejSupplySansItem.lastname }} <br>
+                Montant : {{ rejSupplySansItem.montant }} F CFA
+              </v-card-title>
+            </div>
+            <div class="modal-footer justify-content-center">
+              <button
+                type="submit"
+                class="btn btn-danger btn-wd btn-lg"
+                @click="rejSans(rejSupplySansItem.id)"
+                >
+                Rejeter
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </v-app>
 </template>
 <script>
@@ -794,7 +881,21 @@ export default {
         ribexp: null,
         ribbenef: null
       },
+      rejSupplyAvecItem: {
+        firstname: null,
+        lastname: null,
+        montant: null,
+        ribexp: null,
+        ribbenef: null
+      },
       approSupplySansItem: {
+        firstname: null,
+        lastname: null,
+        montant: null,
+        ribexp: null,
+        ribbenef: null
+      },
+      rejSupplySansItem: {
         firstname: null,
         lastname: null,
         montant: null,
@@ -826,7 +927,9 @@ export default {
   methods: {
     ...mapActions({
       validAvec: "supply/validSupplyAvec",
+      rejtAvec: "supply/rejSupplyAvec",
       validSans: "supply/validSupplySans",
+      rejtSans: "supply/rejSupplySans",
     }),
     logout() {
       this.$store.dispatch("user/logoutUser").then(() => {
@@ -841,10 +944,26 @@ export default {
       $('.modal-backdrop').remove();
       this.$router.push({ name: "listeDemandes" });
     },
+    rejAvec(item) {
+      console.log(item)
+      this.rejtAvec(item)
+      $("#rejModalAvec").hide();
+      $('body').removeClass('modal-open');
+      $('.modal-backdrop').remove();
+      this.$router.push({ name: "listeDemandes" });
+    },
     approvSans(item) {
       //console.log(item)
       this.validSans(item)
       $("#approModalSans").hide();
+      $('body').removeClass('modal-open');
+      $('.modal-backdrop').remove();
+      this.$router.push({ name: "listeDemandes" });
+    },
+    rejSans(item) {
+      //console.log(item)
+      this.rejtSans(item)
+      $("#rejModalSans").hide();
       $('body').removeClass('modal-open');
       $('.modal-backdrop').remove();
       this.$router.push({ name: "listeDemandes" });
@@ -881,6 +1000,16 @@ export default {
       this.approSupplyAvecItem.ribbenef = this.approSupplyAvecItem.rib_benef.numero
       $("#approModalAvec").modal("show");
     },
+    rejSupplyAvec(index) {
+      //this.index = this.supply
+      this.rejSupplyAvecItem = this.suppliesAvecB.[index];
+      //console.log(this.rejSupplyAvecItem);
+      this.rejSupplyAvecItem.firstname = this.rejSupplyAvecItem.user.firstname
+      this.rejSupplyAvecItem.lastname = this.rejSupplyAvecItem.user.lastname
+      this.rejSupplyAvecItem.ribexp = this.rejSupplyAvecItem.rib_exp.numero
+      this.rejSupplyAvecItem.ribbenef = this.rejSupplyAvecItem.rib_benef.numero
+      $("#rejModalAvec").modal("show");
+    },
     approSupplySans(index) {
       //this.index = this.supply
       this.approSupplySansItem = this.suppliesSansB.[index];
@@ -890,6 +1019,16 @@ export default {
       this.approSupplySansItem.ribexp = this.approSupplySansItem.rib_exp.numero
       this.approSupplySansItem.ribbenef = this.approSupplySansItem.rib_benef.numero
       $("#approModalSans").modal("show");
+    },
+    rejSupplySans(index) {
+      //this.index = this.supply
+      this.rejSupplySansItem = this.suppliesSansB.[index];
+      //console.log(this.rejSupplySansItem);
+      this.rejSupplySansItem.firstname = this.rejSupplySansItem.user.firstname
+      this.rejSupplySansItem.lastname = this.rejSupplySansItem.user.lastname
+      this.rejSupplySansItem.ribexp = this.rejSupplySansItem.rib_exp.numero
+      this.rejSupplySansItem.ribbenef = this.rejSupplySansItem.rib_benef.numero
+      $("#rejModalSans").modal("show");
     }
   },
   mounted() {

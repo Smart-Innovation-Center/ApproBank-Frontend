@@ -90,6 +90,20 @@ export default {
     })
   },
 
+  rejSupplyAvec(ctx, payload){
+    console.log('payload :>> ', payload)
+  return new Promise((resolve, reject) => {
+      axios
+          .post(`rejSupplyAvecB/${payload}`,payload)
+          .then(response => {
+              resolve(response);
+          })
+          .catch((error)=>{
+              reject(error);
+          })
+  })
+},
+
   validSupplySans(ctx, payload){
     //console.log('payload :>> ', payload)
   return new Promise((resolve, reject) => {
@@ -103,6 +117,21 @@ export default {
               reject(error);
           })
   })
+},
+
+rejSupplySans(ctx, payload){
+  console.log('payload :>> ', payload)
+return new Promise((resolve, reject) => {
+    axios
+        .post(`rejSupplySansB/${payload}`,payload)
+        .then(response => {
+            console.log(response)
+           resolve(response);
+        })
+        .catch((error)=>{
+            reject(error);
+        })
+})
 },
 
 //   deleteRib(ctx, payload){
