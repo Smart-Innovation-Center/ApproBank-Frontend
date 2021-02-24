@@ -5,6 +5,9 @@ export default {
     userInfos(state){
         return state.userInfos;
     },
+    users(state){
+        return state.users;
+    },
     adminBankInfos(state){
         return state.adminBankInfos;
     },

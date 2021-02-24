@@ -3,6 +3,7 @@ import Vuex from "vuex";
 
 //modules
 import user from "./user/index";
+import role from "./role/index";
 import application from "./application/index";
 import agency from "./agency/index";
 import bank from "./bank/index";
@@ -18,6 +19,7 @@ export default new Vuex.Store({
   actions: {},
   modules: {
     user,
+    role,
     application,
     agency,
     bank,

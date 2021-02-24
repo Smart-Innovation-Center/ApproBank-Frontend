@@ -144,7 +144,7 @@
                     </a>
                   </li>
                   <li class="nav-item" v-if="userInfos.roles[0].slug==='superAdmin'">
-                    <a class="nav-link" href="#">
+                    <a class="nav-link" href="utilisateurs">
                       <i class="material-icons">groups</i>
                       <p>Gestion des Utilisateurs</p>
                     </a>

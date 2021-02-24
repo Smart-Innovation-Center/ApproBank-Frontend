@@ -69,6 +69,15 @@ Vue.use(VueRouter)
     }
   },
   {
+    path: '/utilisateurs',
+    name: 'utilisateurs',
+    component: () => import(/* webpackChunkName: "utilisateurs" */ '../views/pages/utilisateurs.vue'),
+    meta: {
+      middleware: [Middlewares.auth],
+      title: 'utilisateurs'
+    }
+  },
+  {
     path: '/mesAgences',
     name: 'mesAgences',
     component: () => import(/* webpackChunkName: "demandes" */ '../views/pages/mesAgences.vue'),

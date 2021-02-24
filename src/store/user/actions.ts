@@ -90,6 +90,20 @@ export default {
                 })
         })
     },
+    users(ctx){
+        return new Promise((resolve, reject) => {
+            axios
+                .get('usersWithRoles')
+                .then(response => {
+                    console.log(response.data)
+                    ctx.commit('setUsers', response.data);
+                    resolve(response);
+                })
+                .catch((error)=>{
+                    reject(error);
+                })
+        })
+    },
     adminBankInfos(ctx){
         return new Promise((resolve, reject) => {
             axios
@@ -116,5 +130,10 @@ export default {
                     reject(error);
                 })
         })
-    }
+    },
+
+    //crud users by superadmin
+
+    
+
 }

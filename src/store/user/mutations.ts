@@ -5,6 +5,9 @@ export default {
     setUserInfos(state, payload){
         state.userInfos = payload;
     },
+    setUsers(state, payload){
+        state.users = payload;
+    },
     setAdminBankInfo(state, payload){
         state.adminBankInfos = payload;
     },
