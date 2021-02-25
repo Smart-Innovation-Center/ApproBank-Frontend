@@ -1,6 +1,9 @@
 export default {
     isLoggedIn: false,
-    userInfos : {},
+    //userInfos : {},
+    userInfos : {
+        roles: [0]
+    },
     users : [],
     adminBankInfos : {},
     validatorsBankInfos : []

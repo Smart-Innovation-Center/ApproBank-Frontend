@@ -136,12 +136,12 @@ export default {
     //crud users by superadmin
 
     updateUser(ctx, payload){
-        console.log(payload)
+        //console.log(payload)
         return new Promise((resolve, reject) => {
             axios
                 .post(`updateUser/${payload.id}`,payload)
                 .then(response => {
-                    console.log(response);
+                    //console.log(response);
                     resolve(response);
                 })
                 .catch((error)=>{

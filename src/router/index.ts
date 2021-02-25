@@ -69,6 +69,15 @@ Vue.use(VueRouter)
     }
   },
   {
+    path: '/roles',
+    name: 'roles',
+    component: () => import(/* webpackChunkName: "roles" */ '../views/pages/roles.vue'),
+    meta: {
+      middleware: [Middlewares.auth],
+      title: 'roles'
+    }
+  },
+  {
     path: '/utilisateurs',
     name: 'utilisateurs',
     component: () => import(/* webpackChunkName: "utilisateurs" */ '../views/pages/utilisateurs.vue'),

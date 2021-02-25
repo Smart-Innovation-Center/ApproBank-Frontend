@@ -156,7 +156,7 @@
                     </a>
                   </li>
                   <li class="nav-item" v-if="userInfos.roles[0].slug==='superAdmin'">
-                    <a class="nav-link" href="#">
+                    <a class="nav-link" href="roles">
                       <i class="material-icons">safety_divider</i>
                       <p>Gestion des Rôles</p>
                     </a>
@@ -210,7 +210,7 @@
             </button>
             <div class="collapse navbar-collapse justify-content-end">
               <ul class="navbar-nav">
-                <li class="nav-item dropdown">
+                <li class="nav-item dropdown" v-if="userInfos.roles[0].slug!=='superAdmin'">
                   <a
                     class="nav-link"
                     href=""
