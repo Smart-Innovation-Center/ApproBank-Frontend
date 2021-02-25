@@ -410,6 +410,18 @@
                                 return-object
                               >
                               </v-select>
+                              <v-select
+                                  v-if="editedItem.role.slug === 'adminBanque'"
+                                  v-model="editedItem.bankID"
+                                  :items="banks"
+                                  prepend-icon="account_balance"
+                                  item-value="id"
+                                  item-text="nom"
+                                  placeholder="BANQUE *"
+                                  single-line
+                                  return-object
+                                >
+                                </v-select>
                             </v-form>
                           </v-card-text>
 
@@ -446,17 +458,12 @@
                       
                     </v-toolbar>
                     
-                    <!-- <v-switch
-        v-model="singleSelect"
-        label="Selection unique"
-        class="pa-3"
-        color="orange darken-3"
-      ></v-switch> -->
 
       
                   </template>
                   <template v-slot:item.actions="{ item }">
                     <v-icon
+                      v-if="item.roles && item.roles[0].slug !== 'validatorBanque' && item.roles[0].slug !== 'validatorOMCI' && item.roles[0].slug !== 'structureOM'"
                       small
                       class="mr-2"
                       @click="editItem(item)"
@@ -464,6 +471,7 @@
                       mdi-pencil
                     </v-icon>
                     <v-icon
+                      v-if="item.roles && item.roles[0].slug !== 'validatorBanque' && item.roles[0].slug !== 'validatorOMCI' && item.roles[0].slug !== 'structureOM'"
                       small
                       @click="deleteItem(item)"
                     >
@@ -522,19 +530,19 @@ export default {
         phone: "",
         email: "",
         password: "",
-        active: true
+        active: true,
+        bankID: ""
       },
       defaultItem: {
-        role: {
-          name: "",
-        },
+        role: "",
         name: "",
         firstname: "",
         lastname: "",
         phone: "",
         email: "",
         password: "",
-        active: true
+        active: true,
+        bankID: ""
       },
   }),
   computed: {
@@ -546,6 +554,7 @@ export default {
       users: "user/users",
     }),
     ...mapState({
+      banks: state => state.bank.banks,
       roles: state => state.role.roles,
     }),
   },
@@ -560,24 +569,28 @@ export default {
   methods: {
     ...mapActions({
       registerUser: "user/registerUser",
-      userDel: "user/deleteuser",
-      userUpd: "user/updateuser"
+      userDel: "user/deleteUser",
+      userUpd: "user/updateUser"
     }),
     editItem (item) {
+      //console.log(item.roles[0].slug)
         this.editedIndex = this.users.indexOf(item)
         this.editedItem = Object.assign({}, item)
         this.editedItem.role = this.editedItem.roles[0].name
-        console.log(this.editedItem)
+        //this.editedItem.bankID = this.editedItem.bankID.id
+        //console.log(this.editedItem)
         this.edit = true
         this.dialog = true
       },
       deleteItem (item) {
         this.editedIndex = this.users.indexOf(item)
         this.editedItem = Object.assign({}, item)
+        this.editedItem.role = this.editedItem.roles[0].name
+        
         this.dialogDelete = true
       },
       deleteItemConfirm (id) {
-        this.validatorBankDel(id)    
+        this.userDel(id)    
         this.users.splice(this.editedIndex, 1)
         this.closeDelete()
       },
@@ -599,10 +612,11 @@ export default {
         if (this.editedIndex > -1) {
           Object.assign(this.users[this.editedIndex], this.editedItem);
           
-        this.validatorBankUpd(this.editedItem)
+        this.userUpd(this.editedItem)
         } else {
 
         this.editedItem.role=this.editedItem.role.slug
+        this.editedItem.bankID = this.editedItem.bankID.id
         this.registerUser(this.editedItem);
         this.users.push(this.editedItem);
          
@@ -616,6 +630,7 @@ export default {
     },
   },
   mounted() {
+    this.$store.dispatch("bank/loadBanks");
     this.$store.dispatch("role/loadRoles");
     this.$store.dispatch("user/users");
   }

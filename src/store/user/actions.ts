@@ -9,6 +9,7 @@ export default {
                     resolve(response);
                 })
                 .catch((error)=>{
+                    console.log(error)
                     reject(error);
                 })
         })
@@ -95,7 +96,7 @@ export default {
             axios
                 .get('usersWithRoles')
                 .then(response => {
-                    console.log(response.data)
+                    //console.log(response.data)
                     ctx.commit('setUsers', response.data);
                     resolve(response);
                 })
@@ -134,6 +135,32 @@ export default {
 
     //crud users by superadmin
 
+    updateUser(ctx, payload){
+        console.log(payload)
+        return new Promise((resolve, reject) => {
+            axios
+                .post(`updateUser/${payload.id}`,payload)
+                .then(response => {
+                    console.log(response);
+                    resolve(response);
+                })
+                .catch((error)=>{
+                    reject(error);
+                })
+        })
+      },
     
+      deleteUser(ctx, payload){
+            return new Promise((resolve, reject) => {
+                axios
+                    .delete(`deleteUser/${payload}`)
+                    .then(response => {
+                        resolve(response);
+                    })
+                    .catch((error)=>{
+                        reject(error);
+                    })
+            })
+        },
 
 }
