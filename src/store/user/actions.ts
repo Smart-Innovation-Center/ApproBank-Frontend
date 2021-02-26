@@ -14,6 +14,20 @@ export default {
                 })
         })
     },
+    gelUser(ctx, payload){
+        console.log(payload)
+        return new Promise((resolve, reject) => {
+            axios
+                .post(`gelUser/${payload.id}`,payload)
+                .then(response => {
+                    console.log(response);
+                    resolve(response);
+                })
+                .catch((error)=>{
+                    reject(error);
+                })
+        })
+      },
     loginUser(ctx, payload){
         return new Promise((resolve, reject) => {
             axios
@@ -132,35 +146,5 @@ export default {
                 })
         })
     },
-
-    //crud users by superadmin
-
-    updateUser(ctx, payload){
-        //console.log(payload)
-        return new Promise((resolve, reject) => {
-            axios
-                .post(`updateUser/${payload.id}`,payload)
-                .then(response => {
-                    //console.log(response);
-                    resolve(response);
-                })
-                .catch((error)=>{
-                    reject(error);
-                })
-        })
-      },
-    
-      deleteUser(ctx, payload){
-            return new Promise((resolve, reject) => {
-                axios
-                    .delete(`deleteUser/${payload}`)
-                    .then(response => {
-                        resolve(response);
-                    })
-                    .catch((error)=>{
-                        reject(error);
-                    })
-            })
-        },
 
 }

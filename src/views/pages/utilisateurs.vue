@@ -392,13 +392,13 @@
                                 v-model="editedItem.password"
                               ></v-text-field>
 
-                                  <v-switch 
+                                  <!-- <v-switch 
                                   v-if="edit"
                                     label="Actif" 
                                     v-model="editedItem.active"
                                     color="orange darken-3"
                                   >
-                                  </v-switch>
+                                  </v-switch> -->
 
                               <v-select
                                 v-if="!edit"
@@ -462,8 +462,21 @@
 
       
                   </template>
+                  <template v-slot:item.active="{ item }">
+                      
+                        {{ item.active ? "Actif" : "Gélé" }}
+                      
+                  </template>
                   <template v-slot:item.actions="{ item }">
-                    <v-icon
+
+                                  <v-switch 
+                                    v-model="item.active"
+                                    color="orange darken-3"
+                                    v-on:change="geler(item)"
+                                  >
+                                  </v-switch>
+
+                    <!-- <v-icon
                       v-if="item.roles && item.roles[0].slug !== 'validatorBanque' && item.roles[0].slug !== 'validatorOMCI' && item.roles[0].slug !== 'structureOM'"
                       small
                       class="mr-2"
@@ -477,7 +490,7 @@
                       @click="deleteItem(item)"
                     >
                       mdi-delete
-                    </v-icon>
+                    </v-icon> -->
                   </template>
                   <template v-slot:no-data>
                       Aucune donnée à afficher
@@ -516,11 +529,11 @@ export default {
         { text: 'Prénom(s)', value: 'lastname' },
         { text: 'Email', value: 'email' },
         { text: 'Telephone', value: 'phone' },
-        { text: 'Actif', value: 'active'},
+        { text: 'Statut', value: 'active'},
         { text: 'Rôle', value: 'roles[0].name'},
         //{ text: 'Nombre de validations', value: '' },
         //{ text: 'Date', value: 'created_at' },
-        { text: 'Actions', value: 'actions', sortable: false },
+        { text: 'Géler', value: 'actions', sortable: false },
       ],
       editedIndex: -1,
       editedItem: {
@@ -570,8 +583,7 @@ export default {
   methods: {
     ...mapActions({
       registerUser: "user/registerUser",
-      userDel: "user/deleteUser",
-      userUpd: "user/updateUser"
+      gel: "user/gelUser",
     }),
     editItem (item) {
       //console.log(item.roles[0].slug)
@@ -583,18 +595,21 @@ export default {
         this.edit = true
         this.dialog = true
       },
-      deleteItem (item) {
-        this.editedIndex = this.users.indexOf(item)
-        this.editedItem = Object.assign({}, item)
-        this.editedItem.role = this.editedItem.roles[0].name
+      geler(item){
+        this.gel(item);
+      },
+      // deleteItem (item) {
+      //   this.editedIndex = this.users.indexOf(item)
+      //   this.editedItem = Object.assign({}, item)
+      //   this.editedItem.role = this.editedItem.roles[0].name
         
-        this.dialogDelete = true
-      },
-      deleteItemConfirm (id) {
-        this.userDel(id)    
-        this.users.splice(this.editedIndex, 1)
-        this.closeDelete()
-      },
+      //   this.dialogDelete = true
+      // },
+      // deleteItemConfirm (id) {
+      //   this.userDel(id)    
+      //   this.users.splice(this.editedIndex, 1)
+      //   this.closeDelete()
+      // },
       close () {
         this.dialog = false
         this.$nextTick(() => {
@@ -612,15 +627,12 @@ export default {
       save () {
         if (this.editedIndex > -1) {
           Object.assign(this.users[this.editedIndex], this.editedItem);
-          this.editedItem.role=this.editedItem.role.slug
-        this.userUpd(this.editedItem)
+        this.gel(this.editedItem)
         } else {
-
         this.editedItem.role=this.editedItem.role.slug
         this.editedItem.bankID = this.editedItem.bankID.id
         this.registerUser(this.editedItem);
         this.users.push(this.editedItem);
-         
         }
         this.close()
       },

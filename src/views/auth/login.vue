@@ -99,7 +99,7 @@ export default {
 				this.login(this.user)
 					.then(response => {
 						// if (response.data && response.data.success) {
-						// 	this.addNotification({
+						// 	this.addNotification({	
 						// 		show: true,
 						// 		text1: "Connexion effectuée :",
 						// 		text2: "Bienvenue à votre espace !"

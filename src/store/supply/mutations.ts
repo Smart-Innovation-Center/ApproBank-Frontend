@@ -2,6 +2,9 @@ export default {
     SET_SUPPLIES(state, supplies) {
       state.supplies = supplies;
     },
+    SET_SUPPLIES_FOR_STATS(state, suppliesForStats) {
+      state.suppliesForStats = suppliesForStats;
+    },
     SET_SUPPLIES_SANS_B(state, suppliesSansB) {
       state.suppliesSansB = suppliesSansB;
     },

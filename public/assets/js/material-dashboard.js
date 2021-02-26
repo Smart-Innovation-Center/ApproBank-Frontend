@@ -371,21 +371,44 @@ md = {
       /* ----------==========     Emails Subscription Chart initialization    ==========---------- */
 
       var dataWebsiteViewsChart = {
-        labels: ['J', 'F', 'M', 'A', 'M', 'J', 'J', 'A', 'S', 'O', 'N', 'D'],
+        labels: [
+          'Janvier',
+          'Février',
+          'Mars',
+          'Avril',
+          'Mai',
+          'Juin',
+          'Juillet',
+          'Août',
+          'Septembre',
+          'Octobre',
+          'Novembre',
+          'Décembre'
+        ],
         series: [
-          [542, 443, 320, 780, 553, 453, 326, 434, 568, 610, 756, 895]
-
+          [
+            54,
+            44,
+            32,
+            78,
+            55,
+            45,
+            32,
+            43,
+            56,
+            61,
+            75,
+            89
+          ]
         ]
       };
       var optionsWebsiteViewsChart = {
         axisX: {
           showGrid: false
         },
-        low: 0,
-        high: 1000,
         chartPadding: {
-          top: 0,
-          right: 5,
+          top: 15,
+          right: 0,
           bottom: 0,
           left: 0
         }
@@ -401,8 +424,6 @@ md = {
         }]
       ];
       var websiteViewsChart = Chartist.Bar('#websiteViewsChart', dataWebsiteViewsChart, optionsWebsiteViewsChart, responsiveOptions);
-
-      //start animation for the Emails Subscription Chart
       md.startAnimationForBarChart(websiteViewsChart);
     }
   },

@@ -795,14 +795,16 @@ export default {
         description: "",
         userID: "",
         bankID: "",
-        orange: ""
+        orange: "",
+        visible: true,
       },
       defaultItem: {
         numero: "",
         description: "",
         userID: "",
         bankID: "",
-        orange: ""
+        orange: "",
+        visible: true
       },
     selectedAgency: [],
     selectedRib: []

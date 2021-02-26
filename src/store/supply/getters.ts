@@ -2,6 +2,9 @@ export default {
     supplies(state){
         return state.suppliesAll;
     },
+    suppliesForStats(state){
+        return state.suppliesForStats;
+    },
     suppliesSansB(state){
         return state.suppliesSansB;
     },

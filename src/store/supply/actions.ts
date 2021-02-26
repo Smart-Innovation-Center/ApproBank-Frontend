@@ -134,6 +134,12 @@ return new Promise((resolve, reject) => {
 })
 },
 
+async loadSuppliesForStats({ commit }) {
+  let response = await axios.get("supplyThisYear",);
+  let suppliesForStats = response.data;
+  commit("SET_SUPPLIES_FOR_STATS", suppliesForStats);
+},
+
 //   deleteRib(ctx, payload){
 //   return new Promise((resolve, reject) => {
 //       axios

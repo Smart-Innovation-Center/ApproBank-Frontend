@@ -319,7 +319,7 @@
                       <i class="material-icons">people</i>
                     </div>
                     <p class="card-category">Comptes Utilisateurs</p>
-                    <h3 class="card-title">4</h3>
+                    <h3 class="card-title">{{ users.length + 1 }}</h3>
                   </div>
                   <div class="card-footer">
                     <a href="javascript:;" class="btn btn-primary btn-round">
@@ -349,11 +349,12 @@
               <div class="col-md-12">
                 <div class="card card-chart">
                   <div class="card-header card-header-warning bg-orange">
-                    <div class="ct-chart bg-black" id="websiteViewsChart"></div>
+                    <h4 class="card-title">Opérations effectuées</h4>
+                    <p class="card-category">Année 2021</p>
                   </div>
                   <div class="card-body">
-                    <h4 class="card-title">Opérations effectuées</h4>
-                    <p class="card-category">Année 2020</p>
+                    
+                    <stats-demandes></stats-demandes>
                   </div>
                   <div class="card-footer">
                     <div class="stats">
@@ -372,7 +373,9 @@
 </template>
 <script>
 import { mapGetters, mapState } from "vuex";
+import statsDemandes from './statsDemandes.vue';
 export default {
+  components: { statsDemandes },
   name: "dashboard",
   data: () => ({
     loading: false,
@@ -383,7 +386,8 @@ export default {
   computed: {
     ...mapGetters({
       userInfos: "user/userInfos",
-      adminBankInfos: "user/adminBankInfos"
+      adminBankInfos: "user/adminBankInfos",
+      users: "user/users",
     }),
     ...mapState({
       soldeStructure: state => state.agency.soldeStructure,
@@ -399,6 +403,7 @@ export default {
     this.$store.dispatch("agency/loadSoldeStructure");
     this.$store.dispatch("supply/loadSupplies");
     this.$store.dispatch("supply/loadmySupplies");
+    this.$store.dispatch("user/users");
   },
   methods: {  
     logout() {

@@ -24,6 +24,15 @@ Vue.use(VueRouter)
     }
   },
   {
+    path: '/statsDemandes',
+    name: 'statsDemandes',
+    component: () => import(/* webpackChunkName: "statsDemandes" */ '../views/pages/statsDemandes.vue'),
+    meta: {
+      middleware: [Middlewares.auth],
+      title: 'statsDemandes'
+    }
+  },
+  {
     path: '/otp',
     name: 'otp',
     component: () => import(/* webpackChunkName: "otp" */ '../views/auth/otp.vue'),
