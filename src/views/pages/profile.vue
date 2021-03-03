@@ -280,7 +280,6 @@
                     </p>
                   </div>
                   <div class="card-body">
-                    <v-form>
                       <div class="row">
                         <div class="col-md-4">
                           <div class="form-group">
@@ -344,12 +343,11 @@
                         </div>
                       </div>
                       <button
-                        class="btn btn-orange btn-fill pull-right">
+                        class="btn btn-orange btn-fill pull-right" @click="modifierInfos">
                         Enregistrer
                       </button>
 
                       <div class="clearfix"></div>
-                    </v-form>
                   </div>
                 </div>
               </div>
@@ -359,7 +357,6 @@
                     Editer Mot de Passe
                   </div>
                   <div class="card-body">
-                    <v-form>
                       <div class="container">
                         <div class="form-group">
                           <label for="oldPassword">Mot de Passe Actuel</label>
@@ -367,6 +364,7 @@
                             type="password"
                             class="form-control"
                             id="oldPassword"
+                            v-model="pwd.oldPwd"
                           />
                         </div>
                         <div class="form-group">
@@ -375,6 +373,7 @@
                             type="password"
                             class="form-control"
                             id="newPassword"
+                            v-model="pwd.newPwd1"
                           />
                         </div>
                         <div class="form-group">
@@ -385,15 +384,16 @@
                             type="password"
                             class="form-control"
                             id="confirmNewPassword"
+                            v-model="pwd.newPwd"
                           />
                         </div>
                       </div>
                       <button
+                        v-if="pwd.newPwd != null && pwd.newPwd1 === pwd.newPwd"
                         type="submit"
-                        class="btn btn-orange btn-fill pull-right">
+                        class="btn btn-orange btn-fill pull-right" @click="modifierPwd">
                         Valider
                       </button>
-                    </v-form>
                   </div>
                 </div>
               </div>
@@ -788,6 +788,17 @@ export default {
         //{ text: 'Date', value: 'created_at' },
         { text: 'Actions', value: 'actions', sortable: false },
       ],
+      
+        firstname: "",
+        lastname: "",
+        name: "",
+        email: "",
+        phone: "",
+        pwd: {
+          id: null,
+          oldPwd: null,
+          newPwd: null
+        },
       rib: {},
       editedIndex: -1,
       editedItem: {
@@ -835,42 +846,52 @@ export default {
   methods: {
     ...mapActions({
       addNotification: "application/addNotification",
+      InfoUp: "user/updateInfos",
+      PwdUp: "user/updatePwd",
       ribAd: "rib/addRib",
       ribDel: "rib/deleteRib",
       ribUpd: "rib/updateRib"
     }),
+    modifierInfos(){
+      //this.phone = this.userInfos.phone;
+      this.InfoUp(this.userInfos);
+    },
+    modifierPwd(){
+      this.pwd.id = this.userInfos.id;
+      this.PwdUp(this.pwd);
+    },
     editItem (item) {
-        this.editedIndex = this.ribs.indexOf(item)
-        this.editedItem = Object.assign({}, item)
-        this.editedItem.bankID = this.editedItem.bank.id
-        this.dialog = true
-      },
-      deleteItem (item) {
-        this.editedIndex = this.ribs.indexOf(item)
-        this.editedItem = Object.assign({}, item)
-        this.dialogDelete = true
-      },
-      deleteItemConfirm (id) {
-       
-                this.ribDel(id)
-            
-        this.ribs.splice(this.editedIndex, 1)
-        this.closeDelete()
-      },
-      close () {
-        this.dialog = false
-        this.$nextTick(() => {
-          this.editedItem = Object.assign({}, this.defaultItem)
-          this.editedIndex = -1
-        })
-      },
-      closeDelete () {
-        this.dialogDelete = false
-        this.$nextTick(() => {
-          this.editedItem = Object.assign({}, this.defaultItem)
-          this.editedIndex = -1
-        })
-      },
+      this.editedIndex = this.ribs.indexOf(item)
+      this.editedItem = Object.assign({}, item)
+      this.editedItem.bankID = this.editedItem.bank.id
+      this.dialog = true
+    },
+    deleteItem (item) {
+      this.editedIndex = this.ribs.indexOf(item)
+      this.editedItem = Object.assign({}, item)
+      this.dialogDelete = true
+    },
+    deleteItemConfirm (id) {
+      
+      this.ribDel(id)
+          
+      this.ribs.splice(this.editedIndex, 1)
+      this.closeDelete()
+    },
+    close () {
+      this.dialog = false
+      this.$nextTick(() => {
+        this.editedItem = Object.assign({}, this.defaultItem)
+        this.editedIndex = -1
+      })
+    },
+    closeDelete () {
+      this.dialogDelete = false
+      this.$nextTick(() => {
+        this.editedItem = Object.assign({}, this.defaultItem)
+        this.editedIndex = -1
+      })
+    },
       save () {
         if (this.editedIndex > -1) {
           Object.assign(this.ribs[this.editedIndex], this.editedItem);
@@ -881,7 +902,7 @@ export default {
           this.editedItem.userID = this.$store.state.user.userInfos.id;
         this.editedItem.bankID = this.editedItem.bankID.id;
 
-        //si c'est une structure qui ajoute le rib alors mettre "orange" à 0 pour dire que c'est pas un rib de ORANGE
+          //si c'est une structure qui ajoute le rib alors mettre "orange" à 0 pour dire que c'est pas un rib de ORANGE
           if(this.$store.state.user.userInfos.roles[0].slug==='structureOM'){
             this.editedItem.orange = "0"
           }

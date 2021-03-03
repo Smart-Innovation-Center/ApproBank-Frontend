@@ -1,39 +1,15 @@
 <script>
 import { mapState } from "vuex";
-import { Bar } from 'vue-chartjs'
+import { Bar, mixins } from 'vue-chartjs'
+import axios from '../../axios'
 
   export default {
     name: "statsDemandes",
     extends: Bar,
+    mixins: [mixins.reactiveData],
     data () {
       return {
-        datacollection: {
-          labels: ['J', 'F', 'M', 'A', 'M', 'J', 'J', 'A', 'S', 'O', 'N', 'D'],
-          datasets: [
-            {
-              label: 'Toutes les demandes',
-              backgroundColor: '#1285b5',
-              pointBackgroundColor: 'white',
-              borderWidth: 1,
-              data: [60, 50, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-            },
-            {
-              label: 'Demandes validées',
-              backgroundColor: '#00c466',
-              pointBackgroundColor: 'white',
-              borderWidth: 1,
-              data: [40, 48, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-            },
-            {
-              label: 'Demandes rejetées',
-              backgroundColor: '#e90a0e',
-              pointBackgroundColor: 'white',
-              borderWidth: 1,
-              pointBorderColor: '#249EBF',
-              data: [20, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-            },
-          ]
-        },
+        chartData : null,
         options: {
           scales: {
             yAxes: [{
@@ -59,24 +35,51 @@ import { Bar } from 'vue-chartjs'
       }
     },
     methods: {
-      load(){
-        this.datacollection.datasets[0].data = this.suppliesForStats
-        //console.log(this.suppliesForStats)
-      }
     },
     computed: {
     ...mapState({
       suppliesForStats: state => state.supply.suppliesForStats,
     }),
   },
-  created(){
-    this.load();
+  created() {
+    axios.get(`supplyThisYear`)
+      .then(response => {
+        const responseData = response.data
+        this.chartData = {
+          labels: ['J', 'F', 'M', 'A', 'M', 'J', 'J', 'A', 'S', 'O', 'N', 'D'],
+          datasets: [
+            {
+            label: 'Toutes les demandes',
+             backgroundColor: '#1285b5',
+              pointBackgroundColor: 'white',
+              borderWidth: 1,
+             data: responseData[0]
+            },
+            {
+              label: 'Demandes validées',
+              backgroundColor: '#00c466',
+              pointBackgroundColor: 'white',
+              borderWidth: 1,
+              data: responseData[1]
+            },
+            {
+              label: 'Demandes rejetées',
+              backgroundColor: '#e90a0e',
+              pointBackgroundColor: 'white',
+              borderWidth: 1,
+              pointBorderColor: '#249EBF',
+              data: responseData[2]
+            },
+          ]
+        }
+      })
+      .catch(e => {
+        this.errors.push(e)
+      })
   }
   ,
     mounted () {
-      this.load();
-      this.$store.dispatch("supply/loadSuppliesForStats");
-      this.renderChart(this.datacollection, this.options)
+      this.renderChart(this.chartData, this.options)
     }
   }
 </script>

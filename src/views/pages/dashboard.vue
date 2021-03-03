@@ -322,7 +322,7 @@
                     <h3 class="card-title">{{ users.length + 1 }}</h3>
                   </div>
                   <div class="card-footer">
-                    <a href="javascript:;" class="btn btn-primary btn-round">
+                    <a href="utilisateurs" class="btn btn-primary btn-round">
                       Consulter la liste
                     </a>
                   </div>
@@ -335,10 +335,10 @@
                       <i class="material-icons">person_off</i>
                     </div>
                     <p class="card-category">Comptes Gelés</p>
-                    <h3 class="card-title">0</h3>
+                    <h3 class="card-title">{{ usersGeles.length }}</h3>
                   </div>
                   <div class="card-footer">
-                    <a href="javascript:;" class="btn btn-primary btn-round">
+                    <a href="utilisateurs" class="btn btn-primary btn-round">
                       Consulter la liste
                     </a>
                   </div>
@@ -388,6 +388,7 @@ export default {
       userInfos: "user/userInfos",
       adminBankInfos: "user/adminBankInfos",
       users: "user/users",
+      usersGeles: "user/usersGeles",
     }),
     ...mapState({
       soldeStructure: state => state.agency.soldeStructure,
@@ -404,6 +405,7 @@ export default {
     this.$store.dispatch("supply/loadSupplies");
     this.$store.dispatch("supply/loadmySupplies");
     this.$store.dispatch("user/users");
+    this.$store.dispatch("user/usersGeles");
   },
   methods: {  
     logout() {

@@ -5,6 +5,7 @@ export default {
         roles: [0]
     },
     users : [],
+    usersGeles : [],
     adminBankInfos : {},
     validatorsBankInfos : []
 };

@@ -8,6 +8,9 @@ export default {
     setUsers(state, payload){
         state.users = payload;
     },
+    setUsersGeles(state, payload){
+        state.usersGeles = payload;
+    },
     setAdminBankInfo(state, payload){
         state.adminBankInfos = payload;
     },

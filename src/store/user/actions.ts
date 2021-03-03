@@ -119,6 +119,19 @@ export default {
                 })
         })
     },
+    usersGeles(ctx){
+        return new Promise((resolve, reject) => {
+            axios
+                .get('usersGeles')
+                .then(response => {
+                    ctx.commit('setUsersGeles', response.data);
+                    resolve(response);
+                })
+                .catch((error)=>{
+                    reject(error);
+                })
+        })
+    },
     adminBankInfos(ctx){
         return new Promise((resolve, reject) => {
             axios
@@ -146,5 +159,32 @@ export default {
                 })
         })
     },
+    updateInfos(ctx, payload){
+        console.log("update infos => ",payload)
+        return new Promise((resolve, reject) => {
+            axios
+                .post('updateInfos', payload)
+                .then(response => {
+                    resolve(response);
+                })
+                .catch((error)=>{
+                    reject(error);
+                })
+        })
+    },
+    updatePwd(ctx, payload){
+        console.log("update pwd => ",payload)
+    return new Promise((resolve, reject) => {
+        axios
+            .post(`updatePwd/${payload.id}`,payload)
+            .then(response => {
+                resolve(response);
+                console.log(response)
+            })
+            .catch((error)=>{
+                reject(error);
+            })
+    })
+    }
 
 }

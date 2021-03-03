@@ -8,6 +8,9 @@ export default {
     users(state){
         return state.users;
     },
+    usersGeles(state){
+        return state.usersGeles;
+    },
     adminBankInfos(state){
         return state.adminBankInfos;
     },
