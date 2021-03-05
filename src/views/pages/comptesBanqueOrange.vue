@@ -78,7 +78,7 @@
               <div class="collapse" id="sousmenuAdmin" aria-expanded="false">
                 <ul class="flex-column pl-2 nav">
                   <li class="nav-item" v-if="userInfos.roles[0].slug==='managerOMCI'">
-                    <a class="nav-link" href="validateursBanque">
+                    <a class="nav-link" href="validateursOM">
                       <i class="material-icons">done_all</i>
                       <p>Validateurs</p>
                     </a>
@@ -398,6 +398,11 @@
                       </v-dialog>
                     </v-toolbar>
                   </template>
+                  <template v-slot:item.visible="{ item }">
+                      
+                        {{ item.visible ? "Oui" : "Non" }}
+                      
+                  </template>
                   <template v-slot:item.actions="{ item }">
                     <v-icon
                       small
@@ -444,7 +449,7 @@ export default {
         },
         { text: 'Banque', value: 'bank.nom' },
         { text: 'Description', value: 'description' },
-        //{ text: 'Date', value: 'created_at' },
+        { text: 'Visible', value: 'visible' },
         { text: 'Actions', value: 'actions', sortable: false },
       ],
       rib: {},
