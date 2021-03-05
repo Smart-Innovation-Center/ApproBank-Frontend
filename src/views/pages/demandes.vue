@@ -902,7 +902,7 @@ export default {
         ribexp: null,
         ribbenef: null
       },
-      index: 1,
+      index: 0,
       supplySansB: {},
       supplySansBforV: {},
       supplyAvecB: {},
@@ -971,7 +971,7 @@ export default {
     viewSupplySans(index) {
       
       //this.index = this.supply
-      this.viewSupplySansItem = this.suppliesSansB.[index];
+      this.viewSupplySansItem = this.suppliesSansB[index];
       //console.log(this.viewSupplySansItem);
       this.viewSupplySansItem.firstname = this.viewSupplySansItem.user.firstname
       this.viewSupplySansItem.lastname = this.viewSupplySansItem.user.lastname
@@ -982,7 +982,7 @@ export default {
     viewSupplyAvec(index) {
       
       //this.index = this.supply
-      this.viewSupplyAvecItem = this.suppliesAvecB.[index];
+      this.viewSupplyAvecItem = this.suppliesAvecB[index];
       console.log(this.viewSupplyAvecItem);
       this.viewSupplyAvecItem.firstname = this.viewSupplyAvecItem.user.firstname
       this.viewSupplyAvecItem.lastname = this.viewSupplyAvecItem.user.lastname
@@ -992,7 +992,7 @@ export default {
     },
     approSupplyAvec(index) {
       //this.index = this.supply
-      this.approSupplyAvecItem = this.suppliesAvecB.[index];
+      this.approSupplyAvecItem = this.suppliesAvecB[index];
       console.log(this.approSupplyAvecItem);
       this.approSupplyAvecItem.firstname = this.approSupplyAvecItem.user.firstname
       this.approSupplyAvecItem.lastname = this.approSupplyAvecItem.user.lastname
@@ -1002,7 +1002,7 @@ export default {
     },
     rejSupplyAvec(index) {
       //this.index = this.supply
-      this.rejSupplyAvecItem = this.suppliesAvecB.[index];
+      this.rejSupplyAvecItem = this.suppliesAvecB[index];
       //console.log(this.rejSupplyAvecItem);
       this.rejSupplyAvecItem.firstname = this.rejSupplyAvecItem.user.firstname
       this.rejSupplyAvecItem.lastname = this.rejSupplyAvecItem.user.lastname
@@ -1012,7 +1012,7 @@ export default {
     },
     approSupplySans(index) {
       //this.index = this.supply
-      this.approSupplySansItem = this.suppliesSansB.[index];
+      this.approSupplySansItem = this.suppliesSansB[index];
       //console.log(this.approSupplySansItem);
       this.approSupplySansItem.firstname = this.approSupplySansItem.user.firstname
       this.approSupplySansItem.lastname = this.approSupplySansItem.user.lastname
@@ -1022,7 +1022,7 @@ export default {
     },
     rejSupplySans(index) {
       //this.index = this.supply
-      this.rejSupplySansItem = this.suppliesSansB.[index];
+      this.rejSupplySansItem = this.suppliesSansB[index];
       //console.log(this.rejSupplySansItem);
       this.rejSupplySansItem.firstname = this.rejSupplySansItem.user.firstname
       this.rejSupplySansItem.lastname = this.rejSupplySansItem.user.lastname

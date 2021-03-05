@@ -1,0 +1,221 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="icon" href="/favicon.ico"><title>Approbank</title><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@mdi/font@latest/css/materialdesignicons.min.css"><link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Roboto+Slab:400,700|Material+Icons"><link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css"><link href="assets/css/material-dashboard.css?v=2.1.2" rel="stylesheet"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.7.14/css/bootstrap-datetimepicker.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/css/bootstrap-select.min.css"><link href="/css/demandes.5c180981.css" rel="prefetch"><link href="/css/demandes~forgotPassword~login~otp~profile~register~resetPassword~roles~supply~utilisateurs.1bbdaac2.css" rel="prefetch"><link href="/css/demandes~forgotPassword~login~profile~register~resetPassword~roles~supply~utilisateurs.5dcb0138.css" rel="prefetch"><link href="/css/demandes~profile~roles~supply~utilisateurs.5449a959.css" rel="prefetch"><link href="/css/demandes~profile~roles~utilisateurs.177b0972.css" rel="prefetch"><link href="/css/forgotPassword.aa35bca3.css" rel="prefetch"><link href="/css/login.aa35bca3.css" rel="prefetch"><link href="/css/notifications.62b4c914.css" rel="prefetch"><link href="/css/otp.4eb8cd73.css" rel="prefetch"><link href="/css/register.aa35bca3.css" rel="prefetch"><link href="/css/resetPassword.aa35bca3.css" rel="prefetch"><link href="/css/supply.76a811a3.css" rel="prefetch"><link href="/css/utilisateurs.9357cc44.css" rel="prefetch"><link href="/js/dashboard.5bceb83b.js" rel="prefetch"><link href="/js/demandes.2c64f93e.js" rel="prefetch"><link href="/js/demandes~forgotPassword~login~otp~profile~register~resetPassword~roles~supply~utilisateurs.9ce1555e.js" rel="prefetch"><link href="/js/demandes~forgotPassword~login~profile~register~resetPassword~roles~supply~utilisateurs.88d2c2f8.js" rel="prefetch"><link href="/js/demandes~profile~roles~supply~utilisateurs.f1be0034.js" rel="prefetch"><link href="/js/demandes~profile~roles~utilisateurs.c64594ae.js" rel="prefetch"><link href="/js/forgotPassword.4f6eadf3.js" rel="prefetch"><link href="/js/listeDemandes.32c60dfd.js" rel="prefetch"><link href="/js/login.46a4efca.js" rel="prefetch"><link href="/js/notifications.a63c6c95.js" rel="prefetch"><link href="/js/otp.b32b080f.js" rel="prefetch"><link href="/js/profile.5f79b62a.js" rel="prefetch"><link href="/js/register.5a1880d0.js" rel="prefetch"><link href="/js/resetPassword.93e257c5.js" rel="prefetch"><link href="/js/roles.8d3af17f.js" rel="prefetch"><link href="/js/statsDemandes.f0c95d39.js" rel="prefetch"><link href="/js/supply.24a31752.js" rel="prefetch"><link href="/js/utilisateurs.d652a319.js" rel="prefetch"><link href="/css/app.92f0ba29.css" rel="preload" as="style"><link href="/css/chunk-vendors.eb19a2a4.css" rel="preload" as="style"><link href="/js/app.8ed927a0.js" rel="preload" as="script"><link href="/js/chunk-vendors.285f96e4.js" rel="preload" as="script"><link href="/css/chunk-vendors.eb19a2a4.css" rel="stylesheet"><link href="/css/app.92f0ba29.css" rel="stylesheet"></head><body><noscript><strong>We're sorry but Approbank doesn't work properly without JavaScript enabled. Please enable it to continue.</strong></noscript><div id="app"></div><script src="/js/chunk-vendors.285f96e4.js"></script><script src="/js/app.8ed927a0.js"></script></body><script src="assets/js/core/jquery.min.js"></script><script src="assets/js/core/popper.min.js"></script><script src="assets/js/core/bootstrap-material-design.min.js"></script><script src="assets/js/plugins/perfect-scrollbar.jquery.min.js"></script><script src="assets/js/plugins/moment.min.js"></script><script src="assets/js/plugins/sweetalert2.js"></script><script src="assets/js/plugins/jquery.validate.min.js"></script><script src="assets/js/plugins/jquery.bootstrap-wizard.js"></script><script src="assets/js/plugins/bootstrap-selectpicker.js"></script><script src="assets/js/plugins/bootstrap-datetimepicker.min.js"></script><script src="assets/js/plugins/jquery.dataTables.min.js"></script><script src="assets/js/plugins/bootstrap-tagsinput.js"></script><script src="assets/js/plugins/jasny-bootstrap.min.js"></script><script src="assets/js/plugins/fullcalendar.min.js"></script><script src="assets/js/plugins/jquery-jvectormap.js"></script><script src="assets/js/plugins/nouislider.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/core-js/2.4.1/core.js"></script><script src="assets/js/plugins/arrive.min.js"></script><script src="assets/js/plugins/chartist.min.js"></script><script src="assets/js/plugins/bootstrap-notify.js"></script><script src="assets/js/material-dashboard.js?v=2.1.2"></script><script>$(document).ready(function() {
+      $().ready(function() {
+        $sidebar = $('.sidebar');
+
+        $sidebar_img_container = $sidebar.find('.sidebar-background');
+
+        $full_page = $('.full-page');
+
+        $sidebar_responsive = $('body > .navbar-collapse');
+
+        window_width = $(window).width();
+
+        fixed_plugin_open = $('.sidebar .sidebar-wrapper .nav li.active a p').html();
+
+        if (window_width > 767 && fixed_plugin_open == 'Dashboard') {
+          if ($('.fixed-plugin .dropdown').hasClass('show-dropdown')) {
+            $('.fixed-plugin .dropdown').addClass('open');
+          }
+
+        }
+
+        $('.fixed-plugin a').click(function(event) {
+          // Alex if we click on switch, stop propagation of the event, so the dropdown will not be hide, otherwise we set the  section active
+          if ($(this).hasClass('switch-trigger')) {
+            if (event.stopPropagation) {
+              event.stopPropagation();
+            } else if (window.event) {
+              window.event.cancelBubble = true;
+            }
+          }
+        });
+
+        $('.fixed-plugin .active-color span').click(function() {
+          $full_page_background = $('.full-page-background');
+
+          $(this).siblings().removeClass('active');
+          $(this).addClass('active');
+
+          var new_color = $(this).data('color');
+
+          if ($sidebar.length != 0) {
+            $sidebar.attr('data-color', new_color);
+          }
+
+          if ($full_page.length != 0) {
+            $full_page.attr('filter-color', new_color);
+          }
+
+          if ($sidebar_responsive.length != 0) {
+            $sidebar_responsive.attr('data-color', new_color);
+          }
+        });
+
+        $('.fixed-plugin .background-color .badge').click(function() {
+          $(this).siblings().removeClass('active');
+          $(this).addClass('active');
+
+          var new_color = $(this).data('background-color');
+
+          if ($sidebar.length != 0) {
+            $sidebar.attr('data-background-color', new_color);
+          }
+        });
+
+        $('.fixed-plugin .img-holder').click(function() {
+          $full_page_background = $('.full-page-background');
+
+          $(this).parent('li').siblings().removeClass('active');
+          $(this).parent('li').addClass('active');
+
+
+          var new_image = $(this).find("img").attr('src');
+
+          if ($sidebar_img_container.length != 0 && $('.switch-sidebar-image input:checked').length != 0) {
+            $sidebar_img_container.fadeOut('fast', function() {
+              $sidebar_img_container.css('background-image', 'url("' + new_image + '")');
+              $sidebar_img_container.fadeIn('fast');
+            });
+          }
+
+          if ($full_page_background.length != 0 && $('.switch-sidebar-image input:checked').length != 0) {
+            var new_image_full_page = $('.fixed-plugin li.active .img-holder').find('img').data('src');
+
+            $full_page_background.fadeOut('fast', function() {
+              $full_page_background.css('background-image', 'url("' + new_image_full_page + '")');
+              $full_page_background.fadeIn('fast');
+            });
+          }
+
+          if ($('.switch-sidebar-image input:checked').length == 0) {
+            var new_image = $('.fixed-plugin li.active .img-holder').find("img").attr('src');
+            var new_image_full_page = $('.fixed-plugin li.active .img-holder').find('img').data('src');
+
+            $sidebar_img_container.css('background-image', 'url("' + new_image + '")');
+            $full_page_background.css('background-image', 'url("' + new_image_full_page + '")');
+          }
+
+          if ($sidebar_responsive.length != 0) {
+            $sidebar_responsive.css('background-image', 'url("' + new_image + '")');
+          }
+        });
+
+        $('.switch-sidebar-image input').change(function() {
+          $full_page_background = $('.full-page-background');
+
+          $input = $(this);
+
+          if ($input.is(':checked')) {
+            if ($sidebar_img_container.length != 0) {
+              $sidebar_img_container.fadeIn('fast');
+              $sidebar.attr('data-image', '#');
+            }
+
+            if ($full_page_background.length != 0) {
+              $full_page_background.fadeIn('fast');
+              $full_page.attr('data-image', '#');
+            }
+
+            background_image = true;
+          } else {
+            if ($sidebar_img_container.length != 0) {
+              $sidebar.removeAttr('data-image');
+              $sidebar_img_container.fadeOut('fast');
+            }
+
+            if ($full_page_background.length != 0) {
+              $full_page.removeAttr('data-image', '#');
+              $full_page_background.fadeOut('fast');
+            }
+
+            background_image = false;
+          }
+        });
+
+        $('.switch-sidebar-mini input').change(function() {
+          $body = $('body');
+
+          $input = $(this);
+
+          if (md.misc.sidebar_mini_active == true) {
+            $('body').removeClass('sidebar-mini');
+            md.misc.sidebar_mini_active = false;
+
+            $('.sidebar .sidebar-wrapper, .main-panel').perfectScrollbar();
+
+          } else {
+
+            $('.sidebar .sidebar-wrapper, .main-panel').perfectScrollbar('destroy');
+
+            setTimeout(function() {
+              $('body').addClass('sidebar-mini');
+
+              md.misc.sidebar_mini_active = true;
+            }, 300);
+          }
+
+          // we simulate the window Resize so the charts will get updated in realtime.
+          var simulateWindowResize = setInterval(function() {
+            window.dispatchEvent(new Event('resize'));
+          }, 180);
+
+          // we stop the simulation of Window Resize after the animations are completed
+          setTimeout(function() {
+            clearInterval(simulateWindowResize);
+          }, 1000);
+
+        });
+      });
+      $(".datetimepicker").datetimepicker({
+        format: "DD/MM/Y",
+  icons: {
+    time: "fa fa-clock-o",
+    date: "fa fa-calendar",
+    up: "fa fa-chevron-up",
+    down: "fa fa-chevron-down",
+    previous: "fa fa-chevron-left",
+    next: "fa fa-chevron-right",
+    today: "fa fa-screenshot",
+    clear: "fa fa-trash",
+    close: "fa fa-remove"
+  }
+});
+    });
+    // FileInput
+  $('.form-file-simple .inputFileVisible').click(function() {
+    $(this).siblings('.inputFileHidden').trigger('click');
+  });
+
+  $('.form-file-simple .inputFileHidden').change(function() {
+    var filename = $(this).val().replace(/C:\\fakepath\\/i, '');
+    $(this).siblings('.inputFileVisible').val(filename);
+  });
+
+  $('.form-file-multiple .inputFileVisible, .form-file-multiple .input-group-btn').click(function() {
+    $(this).parent().parent().find('.inputFileHidden').trigger('click');
+    $(this).parent().parent().addClass('is-focused');
+  });
+
+  $('.form-file-multiple .inputFileHidden').change(function() {
+    var names = '';
+    for (var i = 0; i < $(this).get(0).files.length; ++i) {
+      if (i < $(this).get(0).files.length - 1) {
+        names += $(this).get(0).files.item(i).name + ',';
+      } else {
+        names += $(this).get(0).files.item(i).name;
+      }
+    }
+    $(this).siblings('.input-group').find('.inputFileVisible').val(names);
+  });
+
+  $('.form-file-multiple .btn').on('focus', function() {
+    $(this).parent().siblings().trigger('focus');
+  });
+
+  $('.form-file-multiple .btn').on('focusout', function() {
+    $(this).parent().siblings().trigger('focusout');
+  });</script><script>$(document).ready(function() {
+      // Javascript method's body can be found in assets/js/demos.js
+      md.initDashboardPageCharts();
+
+    });</script></html>
