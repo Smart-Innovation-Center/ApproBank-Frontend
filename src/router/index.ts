@@ -114,6 +114,15 @@ Vue.use(VueRouter)
     }
   },
   {
+    path: '/validateursOM',
+    name: 'validateursOM',
+    component: () => import(/* webpackChunkName: "demandes" */ '../views/pages/validateursOM.vue'),
+    meta: {
+      middleware: [Middlewares.auth],
+      title: 'Validateurs OM'
+    }
+  },
+  {
     path: '/validateursBanque',
     name: 'validateursBanque',
     component: () => import(/* webpackChunkName: "demandes" */ '../views/pages/validateursBanque.vue'),

@@ -10,6 +10,7 @@ import bank from "./bank/index";
 import rib from "./rib/index";
 import supply from "./supply/index";
 import validatorBank from "./validatorBank/index";
+import validatorOM from "./validatorOM/index";
 
 Vue.use(Vuex);
 
@@ -25,6 +26,7 @@ export default new Vuex.Store({
     bank,
     rib,
     supply,
-    validatorBank
+    validatorBank,
+    validatorOM
   }
 });
