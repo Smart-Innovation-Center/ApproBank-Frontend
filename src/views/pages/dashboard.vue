@@ -84,7 +84,7 @@
                     </a>
                   </li>
                   <li class="nav-item" v-if="userInfos.roles[0].slug==='managerOMCI'">
-                    <a class="nav-link" href="validateursBanque">
+                    <a class="nav-link" href="validateursOM">
                       <i class="material-icons">done_all</i>
                       <p>Validateurs</p>
                     </a>
