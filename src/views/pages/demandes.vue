@@ -9,19 +9,19 @@
         <div class="sidebar-wrapper">
           <ul class="nav text-left">
             <li class="nav-item">
-              <a class="nav-link" href="dashboard">
+              <router-link  href="dashboard">
                 <i class="material-icons">dashboard</i>
                 <p>Tableau de Bord</p>
               </a>
             </li>
             <li class="nav-item ">
-              <a class="nav-link" href="profile">
+              <router-link  href="profile">
                 <i class="material-icons">person</i>
                 <p>Profil</p>
               </a>
             </li>
             <li class="nav-item" v-if="userInfos.roles[0].slug==='structureOM'">
-              <a class="nav-link" href="mesAgences">
+              <router-link  href="mesAgences">
                 <i class="material-icons">store_mall_directory</i>
                 <p>Mes Agences</p>
               </a>
@@ -39,19 +39,19 @@
                     <div class="collapse" id="sousmen" aria-expanded="false">
                       <ul class="flex-column pl-2 nav">
                        <li class="nav-item" v-if="userInfos.roles[0].slug==='structureOM'">
-                          <a class="nav-link" href="supply">
+                          <router-link  href="supply">
                             <i class="material-icons">add_circle</i>
                             <p>Nouvelle Demande</p>
                           </a>
                         </li>
                       <li class="nav-item active" v-if="userInfos.roles[0].slug==='adminBanque' || userInfos.roles[0].slug==='validatorBanque' || userInfos.roles[0].slug==='validatorOMCI'">
-                          <a class="nav-link" href="demandes">
+                          <router-link  href="demandes">
                             <i class="material-icons">schedule</i>
                             <p>Demandes en attente</p>
                           </a>
                         </li>
                         <li class="nav-item">
-                          <a class="nav-link" href="listeDemandes">
+                          <router-link  href="listeDemandes">
                             <i class="material-icons">rule</i>
                             <p>Liste des demandes</p>
                           </a>
@@ -60,7 +60,7 @@
                     </div>
                   </li>
             <li class="nav-item" v-if="userInfos.roles[0].slug!=='superAdmin' && userInfos.roles[0].slug!=='supervisor'">
-              <a class="nav-link" href="notifications">
+              <router-link  href="notifications">
                 <i class="material-icons">notifications</i>
                 <p>Notifications</p>
               </a>
@@ -78,7 +78,7 @@
               <div class="collapse" id="sousmenuAdmin" aria-expanded="false">
                 <ul class="flex-column pl-2 nav">
                   <li class="nav-item" v-if="userInfos.roles[0].slug==='managerOMCI'">
-                    <a class="nav-link" href="validateursOM">
+                    <router-link  href="validateursOM">
                       <i class="material-icons">done_all</i>
                       <p>Validateurs</p>
                     </a>
@@ -96,13 +96,13 @@
               <div class="collapse" id="sousmenuStructure" aria-expanded="false">
                 <ul class="flex-column pl-2 nav">
                   <li class="nav-item">
-                    <a class="nav-link" href="#">
+                    <router-link  href="#">
                       <i class="material-icons">palette</i>
                       <p>Liste des Structures</p>
                     </a>
                   </li>
                   <li class="nav-item">
-                    <a class="nav-link" href="#">
+                    <router-link  href="#">
                       <i class="material-icons">palette</i>
                       <p>Liste des Agences</p>
                     </a>
@@ -111,7 +111,7 @@
               </div>
             </li>
             <li class="nav-item" v-if="userInfos.roles[0].slug==='validatorOMCI'">
-                    <a class="nav-link" href="comptesBanqueOrange">
+                    <router-link  href="comptesBanqueOrange">
                       <i class="material-icons">account_balance</i>
                       <p>Comptes Banque Orange</p>
                     </a>
@@ -132,25 +132,25 @@
               <div class="collapse" id="sousmenu" aria-expanded="false">
                 <ul class="flex-column pl-2 nav">
                 <li class="nav-item" v-if="userInfos.roles[0].slug==='superAdmin'">
-                    <a class="nav-link" href="#">
+                    <router-link  href="#">
                       <i class="material-icons">info_outline</i>
                       <p>Approbank</p>
                     </a>
                   </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">
+                    <router-link  href="#">
                       <i class="material-icons">palette</i>
                       <p>Affichage</p>
                     </a>
                   </li>
                   <li class="nav-item" v-if="userInfos.roles[0].slug==='superAdmin'">
-                    <a class="nav-link" href="roles">
+                    <router-link  href="roles">
                       <i class="material-icons">safety_divider</i>
                       <p>Gestion des Rôles</p>
                     </a>
                   </li>
                   <li class="nav-item" v-if="userInfos.roles[0].slug==='superAdmin'">
-                    <a class="nav-link" href="#">
+                    <router-link  href="#">
                       <i class="material-icons">lock</i>
                       <p>Gestion des Permissions</p>
                     </a>
@@ -160,13 +160,13 @@
             </li>
             <hr class="bg-orange"/>
             <li class="nav-item">
-              <a class="nav-link" href="#">
+              <router-link  href="#">
                 <i class="material-icons">menu_book</i>
                 <p>Documentation</p>
               </a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="#">
+              <router-link  href="#">
                 <i class="material-icons">support_agent</i>
                 <p>Service Support</p>
               </a>
@@ -201,7 +201,7 @@
             <div class="collapse navbar-collapse justify-content-end">
               <ul class="navbar-nav">
                 <li class="nav-item">
-                  <a class="nav-link" href="javascript:;">
+                  <router-link  href="javascript:;">
                     <i class="material-icons">dashboard</i>
                     <p class="d-lg-none d-md-block">
                       Tableau de bord

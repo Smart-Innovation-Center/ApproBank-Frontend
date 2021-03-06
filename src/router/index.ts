@@ -183,7 +183,7 @@ const router = new VueRouter({
   base: process.env.BASE_URL,
   routes
 })
-
+  
 function nextCheck(context, middleware, index){
   const nextMiddleware = middleware[index];
   if (!nextMiddleware) return context.next;
