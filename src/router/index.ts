@@ -132,6 +132,24 @@ Vue.use(VueRouter)
     }
   },
   {
+    path: '/structures',
+    name: 'structures',
+    component: () => import(/* webpackChunkName: "demandes" */ '../views/pages/structures.vue'),
+    meta: {
+      middleware: [Middlewares.auth],
+      title: 'Structures'
+    }
+  },
+  {
+    path: '/agences',
+    name: 'agences',
+    component: () => import(/* webpackChunkName: "demandes" */ '../views/pages/agences.vue'),
+    meta: {
+      middleware: [Middlewares.auth],
+      title: 'agences'
+    }
+  },
+  {
     path: '/notifications',
     name: 'notifications',
     component: () => import(/* webpackChunkName: "notifications" */ '../views/pages/notifications.vue'),

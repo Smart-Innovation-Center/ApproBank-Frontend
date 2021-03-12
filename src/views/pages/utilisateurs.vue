@@ -102,16 +102,16 @@
               <div class="collapse" id="sousmenuStructure" aria-expanded="false">
                 <ul class="flex-column pl-2 nav">
                   <li class="nav-item">
-                    <a class="nav-link" href="#">
+                    <router-link class="nav-link" to="structures">
                       <i class="material-icons">palette</i>
                       <p>Liste des Structures</p>
-                    </a>
+                    </router-link>
                   </li>
                   <li class="nav-item">
-                    <a class="nav-link" href="#">
+                    <router-link class="nav-link" to="agences">
                       <i class="material-icons">palette</i>
                       <p>Liste des Agences</p>
-                    </a>
+                    </router-link>
                   </li>
                 </ul>
               </div>

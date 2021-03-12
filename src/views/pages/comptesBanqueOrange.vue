@@ -3,173 +3,173 @@
     <div class="wrapper ">
       <div class="sidebar" data-color="orange" data-background-color="black">
         <div class="logo text-center">
-          <a href="../"><h2 class="text-light text-uppercase">Approbank</h2></a>
+          <router-link to="../"><h2 class="text-light text-uppercase">Approbank</h2></router-link>
           <span class="text-orange text-uppercase">{{ userInfos.roles[0].name }}</span>
         </div>
         <div class="sidebar-wrapper">
           <ul class="nav text-left">
             <li class="nav-item">
-              <a class="nav-link" href="dashboard">
+              <router-link class="nav-link" to="dashboard">
                 <i class="material-icons">dashboard</i>
                 <p>Tableau de Bord</p>
-              </a>
+              </router-link>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="profile">
+              <router-link class="nav-link" to="profile">
                 <i class="material-icons">person</i>
                 <p>Profil</p>
-              </a>
+              </router-link>
             </li>
             <li class="nav-item" v-if="userInfos.roles[0].slug==='structureOM'">
-              <a class="nav-link" href="mesAgences">
+              <router-link class="nav-link" to="mesAgences">
                 <i class="material-icons">store_mall_directory</i>
                 <p>Mes Agences</p>
-              </a>
+              </router-link>
             </li>
             <li class="nav-item">
-                    <a
+                    <router-link
                   f    class="nav-link collapsed text-truncate"
-                      href="#sousmen"
+                      to="#sousmen"
                       data-toggle="collapse"
                       data-target="#sousmen"
                     >
                       <i class="material-icons">account_balance_wallet</i>
                       <p>Approvisionnements</p>
-                    </a>
+                    </router-link>
                     <div class="collapse" id="sousmen" aria-expanded="false">
                       <ul class="flex-column pl-2 nav">
                        <li class="nav-item" v-if="userInfos.roles[0].slug==='structureOM'">
-                          <a class="nav-link" href="supply">
+                          <router-link class="nav-link" to="supply">
                             <i class="material-icons">add_circle</i>
                             <p>Nouvelle Demande</p>
-                          </a>
+                          </router-link>
                         </li>
                       <li class="nav-item" v-if="userInfos.roles[0].slug==='adminBanque' || userInfos.roles[0].slug==='validatorBanque' || userInfos.roles[0].slug==='validatorOMCI'">
-                          <a class="nav-link" href="demandes">
+                          <router-link class="nav-link" to="demandes">
                             <i class="material-icons">schedule</i>
                             <p>Demandes en attente</p>
-                          </a>
+                          </router-link>
                         </li>
                         <li class="nav-item">
-                          <a class="nav-link" href="listeDemandes">
+                          <router-link class="nav-link" to="listeDemandes">
                             <i class="material-icons">rule</i>
                             <p>Liste des demandes</p>
-                          </a>
+                          </router-link>
                         </li>
                       </ul>
                     </div>
                   </li>
             <li class="nav-item" v-if="userInfos.roles[0].slug!=='superAdmin' && userInfos.roles[0].slug!=='supervisor'">
-              <a class="nav-link" href="notifications">
+              <router-link class="nav-link" to="notifications">
                 <i class="material-icons">notifications</i>
                 <p>Notifications</p>
-              </a>
+              </router-link>
             </li>
             <li class="nav-item active" v-if="userInfos.roles[0].slug==='superAdmin' || userInfos.roles[0].slug==='validatorOMCI' || userInfos.roles[0].slug==='managerOMCI'">
-              <a
+              <router-link
                 class="nav-link collapsed text-truncate"
-                href="#sousmenuAdmin"
+                to="#sousmenuAdmin"
                 data-toggle="collapse"
                 data-target="#sousmenuAdmin"
               >
                 <i class="material-icons">visibility</i>
                 <p>Administration</p>
-              </a>
+              </router-link>
               <div class="collapse" id="sousmenuAdmin" aria-expanded="false">
                 <ul class="flex-column pl-2 nav">
                   <li class="nav-item" v-if="userInfos.roles[0].slug==='managerOMCI'">
-                    <a class="nav-link" href="validateursOM">
+                    <router-link class="nav-link" to="validateursOM">
                       <i class="material-icons">done_all</i>
                       <p>Validateurs</p>
-                    </a>
+                    </router-link>
                   </li>
-                  <li class="nav-item" v-if="userInfos.roles[0].slug==='validatorOMCI' || userInfos.roles[0].slug==='managerOMCI'">
-              <a
+                  <li class="nav-item active" v-if="userInfos.roles[0].slug==='validatorOMCI' || userInfos.roles[0].slug==='managerOMCI'">
+              <router-link
                 class="nav-link collapsed text-truncate"
-                href="#sousmenuStructure"
+                to="#sousmenuStructure"
                 data-toggle="collapse"
                 data-target="#sousmenuStructure"
               >
                 <i class="material-icons">home</i>
                 <p>Gestion des Structures</p>
-              </a>
+              </router-link>
               <div class="collapse" id="sousmenuStructure" aria-expanded="false">
                 <ul class="flex-column pl-2 nav">
                   <li class="nav-item">
-                    <a class="nav-link" href="#">
+                    <router-link class="nav-link" to="structures">
                       <i class="material-icons">palette</i>
                       <p>Liste des Structures</p>
-                    </a>
+                    </router-link>
                   </li>
                   <li class="nav-item">
-                    <a class="nav-link" href="#">
+                    <router-link class="nav-link" to="agences">
                       <i class="material-icons">palette</i>
                       <p>Liste des Agences</p>
-                    </a>
+                    </router-link>
                   </li>
                 </ul>
               </div>
             </li>
             <li class="nav-item active" v-if="userInfos.roles[0].slug==='validatorOMCI' || userInfos.roles[0].slug==='managerOMCI'">
-                    <a class="nav-link" href="comptesBanqueOrange">
+                    <router-link class="nav-link" to="comptesBanqueOrange">
                       <i class="material-icons">account_balance</i>
                       <p>Comptes Banque Orange</p>
-                    </a>
+                    </router-link>
                   </li>
                 </ul>
               </div>
             </li>
             <li class="nav-item">
-              <a
+              <router-link
                 class="nav-link collapsed text-truncate"
-                href="#sousmenu"
+                to="#sousmenu"
                 data-toggle="collapse"
                 data-target="#sousmenu"
               >
                 <i class="material-icons">settings</i>
                 <p>Paramètres</p>
-              </a>
+              </router-link>
               <div class="collapse" id="sousmenu" aria-expanded="false">
                 <ul class="flex-column pl-2 nav">
                 <li class="nav-item" v-if="userInfos.roles[0].slug==='superAdmin'">
-                    <a class="nav-link" href="#">
+                    <router-link class="nav-link" to="#">
                       <i class="material-icons">info_outline</i>
                       <p>Approbank</p>
-                    </a>
+                    </router-link>
                   </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">
+                    <router-link class="nav-link" to="#">
                       <i class="material-icons">palette</i>
                       <p>Affichage</p>
-                    </a>
+                    </router-link>
                   </li>
                   <li class="nav-item" v-if="userInfos.roles[0].slug==='superAdmin'">
-                    <a class="nav-link" href="roles">
+                    <router-link class="nav-link" to="roles">
                       <i class="material-icons">safety_divider</i>
                       <p>Gestion des Rôles</p>
-                    </a>
+                    </router-link>
                   </li>
                   <li class="nav-item" v-if="userInfos.roles[0].slug==='superAdmin'">
-                    <a class="nav-link" href="#">
+                    <router-link class="nav-link" to="#">
                       <i class="material-icons">lock</i>
                       <p>Gestion des Permissions</p>
-                    </a>
+                    </router-link>
                   </li>
                 </ul>
               </div>
             </li>
             <hr class="bg-orange"/>
             <li class="nav-item">
-              <a class="nav-link" href="#">
+              <router-link class="nav-link" to="#">
                 <i class="material-icons">menu_book</i>
                 <p>Documentation</p>
-              </a>
+              </router-link>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="#">
+              <router-link class="nav-link" to="#">
                 <i class="material-icons">support_agent</i>
                 <p>Service Support</p>
-              </a>
+              </router-link>
             </li>
           </ul>
         </div>
@@ -181,7 +181,7 @@
         >
           <div class="container-fluid">
             <div class="navbar-wrapper">
-              <a class="navbar-brand" href="javascript:;">Comptes Banque Orange</a>
+              <a class="navbar-brand" href="javascript:;">Comptes Banque Orange Money CI</a>
             </div>
             <button
               class="navbar-toggler"
@@ -399,9 +399,7 @@
                     </v-toolbar>
                   </template>
                   <template v-slot:item.visible="{ item }">
-                      
-                        {{ item.visible ? "Oui" : "Non" }}
-                      
+                    {{ item.visible ? "Oui" : "Non" }}
                   </template>
                   <template v-slot:item.actions="{ item }">
                     <v-icon
@@ -426,7 +424,6 @@
               </div>
             </div>
             </div>
-          </div>
         </div>
       </div>
     </div>
@@ -566,45 +563,7 @@ export default {
         this.$router.push({ name: "login" });
       });
     },
-    // addNewRib() {
-    //   if (this.$refs.addRibForm.validate()) {
-    //     this.newRib.userID = this.$store.state.user.userInfos.id;
-    //     this.newRib.bankID = this.newRib.bankID.id;
-    //     this.ribAd(this.newRib)
-    //       .then(() => {
-    //         this.addNotification({
-    //           show: true,
-    //           text1: "Rib ajouté avec succès :",
-    //           text2: "Vous pouvez effectuer une transaction !"
-    //         }).then(() => {
-    //           this.$store.dispatch("rib/loadRibs");
-    //           // eslint-disable-next-line no-undef
-    //           $("#addRIBModal").modal("hide");
-    //         });
-    //       })
-    //       .catch(() => {
-    //         this.addNotification({
-    //           show: true,
-    //           text1: "Echec de l'ajout du RIB :",
-    //           text2: "Veuillez vérifier les informations fournies !"
-    //         });
-    //       });
-    //   }
-    // },
-    // editRib() {
-    //   // eslint-disable-next-line no-undef
-    //   $("#editRIBModal").modal("show");
-    // },
-    // updateRib() {
-    //   console.log("update RIB");
-    // }
   },
-  vide() {
-        $("#approModal").hide();
-        $('body').removeClass('modal-open');
-        $('.modal-backdrop').remove();
-        $("#table tr").remove(); 
-    },
   mounted() {
     this.$store.dispatch("bank/loadBanks");
     this.$store.dispatch("rib/loadRibs");

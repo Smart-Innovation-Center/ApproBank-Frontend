@@ -11,6 +11,7 @@ import rib from "./rib/index";
 import supply from "./supply/index";
 import validatorBank from "./validatorBank/index";
 import validatorOM from "./validatorOM/index";
+import structure from "./structure/index";
 
 Vue.use(Vuex);
 
@@ -27,6 +28,7 @@ export default new Vuex.Store({
     rib,
     supply,
     validatorBank,
-    validatorOM
+    validatorOM,
+    structure
   }
 });

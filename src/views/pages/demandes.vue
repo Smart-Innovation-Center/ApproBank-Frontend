@@ -27,7 +27,7 @@
               </router-link>
             </li>
             <li class="nav-item active">
-                    <a
+                    <router-link
                       class="nav-link collapsed text-truncate"
                       to="#sousmen"
                       data-toggle="collapse"
@@ -66,7 +66,7 @@
               </router-link>
             </li>
             <li class="nav-item" v-if="userInfos.roles[0].slug==='superAdmin' || userInfos.roles[0].slug==='validatorOMCI'">
-              <a
+              <router-link
                 class="nav-link collapsed text-truncate"
                 to="#sousmenuAdmin"
                 data-toggle="collapse"
@@ -84,7 +84,7 @@
                     </router-link>
                   </li>
                   <li class="nav-item" v-if="userInfos.roles[0].slug==='validatorOMCI' || userInfos.roles[0].slug==='managerOMCI'">
-              <a
+              <router-link
                 class="nav-link collapsed text-truncate"
                 to="#sousmenuStructure"
                 data-toggle="collapse"
@@ -96,13 +96,13 @@
               <div class="collapse" id="sousmenuStructure" aria-expanded="false">
                 <ul class="flex-column pl-2 nav">
                   <li class="nav-item">
-                    <router-link  to="#">
+                    <router-link class="nav-link" to="structures">
                       <i class="material-icons">palette</i>
                       <p>Liste des Structures</p>
                     </router-link>
                   </li>
                   <li class="nav-item">
-                    <router-link  to="#">
+                    <router-link class="nav-link" to="agences">
                       <i class="material-icons">palette</i>
                       <p>Liste des Agences</p>
                     </router-link>
@@ -120,7 +120,7 @@
               </div>
             </li>
             <li class="nav-item">
-              <a
+              <router-link
                 class="nav-link collapsed text-truncate"
                 to="#sousmenu"
                 data-toggle="collapse"

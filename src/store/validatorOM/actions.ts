@@ -32,7 +32,7 @@ export default {
     },
 
     gelValidatorsOM(ctx, payload){
-        console.log(payload)
+        //console.log(payload)
         return new Promise((resolve, reject) => {
             axios
                 .post(`gelValidatorOM/${payload}`)
@@ -41,6 +41,7 @@ export default {
                     resolve(response);
                 })
                 .catch((error)=>{
+                    console.log(error);
                     reject(error);
                 })
         })
