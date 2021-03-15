@@ -476,6 +476,7 @@ export default {
         phone: "",
         email: "",
         password: "",
+        active: true
       },
       defaultItem: {
          user: {
@@ -492,6 +493,7 @@ export default {
         phone: "",
         email: "",
         password: "",
+        active: true
       },
   }),
   computed: {

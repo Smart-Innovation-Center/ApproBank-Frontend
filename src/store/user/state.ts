@@ -6,6 +6,8 @@ export default {
     },
     users : [],
     usersGeles : [],
-    adminBankInfos : {},
+    adminBankInfos : {
+        bank: {}
+    },
     validatorsBankInfos : []
 };

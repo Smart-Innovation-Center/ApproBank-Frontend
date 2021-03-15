@@ -285,6 +285,8 @@
                   <v-data-table
                     :headers="headers"
                     :items="roles"
+                    :sort-by="['isSystem', 'name']"
+                    :sort-asc="['true']"
                     hide-select
                     class="elevation-1"
                     :search="search"
@@ -390,7 +392,7 @@
                   </template>
                   <template v-slot:item.actions="{ item }">
                     <v-icon
-                      v-if="item.isSystem !== true"
+                      v-if="item.isSystem==false"
                       small
                       class="mr-2"
                       @click="editItem(item)"
@@ -398,12 +400,15 @@
                       mdi-pencil
                     </v-icon>
                     <v-icon
-                      v-if="item.isSystem !== true"
+                      v-if="item.isSystem==false"
                       small
                       @click="deleteItem(item)"
                     >
                       mdi-delete
                     </v-icon>
+                  </template>
+                  <template v-slot:item.isSystem="{ item }">
+                    {{ item.isSystem ? "Rôle Système" : "Rôle Personnalisé" }}
                   </template>
                   <template v-slot:no-data>
                       Aucune donnée à afficher
@@ -436,7 +441,7 @@ export default {
           value: 'name',
         },
         { text: 'Slug', value: 'slug' },
-        { text: 'Rôle Sytème', value: 'isSystem'},
+        { text: 'Type de Rôle', value: 'isSystem'},
         { text: 'Actions', value: 'actions', sortable: false },
       ],
       editedIndex: -1,
@@ -474,9 +479,9 @@ export default {
     },
   methods: {
     ...mapActions({
-    //   addRole: "role/addRole",
-    //   updateRole: "role/updateRole",
-    //   deleteRole: "role/deleteRole"
+      addRole: "role/addRole",
+      updateRole: "role/updateRole",
+      deleteRole: "role/deleteRole"
     }),
     editItem (item) {
       console.log(item)

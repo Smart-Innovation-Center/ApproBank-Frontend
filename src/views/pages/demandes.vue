@@ -9,19 +9,19 @@
         <div class="sidebar-wrapper">
           <ul class="nav text-left">
             <li class="nav-item">
-              <router-link  to="dashboard">
+              <router-link class="nav-link" to="dashboard">
                 <i class="material-icons">dashboard</i>
                 <p>Tableau de Bord</p>
               </router-link>
             </li>
             <li class="nav-item ">
-              <router-link  to="profile">
+              <router-link class="nav-link" to="profile">
                 <i class="material-icons">person</i>
                 <p>Profil</p>
               </router-link>
             </li>
             <li class="nav-item" v-if="userInfos.roles[0].slug==='structureOM'">
-              <router-link  to="mesAgences">
+              <router-link class="nav-link" to="mesAgences">
                 <i class="material-icons">store_mall_directory</i>
                 <p>Mes Agences</p>
               </router-link>
@@ -29,7 +29,7 @@
             <li class="nav-item active">
                     <router-link
                       class="nav-link collapsed text-truncate"
-                      to="#sousmen"
+                       to="#sousmen"
                       data-toggle="collapse"
                       data-target="#sousmen"
                     >
@@ -39,19 +39,19 @@
                     <div class="collapse" id="sousmen" aria-expanded="false">
                       <ul class="flex-column pl-2 nav">
                        <li class="nav-item" v-if="userInfos.roles[0].slug==='structureOM'">
-                          <router-link  to="supply">
+                          <router-link class="nav-link" to="supply">
                             <i class="material-icons">add_circle</i>
                             <p>Nouvelle Demande</p>
                           </router-link>
                         </li>
                       <li class="nav-item active" v-if="userInfos.roles[0].slug==='adminBanque' || userInfos.roles[0].slug==='validatorBanque' || userInfos.roles[0].slug==='validatorOMCI'">
-                          <router-link  to="demandes">
+                          <router-link class="nav-link" to="demandes">
                             <i class="material-icons">schedule</i>
                             <p>Demandes en attente</p>
                           </router-link>
                         </li>
                         <li class="nav-item">
-                          <router-link  to="listeDemandes">
+                          <router-link class="nav-link" to="listeDemandes">
                             <i class="material-icons">rule</i>
                             <p>Liste des demandes</p>
                           </router-link>
@@ -60,7 +60,7 @@
                     </div>
                   </li>
             <li class="nav-item" v-if="userInfos.roles[0].slug!=='superAdmin' && userInfos.roles[0].slug!=='supervisor'">
-              <router-link  to="notifications">
+              <router-link class="nav-link" to="notifications">
                 <i class="material-icons">notifications</i>
                 <p>Notifications</p>
               </router-link>
@@ -78,7 +78,7 @@
               <div class="collapse" id="sousmenuAdmin" aria-expanded="false">
                 <ul class="flex-column pl-2 nav">
                   <li class="nav-item" v-if="userInfos.roles[0].slug==='managerOMCI'">
-                    <router-link  to="validateursOM">
+                    <router-link class="nav-link" to="validateursOM">
                       <i class="material-icons">done_all</i>
                       <p>Validateurs</p>
                     </router-link>
@@ -111,7 +111,7 @@
               </div>
             </li>
             <li class="nav-item" v-if="userInfos.roles[0].slug==='validatorOMCI'">
-                    <router-link  to="comptesBanqueOrange">
+                    <router-link class="nav-link" to="comptesBanqueOrange">
                       <i class="material-icons">account_balance</i>
                       <p>Comptes Banque Orange</p>
                     </router-link>
@@ -132,25 +132,25 @@
               <div class="collapse" id="sousmenu" aria-expanded="false">
                 <ul class="flex-column pl-2 nav">
                 <li class="nav-item" v-if="userInfos.roles[0].slug==='superAdmin'">
-                    <router-link  to="#">
+                    <router-link class="nav-link" to="#">
                       <i class="material-icons">info_outline</i>
                       <p>Approbank</p>
                     </router-link>
                   </li>
                 <li class="nav-item">
-                    <router-link  to="#">
+                    <router-link class="nav-link" to="#">
                       <i class="material-icons">palette</i>
                       <p>Affichage</p>
                     </router-link>
                   </li>
                   <li class="nav-item" v-if="userInfos.roles[0].slug==='superAdmin'">
-                    <router-link  to="roles">
+                    <router-link class="nav-link" to="roles">
                       <i class="material-icons">safety_divider</i>
                       <p>Gestion des Rôles</p>
                     </router-link>
                   </li>
                   <li class="nav-item" v-if="userInfos.roles[0].slug==='superAdmin'">
-                    <router-link  to="#">
+                    <router-link class="nav-link" to="#">
                       <i class="material-icons">lock</i>
                       <p>Gestion des Permissions</p>
                     </router-link>
@@ -160,13 +160,13 @@
             </li>
             <hr class="bg-orange"/>
             <li class="nav-item">
-              <router-link  to="#">
+              <router-link class="nav-link" to="#">
                 <i class="material-icons">menu_book</i>
                 <p>Documentation</p>
               </router-link>
             </li>
             <li class="nav-item">
-              <router-link  to="#">
+              <router-link class="nav-link" to="#">
                 <i class="material-icons">support_agent</i>
                 <p>Service Support</p>
               </router-link>

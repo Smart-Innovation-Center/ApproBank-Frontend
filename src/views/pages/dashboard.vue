@@ -3,7 +3,7 @@
     <div class="wrapper ">
       <div class="sidebar" data-color="orange" data-background-color="black">
         <div class="logo text-center">
-          <router-link href="../"><h2 class="text-light text-uppercase">Approbank</h2></router-link>
+          <router-link to="../"><h2 class="text-light text-uppercase">Approbank</h2></router-link>
           <span class="text-orange text-uppercase">{{ userInfos.roles[0].name }}</span>
         </div>
         <div class="sidebar-wrapper">
@@ -44,7 +44,7 @@
                             <p>Nouvelle Demande</p>
                           </router-link>
                         </li>
-                      <li class="nav-item" v-if="userInfos.roles[0].slug==='adminBanque' || userInfos.roles[0].slug==='validatorBanque' || userInfos.roles[0].slug==='validatorOMCI'">
+                      <li class="nav-item" v-if="userInfos.roles[0].slug==='validatorBanque' || userInfos.roles[0].slug==='validatorOMCI'">
                           <router-link class="nav-link" to="demandes">
                             <i class="material-icons">schedule</i>
                             <p>Demandes en attente</p>
@@ -59,13 +59,13 @@
                       </ul>
                     </div>
                   </li>
-            <li class="nav-item"  v-if="userInfos.roles[0].slug!=='superAdmin' && userInfos.roles[0].slug!=='supervisor'">
+            <li class="nav-item"  v-if="userInfos.roles[0].slug!=='superAdmin' && userInfos.roles[0].slug!=='managerOMCI' && userInfos.roles[0].slug!=='supervisor'">
               <router-link class="nav-link" to="notifications">
                 <i class="material-icons">notifications</i>
                 <p>Notifications</p>
               </router-link>
             </li>
-            <li class="nav-item" v-if="userInfos.roles[0].slug==='validatorOMCI' || userInfos.roles[0].slug==='managerOMCI' || userInfos.roles[0].slug==='adminBanque'">
+            <li class="nav-item" v-if="userInfos.roles[0].slug==='validatorOMCI' || userInfos.roles[0].slug==='managerOMCI' || userInfos.roles[0].slug==='adminBanque' || userInfos.roles[0].slug==='superAdmin'">
               <router-link
                 class="nav-link collapsed text-truncate"
                 to="#sousmenuAdmin"
@@ -77,16 +77,36 @@
               </router-link>
               <div class="collapse" id="sousmenuAdmin" aria-expanded="false">
                 <ul class="flex-column pl-2 nav">
+                  
+                  <li class="nav-item" v-if="userInfos.roles[0].slug==='superAdmin'">
+                    <router-link class="nav-link" to="utilisateurs">
+                      <i class="material-icons">groups</i>
+                      <p>Gestion des Utilisateurs</p>
+                    </router-link>
+                  </li>
+                  <li class="nav-item" v-if="userInfos.roles[0].slug==='superAdmin'">
+                    <router-link class="nav-link" to="roles">
+                      <i class="material-icons">safety_divider</i>
+                      <p>Gestion des Rôles</p>
+                    </router-link>
+                  </li>
+                  <li class="nav-item" v-if="userInfos.roles[0].slug==='superAdmin'">
+                    <router-link class="nav-link" to="#">
+                      <i class="material-icons">lock</i>
+                      <p>Gestion des Permissions</p>
+                    </router-link>
+                  </li>
+
                   <li class="nav-item" v-if="userInfos.roles[0].slug==='adminBanque'">
                     <router-link class="nav-link" to="validateursBanque">
                       <i class="material-icons">done_all</i>
-                      <p>Validateurs</p>
+                      <p>Validateurs Banque</p>
                     </router-link>
                   </li>
                   <li class="nav-item" v-if="userInfos.roles[0].slug==='managerOMCI'">
                     <router-link class="nav-link" to="validateursOM">
                       <i class="material-icons">done_all</i>
-                      <p>Validateurs</p>
+                      <p>Validateurs OM</p>
                     </router-link>
                   </li>
                   <li class="nav-item" v-if="userInfos.roles[0].slug==='validatorOMCI' || userInfos.roles[0].slug==='managerOMCI'">
@@ -149,24 +169,6 @@
                       <p>Affichage</p>
                     </router-link>
                   </li>
-                  <li class="nav-item" v-if="userInfos.roles[0].slug==='superAdmin'">
-                    <router-link class="nav-link" to="utilisateurs">
-                      <i class="material-icons">groups</i>
-                      <p>Gestion des Utilisateurs</p>
-                    </router-link>
-                  </li>
-                  <li class="nav-item" v-if="userInfos.roles[0].slug==='superAdmin'">
-                    <router-link class="nav-link" to="roles">
-                      <i class="material-icons">safety_divider</i>
-                      <p>Gestion des Rôles</p>
-                    </router-link>
-                  </li>
-                  <li class="nav-item" v-if="userInfos.roles[0].slug==='superAdmin'">
-                    <router-link class="nav-link" to="#">
-                      <i class="material-icons">lock</i>
-                      <p>Gestion des Permissions</p>
-                    </router-link>
-                  </li>
                 </ul>
               </div>
             </li>
@@ -193,7 +195,7 @@
         >
           <div class="container-fluid">
             <div class="navbar-wrapper">
-              <router-link> class="navbar-brand" href="javascript:;">Tableau de Bord</router-link>
+              <router-link class="navbar-brand" href="javascript:;">Tableau de Bord</router-link>
             </div>
             <button
               class="navbar-toggler"
@@ -210,10 +212,10 @@
             </button>
             <div class="collapse navbar-collapse justify-content-end">
               <ul class="navbar-nav">
-                <li class="nav-item dropdown" v-if="userInfos.roles[0].slug!=='superAdmin'">
-                  <router-link>
+                <li class="nav-item dropdown" v-if="userInfos.roles[0].slug!=='superAdmin' || userInfos.roles[0].slug!=='managerOMCI' || userInfos.roles[0].slug!=='supervisor'">
+                  <router-link
                     class="nav-link"
-                    href=""
+                    to=""
                     id="navbarDropdownMenuLink"
                     data-toggle="dropdown"
                     aria-haspopup="true"
@@ -242,7 +244,7 @@
                 </li>
                 <li class="nav-item dropdown">
                 
-                  <router-link
+                  <a
                     class="nav-link"
                     href="javascript:;"
                     id="navbarDropdownProfile"
@@ -254,15 +256,15 @@
                     <p class="d-lg-none d-md-block">
                       Mon Compte
                     </p>
-                  </router-link>
+                  </a>
                   <div
                     class="dropdown-menu dropdown-menu-right"
                     aria-labelledby="navbarDropdownProfile"
                   >
                   <h4 class="text-center font-weight-bold text-orange text-uppercase">{{ userInfos.name }}</h4>
                     <div class="dropdown-divider"></div>
-                    <router-link class="dropdown-item" to="profile">Mon Profil</router-link>
-                    <router-link class="dropdown-item" @click="logout">Me Déconnecter</router-link>
+                    <a class="dropdown-item" href="profile">Mon Profil</a>
+                    <a class="dropdown-item" @click="logout">Me Déconnecter</a>
                   </div>
                 </li>
               </ul>
@@ -289,7 +291,7 @@
                     <h3 class="card-title"><strong>{{ soldeStructure.data }}</strong></h3>
                   </div>
                   <div class="card-footer">
-                    <router-link href="supply" class="btn btn-primary btn-round">
+                    <router-link to="supply" class="btn btn-primary btn-round">
                       Recharger
                     </router-link>
                   </div>
@@ -306,7 +308,7 @@
                     <h3 class="card-title" v-if="userInfos.roles[0].slug!=='structureOM'">{{ supplies.length }}</h3>
                   </div>
                   <div class="card-footer">
-                    <router-link href="listeDemandes" class="btn btn-primary btn-round">
+                    <router-link to="listeDemandes" class="btn btn-primary btn-round">
                       Voir tout
                     </router-link>
                   </div>
@@ -322,7 +324,7 @@
                     <h3 class="card-title">{{ users.length + 1 }}</h3>
                   </div>
                   <div class="card-footer">
-                    <router-link href="utilisateurs" class="btn btn-primary btn-round">
+                    <router-link to="utilisateurs" class="btn btn-primary btn-round">
                       Consulter la liste
                     </router-link>
                   </div>
@@ -338,7 +340,7 @@
                     <h3 class="card-title">{{ usersGeles.length }}</h3>
                   </div>
                   <div class="card-footer">
-                    <router-link href="utilisateurs" class="btn btn-primary btn-round">
+                    <router-link to="utilisateurs" class="btn btn-primary btn-round">
                       Consulter la liste
                     </router-link>
                   </div>

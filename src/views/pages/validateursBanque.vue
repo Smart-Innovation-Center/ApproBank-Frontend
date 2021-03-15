@@ -187,7 +187,7 @@
         >
           <div class="container-fluid">
             <div class="navbar-wrapper">
-              <a class="navbar-brand" href="javascript:;">Validateurs de la Banque : <span class="font-weight-bold">{{ adminBankInfos[0].bank.nom }} ({{ adminBankInfos[0].bank.code }})</span></a>
+              <a class="navbar-brand" href="javascript:;">Validateurs de la Banque : <span class="font-weight-bold">{{ adminBankInfos.bank.nom }} ({{ adminBankInfos.bank.code }})</span></a>
             
             </div>
             <button
@@ -293,7 +293,7 @@
                     <v-toolbar
                       flat
                     >
-                      <v-toolbar-title>Liste des validateurs de la banque ({{ validatorsBankInfos.length }} / {{ adminBankInfos[0].bank.nombreApprobation }})</v-toolbar-title>
+                      <v-toolbar-title>Liste des validateurs de la banque ({{ validatorsBankInfos.length }} / {{ adminBankInfos.bank.nombreApprobation }})</v-toolbar-title>
                         <v-divider
                           class="mx-15"
                           inset
@@ -312,14 +312,14 @@
                           v-model="dialog"
                           max-width="500px"
                         >
-                        <template v-slot:activator="{ on, attrs }">
+                        <template v-slot:activator="{ on, attrs }" v-if="validatorsBankInfos.length !== adminBankInfos.bank.nombreApprobation">
                           <v-btn
                             
                             class="mb-2 btn-orange"
                             v-bind="attrs"
                             v-on="on"
                           >
-                            Ajouter 
+                            Ajouter
                           </v-btn>
 
                           
@@ -396,7 +396,7 @@
                     required="required"
                     v-model="editedItem.priorite"
                     min="1"
-                    :max="adminBankInfos[0].bank.nombreApprobation"
+                    :max="adminBankInfos.bank.nombreApprobation"
                   ></v-text-field>
                 </v-form>
                           </v-card-text>
@@ -420,18 +420,6 @@
                           </v-card-actions>
                         </v-card>
                       </v-dialog>
-                      <v-dialog v-model="dialogDelete" max-width="500px">
-                        <v-card>
-                          <v-card-title class="headline">Êtes-vous sûr de supprimer {{ editedItem.user.name }} ?</v-card-title>
-                          <v-card-actions>
-                            <v-spacer></v-spacer>
-                            <v-btn color="blue darken-1" class="btn btn-default btn-link" text @click="closeDelete">Annuler</v-btn>
-                            <v-btn color="blue darken-1" class="btn btn-danger" text @click="deleteItemConfirm(editedItem.id)">Supprimer</v-btn>
-                            <v-spacer></v-spacer>
-                          </v-card-actions>
-                        </v-card>
-                      </v-dialog>
-                      
                     </v-toolbar>
                     
                     <!-- <v-switch
@@ -451,12 +439,19 @@
                     >
                       mdi-pencil
                     </v-icon>
-                    <v-icon
-                      small
-                      @click="deleteItem(item)"
-                    >
-                      mdi-delete
-                    </v-icon>
+                  </template>
+                  <template v-slot:item.active="{ item }">
+                      
+                        {{ item.active ? "Actif" : "Gélé" }}
+                      
+                  </template>
+                  <template v-slot:item.gel="{ item }">
+                    <v-switch 
+                        v-model="item.active"
+                        color="orange darken-3"
+                        v-on:change="geler(item.id)"
+                      >
+                      </v-switch>
                   </template>
                   <template v-slot:no-data>
                       Aucune donnée à afficher
@@ -498,7 +493,9 @@ export default {
         { text: 'Priorité', value: 'priorite'},
         //{ text: 'Nombre de validations', value: '' },
         //{ text: 'Date', value: 'created_at' },
-        { text: 'Actions', value: 'actions', sortable: false },
+        { text: 'Modifier', value: 'actions', sortable: false },
+        { text: 'Statut', value: 'active' },
+        { text: 'Géler', value: 'gel', sortable: false },
       ],
       editedIndex: -1,
       editedItem: {
@@ -556,7 +553,7 @@ export default {
       //validatorsBank: state => state.validatorBank.validatorsBank
     }),
     // validatorsCounter(){
-    //         const payload = this.adminBankInfos[0].bank.id;
+    //         const payload = this.adminBankInfos.bank.id;
     //         console.log(payload);
     //        axios.get(`validatorsByBank/${payload}`,payload).then(response => console.log(response)).catch(error => console.log(error))
     //     },
@@ -574,11 +571,11 @@ export default {
       registerUser: "user/registerUser",
       loadVal: "validatorBank/loadValidatorsBank",
       validatorBankAd: "validatorBank/addValidatorBank",
-      validatorBankDel: "validatorBank/deleteValidatorBank",
+      validatorBankGel: "validatorBank/gelValidatorBank",
       validatorBankUpd: "validatorBank/updateValidatorBank"
     }),
     // load(){
-    //     this.loadVal(adminBankInfos[0].bank);
+    //     this.loadVal(adminBankInfos.bank);
     // }
     editItem (item) {
         this.editedIndex = this.validatorsBankInfos.indexOf(item)
@@ -589,25 +586,12 @@ export default {
         this.edit = true
         this.dialog = true
       },
-      deleteItem (item) {
-        this.editedIndex = this.validatorsBankInfos.indexOf(item)
-        this.editedItem = Object.assign({}, item)
-        this.dialogDelete = true
-      },
-      deleteItemConfirm (id) {
-        this.validatorBankDel(id)    
-        this.validatorsBankInfos.splice(this.editedIndex, 1)
-        this.closeDelete()
+      geler(id) {
+        //console.log(id);
+        this.validatorBankGel(id)
       },
       close () {
         this.dialog = false
-        this.$nextTick(() => {
-          this.editedItem = Object.assign({}, this.defaultItem)
-          this.editedIndex = -1
-        })
-      },
-      closeDelete () {
-        this.dialogDelete = false
         this.$nextTick(() => {
           this.editedItem = Object.assign({}, this.defaultItem)
           this.editedIndex = -1
@@ -620,7 +604,7 @@ export default {
         this.validatorBankUpd(this.editedItem)
         } else {
 
-        this.editedItem.bank_id = this.adminBankInfos[0].bank_id;
+        this.editedItem.bank_id = this.adminBankInfos.bank_id;
         this.editedItem.name = this.editedItem.user.name;
         this.editedItem.firstname = this.editedItem.user.firstname;
         this.editedItem.lastname = this.editedItem.user.lastname;
