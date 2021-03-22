@@ -185,6 +185,12 @@ export default {
                 reject(error);
             })
     })
-    }
+    },
+
+    async loadmyNotifications({ commit }) {
+        let response = await axios.get("myNotifications",);
+        let myNotifications = response.data;
+        commit("SET_MY_NOTIFICATIONS", myNotifications);
+      },
 
 }

@@ -16,5 +16,8 @@ export default {
     },
     setValidatorsBankInfo(state, payload){
         state.validatorsBankInfos = payload;
-    }
+    },
+    SET_MY_NOTIFICATIONS(state, myNotifications) {
+        state.myNotifications = myNotifications;
+      }
 }

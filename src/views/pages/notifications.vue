@@ -274,17 +274,7 @@
                               href="#profile"
                               data-toggle="tab"
                             >
-                              <i class="material-icons">message</i> Infos
-                              <div class="ripple-container"></div>
-                            </a>
-                          </li>
-                          <li class="nav-item">
-                            <a
-                              class="nav-link"
-                              href="#messages"
-                              data-toggle="tab"
-                            >
-                              <i class="material-icons">notifications</i> Alertes
+                              <i class="material-icons">message</i> Messages
                               <div class="ripple-container"></div>
                             </a>
                           </li>
@@ -318,7 +308,7 @@
                           </th>
                         </thead>
                           <tbody>
-                            <tr v-if="userInfos.roles[0].slug==='structureOM'">
+                            <tr v-for="myNotification in myNotifications" :key="myNotification.id">
                               <td>
                                 <div class="form-check">
                                   <label class="form-check-label">
@@ -334,7 +324,7 @@
                                 </div>
                               </td>
                               <td>
-                                Votre demande d'approvisionnement N° <a href="supply#approvisionnement">AP-12012021-5000000</a> a été approuvé 1 fois sur 2.
+                                <router-link to="listeDemandes"> {{ myNotification.message }} </router-link>
                               </td>
                               <td class="td-actions text-right">
                                 <button
@@ -347,53 +337,15 @@
                                 </button>
                               </td>
                             </tr>
-                            <tr v-if="userInfos.roles[0].slug==='validatorBanque'">
-                              <td>
-                                <div class="form-check">
-                                  <label class="form-check-label">
-                                    <input
-                                      class="form-check-input"
-                                      type="checkbox"
-                                      value=""
-                                    />
-                                    <span class="form-check-sign">
-                                      <span class="check"></span>
-                                    </span>
-                                  </label>
-                                </div>
-                              </td>
-                              <td>
-                                Nouvelle demande d'Approvisionnement en attente d'approbation ! 
-                                <br>
-                                Veuillez Consulter la liste des approvisionnements en cours : <a href="demandes">ICI</a>
-                              </td>
-                              <td class="td-actions text-right">
-                                <button
-                                  type="button"
-                                  rel="tooltip"
-                                  title="Supprimer"
-                                  class="btn btn-danger btn-link btn-sm"
-                                >
-                                  <i class="material-icons">delete</i>
-                                </button>
-                              </td>
-                            </tr>
-                          </tbody>
-                        </table>
-                      </div>
-                      <div class="tab-pane" id="messages">
-                        <table class="table">
-                          <tbody>
-                            Aucune alerte
                           </tbody>
                         </table>
                       </div>
                       <div class="tab-pane" id="settings">
                         <table class="table text-justify">
                           <tbody>
-                            <v-switch
-                              label="Son pour les notifications"
-                            ></v-switch>
+                            <v-text-field type="number" label="nombre maximum de notifications">
+                              
+                            </v-text-field>
                             <hr>
                               <div class="form-check">
                                   <label class="form-check-label">
@@ -407,19 +359,19 @@
                                     </span>
                                   </label>
                                   Recevoir les notifications par E-MAIL
-                                </div>
-                                <div class="form-check">
-                                  <label class="form-check-label">
-                                    <input
-                                      class="form-check-input"
-                                      type="checkbox"
-                                    />
-                                    <span class="form-check-sign">
-                                      <span class="check"></span>
-                                    </span>
-                                  </label>
-                                  Recevoir les notifications par SMS
-                                </div>
+                              </div>
+                              <div class="form-check">
+                                <label class="form-check-label">
+                                  <input
+                                    class="form-check-input"
+                                    type="checkbox"
+                                  />
+                                  <span class="form-check-sign">
+                                    <span class="check"></span>
+                                  </span>
+                                </label>
+                                Recevoir les notifications par SMS
+                              </div>
                           </tbody>
                         </table>
                       </div>
@@ -435,13 +387,19 @@
   </v-app>
 </template>
 <script>
-import { mapGetters } from "vuex";
+import { mapGetters, mapState } from "vuex";
 export default {
   name: "notifications",
+  data: () => ({
+    myNotification: {},
+  }),
   computed: {
     ...mapGetters({
       userInfos: "user/userInfos"
-    })
+    }),
+    ...mapState({
+      myNotifications: state => state.user.myNotifications 
+    }),
   },
   methods: {
     logout() {
@@ -449,6 +407,9 @@ export default {
         this.$router.push({ name: "login" });
       });
     }
+  },
+  monted(){
+    this.$store.dispatch("user/loadmyNotifications");
   }
 };
 </script>

@@ -222,7 +222,7 @@
                     aria-expanded="false"
                   >
                     <i class="material-icons">notifications</i>
-                    <span class="notification">2</span>
+                    <span class="notification">{{ myNotifications.length }}</span>
                     <p class="d-lg-none d-md-block">
                       Notifications
                     </p>
@@ -231,19 +231,17 @@
                     class="dropdown-menu dropdown-menu-right"
                     aria-labelledby="navbarDropdownMenuLink"
                   >
-                    <router-link class="dropdown-item" to="notifications" v-if="userInfos.roles[0].slug==='validatorOMCI'">
-                      Nouvelle demande en attente de validation !
+                  <span class="dropdown-item" v-if="myNotifications.length===0"> Aucune notification non-lue</span>
+                  <div v-for="myNotification in myNotifications" :key="myNotification.id">
+                    <router-link class="dropdown-item" to="notifications">
+                      {{ myNotification.message }} 
                     </router-link>
-                    <router-link class="dropdown-item" to="notifications" v-if="userInfos.roles[0].slug==='structureOM'">
-                      Votre demande a été envoyée !
-                    </router-link>
-                    <router-link class="dropdown-item" to="notifications" v-if="userInfos.roles[0].slug==='structureOM'">
-                      Votre demande a été approuvée (1/2) !
-                    </router-link>
+                    
+                  </div>
+                    
                   </div>
                 </li>
                 <li class="nav-item dropdown">
-                
                   <a
                     class="nav-link"
                     href="javascript:;"
@@ -384,6 +382,7 @@ export default {
     agency: {},
     supply: {},
     mySupply: {},
+    myNotification: {},
   }),
   computed: {
     ...mapGetters({
@@ -395,13 +394,15 @@ export default {
     ...mapState({
       soldeStructure: state => state.agency.soldeStructure,
       supplies: state => state.supply.supplies,
-      mySupplies: state => state.supply.mySupplies 
+      mySupplies: state => state.supply.mySupplies, 
+      myNotifications: state => state.user.myNotifications 
       //agencies: state => state.agency.agencies,
     }),
   },
   mounted() {
     this.$store.dispatch("user/userInfos");
     this.$store.dispatch("user/adminBankInfos");
+    // this.$store.dispatch("user/loadmyNotifications");
     //this.$store.dispatch("agency/loadAgencies");
     this.$store.dispatch("agency/loadSoldeStructure");
     this.$store.dispatch("supply/loadSupplies");

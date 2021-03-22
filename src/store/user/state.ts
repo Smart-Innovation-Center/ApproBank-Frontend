@@ -9,5 +9,6 @@ export default {
     adminBankInfos : {
         bank: {}
     },
-    validatorsBankInfos : []
+    validatorsBankInfos : [],
+    myNotifications : []
 };

@@ -16,5 +16,8 @@ export default {
     },
     validatorsBankInfos(state){
         return state.validatorsBankInfos;
+    },
+    myNotifications(state){
+        return state.myNotifications;
     }
 }

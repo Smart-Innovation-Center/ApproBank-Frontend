@@ -44,14 +44,15 @@
   </v-app>
 </template>
 <script>
-import { mapGetters, mapActions } from "vuex";
+import { mapGetters, mapActions, mapState } from "vuex";
 
 export default {
   name: "App",
   data() {
     return {
       snackbarsuccess: {},
-      snackbarerror: {}
+      snackbarerror: {},
+      myNotification: {}
     };
   },
   created() {
@@ -61,10 +62,16 @@ export default {
       }
     });
   },
+  mounted(){
+    this.$store.dispatch("user/loadmyNotifications");
+  },
   computed: {
     ...mapGetters({
       loggedIn: "user/loggedIn",
       allNotifications: "application/notifications"
+    }),
+    ...mapState({
+      myNotifications: state => state.user.myNotifications 
     })
   },
   methods: {
