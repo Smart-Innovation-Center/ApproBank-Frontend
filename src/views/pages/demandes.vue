@@ -474,8 +474,8 @@
                               {{ supplyAvecB.numero_bordereau }}
                             </td>
                             <td class="font-weight-bold text-uppercase">
-                              <a :href="'http://127.0.0.1:8000/storage/'+ supplyAvecB.photo_bordereau" target="_blank">
-                                <img :src="'http://127.0.0.1:8000/storage/'+ supplyAvecB.photo_bordereau" alt="photoBordereau" class="my-3" contain height="100" />
+                              <a :href="'https://appro.it-timbuktu-exchange.com/storage/'+ supplyAvecB.photo_bordereau" target="_blank">
+                                <img :src="'https://appro.it-timbuktu-exchange.com/storage/'+ supplyAvecB.photo_bordereau" alt="photoBordereau" class="my-3" contain height="100" />
                               </a>
                             </td>
                             <td class="text-info">
@@ -667,7 +667,7 @@
               <v-card>
                 <v-img
                   height="200"
-                  :src="'http://127.0.0.1:8000/storage/'+ viewSupplyAvecItem.photo_bordereau" alt="photoBOrdereau"
+                  :src="'https://appro.it-timbuktu-exchange.com/storage/'+ viewSupplyAvecItem.photo_bordereau" alt="photoBOrdereau"
                 ></v-img>
                 <v-card-title>N° bordereau : {{ viewSupplyAvecItem.numero_bordereau }}</v-card-title>
                 <v-card-text>
@@ -720,7 +720,7 @@
               <v-card>
                 <v-img
                   height="200"
-                  :src="'http://127.0.0.1:8000/storage/'+ approSupplyAvecItem.photo_bordereau" alt="photoBOrdereau"
+                  :src="'https://appro.it-timbuktu-exchange.com/storage/'+ approSupplyAvecItem.photo_bordereau" alt="photoBOrdereau"
                 ></v-img>
                 <v-card-title>N° bordereau : {{ approSupplyAvecItem.numero_bordereau }}</v-card-title>
                 <v-card-text>
@@ -782,7 +782,7 @@
               <v-card>
                 <v-img
                   height="200"
-                  :src="'http://127.0.0.1:8000/storage/'+ rejSupplyAvecItem.photo_bordereau" alt="photoBOrdereau"
+                  :src="'https://appro.it-timbuktu-exchange.com/storage/'+ rejSupplyAvecItem.photo_bordereau" alt="photoBOrdereau"
                 ></v-img>
                 <v-card-title>
                   Êtes-vous certain de vouloir rejeter la demande d'approvisionnement avec bordereau dont les détails suivent : <br>
