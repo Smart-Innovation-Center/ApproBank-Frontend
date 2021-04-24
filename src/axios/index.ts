@@ -1,8 +1,8 @@
 import axios from 'axios'
 
 const ax = axios.create({
-    //baseURL: 'https://approbank.2asoft.net/api/',
-    baseURL: 'https://appro.it-timbuktu-exchange.com/api/',
+    baseURL: 'http://localhost:8000/api/',
+    //baseURL: 'https://appro.it-timbuktu-exchange.com/api/',
     // timeout: 1000,
     // headers: {'X-Custom-Header': 'foobar'}
 });

@@ -335,6 +335,14 @@
                               ></v-text-field>
 
                               <v-text-field
+                                label="Agence ID"
+                                name="agenceId"
+                                prepend-icon="mdi-account"
+                                type="text"
+                                v-model="editedItem.agenceId"
+                              ></v-text-field>
+
+                              <v-text-field
                                 label="Ville"
                                 name="ville"
                                 prepend-icon="mdi-account"
@@ -473,6 +481,7 @@ export default {
       editedItem: {
         code: "",
         ville: "",
+        agenceId: "",
         description: "",
         structure:"",
         active: true
@@ -480,6 +489,7 @@ export default {
       defaultItem: {
         code: "",
         ville: "",
+        agenceId: "",
         description: "",
         structure:"",
         active: true
